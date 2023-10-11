@@ -1,0 +1,154 @@
+<!-- Modal for Appointment View -->
+<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="viewModalLabel">Appointment Details</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <!--<span aria-hidden="true">&times;</span>-->
+        </button>
+      </div>
+      <div class="modal-body">
+       
+       
+         <div class="form-group row">
+           <label for="viewDoctorName" class="col-sm-2 col-form-label">Doctor: </label>
+           <div class="col-sm-10">
+             <input type="text" readonly class="form-control" id="viewDoctorName" >
+           </div>
+         </div>
+         <div class="form-group row">
+           <label for="viewAptDate" class="col-sm-2 col-form-label">Date: </label>
+           <div class="col-sm-4">
+             <input type="text" readonly class="form-control" id="viewAptDate" >
+           </div>
+         </div>
+         <div class="form-group row">
+           <label for="viewAptTime" class="col-sm-2 col-form-label">Time:</label>
+           <div class="col-sm-4" >
+             <input type="text" readonly class="form-control" id="viewAptTime" >
+           </div>
+         </div>
+         <div class="form-group row">
+           <label for="viewAptMessage" class="col-sm-2 col-form-label">Message: </label>
+           <div class="col-sm-10">
+             <input type="text" readonly class="form-control" id="viewAptMessage" >
+           </div>
+         </div>
+          <div class="form-group row">
+           <label for="viewAptConditions" class="col-sm-2 col-form-label">Condition: </label>
+           <div class="col-sm-10">
+             <input type="text" readonly class="form-control" id="viewAptConditions" >
+           </div>
+         </div>
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary-appointment-view-button" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<h2 id="aptPatientHomeTitle"><small>{{title}}</small></h2>
+
+{{#if success}}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>{{success}}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    <!--<span aria-hidden="true">&times;</span>-->
+  </button>
+</div>
+{{/if}}
+
+<table class="patientTable">
+  <tr>
+    <td> {{#if userProfilePicture}}
+    <img id ="patientPic" alt="{{userFullName}}" src="{{userProfilePicture}}"  />
+     {{else}}
+     <img id ="patientPic" alt="No Image Available" src='/public/images/no-photo-available.jpg' />
+     {{/if}}
+     </td>
+             
+             </tr>
+   <tr>
+             <td><strong>Name : </strong></td>
+             <td>{{userFullName}}</td>
+             </tr>
+    <tr>
+      
+             <td><strong>Email : </strong></td>
+             <td>{{userEmail}}</td>
+             </tr>
+    <tr>
+             <td><strong>PhoneNumber : </strong></td>
+             <td>{{userPhoneNumber}}</td>
+             </tr>
+</table>
+<form id="appointmentListForm">
+    {{#if appointmentResultSet.length}}
+    
+    <h3 class="furtureApt"> Future Appointments</h3>
+     <table class="patientAppointmentTable">
+         <tr>
+           <th>Date</th>
+           <th>Time</th>
+           <th>Doctor</th>
+          </tr>
+        {{#each appointmentResultSet}}
+         {{#ifDateCompare aptDate '>=' aptTime }}
+        
+          <tr>
+             <td>{{aptDate}}</td>
+             <td>{{aptTime}}</td>
+             <td>{{doctorName}}</td>
+             <td>
+               <button type="button" class="btn btn-primary-appointment-view-button btn-sm" data-bs-toggle="modal" data-bs-target="#viewModal" id="viewButton{{_id}}"  value="/appointments/{{_id}}">View</button>
+               <button  type="submit" class="btn btn-primary-appointment-reschedule-button btn-sm" formmethod = "GET" formaction="/appointments/reschedule/{{_id}}" >Reschedule</button>
+               <button  type="button" class="btn btn-primary-appointment-delete-button btn-sm"  id="deleteButton{{_id}}"  value="/appointments/delete/{{_id}}">Cancel</button>
+              </td>
+          </tr>
+        
+        {{/ifDateCompare}}
+        {{/each}}
+        </table>
+        <h3 class="pastApt"> Past Appointments</h3>
+        <table class="patientAppointmentTable">
+         <tr>
+           <th>Date</th>
+           <th>Time</th>
+           <th>Doctor</th>
+          </tr>
+
+        {{#each appointmentResultSet}}
+         {{#ifDateCompare aptDate '<' aptTime }}
+
+          <tr>
+             <td>{{aptDate}}</td>
+             <td>{{aptTime}}</td>
+             <td>{{doctorName}}</td>
+             <td>
+               <button type="button" class="btn btn-primary-appointment-view-button btn-sm" data-bs-toggle="modal" data-bs-target="#viewModal" id="viewButton{{_id}}"  value="/appointments/{{_id}}">View</button>
+              </td>
+          </tr>
+    
+        {{/ifDateCompare}}
+        
+        {{/each}}
+        </table>
+        
+    {{else}}
+    <p class="not-found">We're sorry, there no appointments booked yet.</p>
+    {{/if}}
+     <input name= '_method' value="DELETE" hidden/>
+     
+</form>
+{{#if hasError}}
+<p class={{class}}>Error:{{errorMessage}}</p>
+{{/if}}
+<div class="apointmentDiv">
+<!--<a href="/appointments/userappointmentlist/{{userId}}" id="PatientHomeLink" >Back to PatietHome</a>-->
+<a class="btn btn-primary" href="/" role="button">Create New Appointment</a>
+</div>
+

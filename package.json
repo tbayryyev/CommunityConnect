@@ -1,0 +1,19 @@
+{
+  "name": "team2-agile",
+  "version": "1.0.0",
+  "description": "Agile project",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tbayryyev/Team2-Agile.git"
+  },
+  "author": "Tahyr Bayryyev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tbayryyev/Team2-Agile/issues"
+  },
+  "homepage": "https://github.com/tbayryyev/Team2-Agile#readme"
+}
