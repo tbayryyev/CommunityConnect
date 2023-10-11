@@ -1,113 +1,134 @@
+
+// Setup server, session and middleware here.
 const express = require('express');
 const app = express();
-const static = express.static(__dirname + '/public');
-const session = require('express-session');
-const flash = require('connect-flash');
-const bodyParser = require('body-parser');
-
 const configRoutes = require('./routes');
 const exphbs = require('express-handlebars');
-const Handlebars = require('handlebars');
+const session = require('express-session');
+const path = require('path');
+const multer = require("multer");
+const fs = require('fs');
+const { addFilePathtoApt } = require('./data/apartments');
 
 
-Handlebars.registerHelper('toString', function(inputString) {
-  var transformedString = inputString.toString();
-  return new Handlebars.SafeString(transformedString)
-});
+app.use(express.static('images'));
+app.use(express.static("uploads"));
+app.use('/uploads', express.static(__dirname + '/uploads'))
+app.use(express.static('views'));
+app.use(express.static(__dirname + '/views'));
+app.use(express.static("public"));
+app.use('/public', express.static(__dirname +'/public'));
 
-Handlebars.registerHelper('ifDateCompare', function (dt1, operator, tm1, options) {
-  var date1 = new Date(dt1+" "+tm1);
-  var date2 = new Date();
-
-  switch (operator) {
-
-      case '>=':
-        return (date1.getTime() >= date2.getTime()) ? options.fn(this) : options.inverse(this);
-      case '<':
-        return (date1.getTime() < date2.getTime()) ? options.fn(this) : options.inverse(this);
-      default:
-        return options.inverse(this);
-  }
-});
-
-const handlebarsInstance = exphbs.create({
-    defaultLayout: 'main',
-    // Specify helpers which are only registered on this instance.
-    helpers: {
-      asJSON: (obj, spacing) => {
-        if (typeof spacing === 'number')
-          return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
-
-        return new Handlebars.SafeString(JSON.stringify(obj));
-      }
-    },
-    partialsDir: ['views/partials/']
-  });
-
-  const rewriteUnsupportedBrowserMethods = (req, res, next) => {
-
-    if (req.body && req.body._method ) {
-
-      console.log("req.method : "+req.method);
-      req.method = req.body._method;
-      console.log("req.method : "+req.method);
-      delete req.body._method;
-    }
-      // let the next middleware run:
-    next();
-  };
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
   
+    cb(null, path.join(__dirname,'/uploads'))
+  },
+  filename: function (req, file, cb) {
+    //console.log("file",file);  
+    fileExtension = file.originalname.split('.')[1]
+    console.log("Date: " + __dirname)
+    let length = fs.readdirSync(__dirname+'/uploads').length
+    cb(null, length +'.'+fileExtension)
+  }
 
-  app.use(session({
-    name: 'AuthCookie',
-    secret: 'some secret string!',
-    resave: false,
-    saveUninitialized: true
-  }))
+})
 
-app.use(flash());
+var upload = multer({ storage: storage })
 
-app.use((req, res, next)=>{
-  app.locals.success = req.flash('success')
-  next();
-});
+app.set('view engine','handlebars');
+app.engine('handlebars', exphbs.engine({ defaultLayout: __dirname+ '/views/layouts/main' }))
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use('/public', static);
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use(rewriteUnsupportedBrowserMethods);
 
-app.engine('handlebars', handlebarsInstance.engine);
-app.set('view engine', 'handlebars');
+//app.use('/uploads', express.static('uploads'));
+
+app.set('views', path.join(__dirname, 'views'));
+
+
+// app.use(express.static(__dirname + '/public'));
+// const static = express.static(__dirname + '/public');
+// app.use(express.static('images'));
+// app.use('/public', static);
+// app.use(express.static('uploads'));
+
+
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+// app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }))
+//app.set('view engine', 'handlebars')
 
 app.use(session({
   name: 'AuthCookie',
   secret: 'some secret string!',
   resave: false,
   saveUninitialized: true
-}));
-app.use(async (req, res, next) => {
+}))
 
-  //console.log("req.username in app.js: "+req.session.username);
-  
-  //console.log("req.session.user : "+CircularJSON.stringify(req))
-    console.log("["+new Date().toUTCString()+"]: "+req.method+" "+req.originalUrl);
-next();
-});
 
-app.use('/appointments/*', (req, res, next) => {
-
-  if (!req.session.username) {
-    res.status(403).render('pages/error',{errorMessage:'User not logged in ! Go to home to login'});
-    return;
-  } else {
-    next();
+// Authentication middleware
+app.use('/protected', async (req, res, next) => {
+  if (req.session.user) next()
+  else {
+    return res.status(403).render('userAccount/forbiddenAccess')
   }
+})
+
+
+// Logging middleware
+app.use(async (req, res, next) => {
+  const timestamp = new Date().toUTCString()
+  const method = req.method
+  const route = req.originalUrl
+  const authCookie = `${req.session.user ? 'Authenticated' : 'Non-Authenticated'} User`
+  const log = `[${timestamp}]: ${method} ${route} (${authCookie})`
+  console.log(log)
+  next()
+})
+
+// app.engine('handlebars',exphbs.engine({ defaultLayout : __dirname + "/views/apartments/editApt" }));
+
+// app.get("/apartments/editApartment/::apartmentId", (req, res) => {
+//   res.render("apartments/editApt")
+// })
+
+
+app.post("/apartments/apartment/uploadimage/:id",upload.single('samplefile'),async function (req, res, next) {
+  // response += `<img src="${req.file.path}" /><br>`
+  //response += `<img src ="uploads/${req.file.filename}"/>`                 
+   //return res.sendFile(req.file.path)
+   try {
+    const aptId = req.params.id
+    fs.readdirSync(__dirname+'/uploads').length
+    var files = fs.readdirSync(__dirname+'/uploads');
+    console.log("\n\nFILES: " + files + "\n\n")
+    //files is array, get next to last element, get the .""
+    let fileExtension = files[files.length-2].split('.')[1]
+    console.log(fileExtension)
+    let newApt = await addFilePathtoApt(aptId,"/uploads/" + (fs.readdirSync(__dirname+'/uploads').length-1).toString()+"."+fileExtension )
+    res.redirect('/apartments/apartment/'+aptId)
+   } catch (error) {
+    res.render('error', {message:error})
+   }
+   
 });
+  //  var response = '<a href="/">Home</a><br>'
+  //  response += "Files uploaded successfully.<br>"
+  // // response += `<img src="${req.file.path}" /><br>`
+  // response += `<img src ="uploads/${req.file.filename}"/>`                 
+  //  return res.send(response)
+   //return res.sendFile(req.file.path);
+   //return res.send(`<img src="${req.file.path}"/>`);
+
+
+
+
+
+
 
 configRoutes(app);
+
 
 app.listen(3000, () => {
   console.log("We've now got a server!");
