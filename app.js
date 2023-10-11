@@ -25,6 +25,7 @@ var storage = multer.diskStorage({
     cb(null, path.join(__dirname,'/uploads'))
   },
   filename: function (req, file, cb) {
+    //console.log("file",file);  
     fileExtension = file.originalname.split('.')[1]
     console.log("Date: " + __dirname)
     let length = fs.readdirSync(__dirname+'/uploads').length
@@ -38,13 +39,25 @@ var upload = multer({ storage: storage })
 app.set('view engine','handlebars');
 app.engine('handlebars', exphbs.engine({ defaultLayout: __dirname+ '/views/layouts/main' }))
 
+
+//app.use('/uploads', express.static('uploads'));
+
 app.set('views', path.join(__dirname, 'views'));
+
+
+// app.use(express.static(__dirname + '/public'));
+// const static = express.static(__dirname + '/public');
+// app.use(express.static('images'));
+// app.use('/public', static);
+// app.use(express.static('uploads'));
 
 
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+// app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }))
+//app.set('view engine', 'handlebars')
 
 app.use(session({
   name: 'AuthCookie',
@@ -74,8 +87,17 @@ app.use(async (req, res, next) => {
   next()
 })
 
+// app.engine('handlebars',exphbs.engine({ defaultLayout : __dirname + "/views/apartments/editApt" }));
+
+// app.get("/apartments/editApartment/::apartmentId", (req, res) => {
+//   res.render("apartments/editApt")
+// })
+
 
 app.post("/apartments/apartment/uploadimage/:id",upload.single('samplefile'),async function (req, res, next) {
+  // response += `<img src="${req.file.path}" /><br>`
+  //response += `<img src ="uploads/${req.file.filename}"/>`                 
+   //return res.sendFile(req.file.path)
    try {
     const aptId = req.params.id
     fs.readdirSync(__dirname+'/uploads').length
@@ -91,6 +113,19 @@ app.post("/apartments/apartment/uploadimage/:id",upload.single('samplefile'),asy
    }
    
 });
+  //  var response = '<a href="/">Home</a><br>'
+  //  response += "Files uploaded successfully.<br>"
+  // // response += `<img src="${req.file.path}" /><br>`
+  // response += `<img src ="uploads/${req.file.filename}"/>`                 
+  //  return res.send(response)
+   //return res.sendFile(req.file.path);
+   //return res.send(`<img src="${req.file.path}"/>`);
+
+
+
+
+
+
 
 configRoutes(app);
 
