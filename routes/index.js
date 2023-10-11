@@ -1,22 +1,12 @@
-const path = require('path');
-const appointmentRoutes = require('./appointments');
-const API = require('./API');
-const doctorRoutes = require('./doctors');
-const userRoutes = require('./users');
-const commentRoutes = require('./comments');
+//Here you will require route files and export the constructor method as shown in lecture code and worked in previous labs.
+const routesAPI = require('./routesAPI');
 
 const constructorMethod = (app) => {
+  app.use('/', routesAPI);
 
-  app.use('/appointments', appointmentRoutes);
-  app.use('/doctor', doctorRoutes);
-  app.use('/account', userRoutes);
-  app.use('/comment', commentRoutes);
-  app.use('/', API);
-  // app.use('/doctor',doctorRoutes);
   app.use('*', (req, res) => {
-    res.status(404).json({ error: 'Not found' });
+    res.status(404).json({ error: "Page not found" })
   });
-
 
 };
 

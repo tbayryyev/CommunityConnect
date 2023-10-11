@@ -7,7 +7,7 @@ const getCollectionFn = (collection) => {
 
   return async () => {
     if (!_col) {
-      const db = await dbConnection.connectToDb();
+      const db = await dbConnection.dbConnection();
       _col = await db.collection(collection);
     }
 
@@ -15,10 +15,8 @@ const getCollectionFn = (collection) => {
   };
 };
 
-/* Now, you can list your collections here: */
+/* Now, you can list your collections here: 
+NOTE: YOU WILL NEED TO CHANGE THE CODE BELOW TO HAVE THE COLLECTION(S) REQUIRED BY THE ASSIGNMENT */
 module.exports = {
-  reviews: getCollectionFn('reviews'),
-  users: getCollectionFn('users'),
-  doctors: getCollectionFn('doctors'),
-  appointments: getCollectionFn('appointments')
+  user_collection: getCollectionFn('user_collection'),
 };

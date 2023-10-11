@@ -1,13 +1,7 @@
-const usersData = require('./users');
-const reviewsData = require('./reviews');
-const doctorsData = require('./doctors');
-const appointmentData = require('./appointments');
-const commentsData = require('./comments');
+//Here you will require data files and export them as shown in lecture code and worked in previous labs.
+
+const dataUser = require('./users');
 
 module.exports = {
-    users: usersData,
-    reviews: reviewsData,
-    doctors: doctorsData,
-    appointments : appointmentData,
-    comments:commentsData
+    users: dataUser,
 };
