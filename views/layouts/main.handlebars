@@ -6,11 +6,26 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{{title}}</title>
+    <title>CommunityConnect</title>
 </head>
 
 <body>
     <main>
+
+        {{#if user.username}}
+
+        <form id="logout-form" action="logout" method="GET"> 
+          <button type = "submit"> Logout </button>
+        </form>
+
+        {{else}}
+
+        <form id="login-form" action="login" method="GET"> 
+          <button type = "submit"> LogIn </button>
+        </form>
+
+        {{/if}}
+
         {{{body}}}
     </main>
 </body>

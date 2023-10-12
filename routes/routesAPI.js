@@ -12,7 +12,7 @@ router
     if (req.session.user) {
       return res.redirect('/protected');
     }
-    return res.render('userLogin', { title: "Login" });
+    return res.render('eventList');
   })
 
 router
@@ -80,6 +80,13 @@ router
  
 router
   .route('/login')
+  .get(async (req, res) => {
+    //code here for GET
+    if (req.session.user) {
+      return res.redirect('/protected');
+    }
+    return res.render('userLogin');
+  })
   .post(async (req, res) => {
     //code here for POST
     let userData = req.body;
