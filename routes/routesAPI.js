@@ -22,7 +22,7 @@ router
     if (req.session.user) {
       return res.redirect('/protected');
     }
-    return res.render('userRegister', { title: "Register" });
+    return res.render('userRegister');
   })
   .post(async (req, res) => {
     //code here for POST
