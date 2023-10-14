@@ -101,30 +101,6 @@ router
       return res.status(400).render('userLogin', { title: "Login", error: e });
     }
 
-    if(username.length < 4) {
-      return res.status(400).render('userLogin', { title: "Login", error: "Error: username length too short" });
-    }
-
-    const regex = /^[a-zA-Z0-9]*$/;
-
-    if(regex.test(username) === false) {
-      return res.status(400).render('userLogin', { title: "Login", error: "Error: username must contain no spaces and only alphabets and numbers" });
-    }
-
-    if(password.length < 6) {
-      return res.status(400).render('userLogin', { title: "Login", error: "Error: password length too short" });
-    }
-
-    if(password.search(/[A-Z]/) < 0) {
-      return res.status(400).render('userLogin', { title: "Login", error: "Error: password must contain at least one upper case letter" });
-    } 
-    if(password.search(/[0-9]/) < 0) {
-      return res.status(400).render('userLogin', { title: "Login", error: "Error: password must contain at least one number" });
-    }
-    if(password.search(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/) < 0) {
-      return res.status(400).render('userLogin', { title: "Login", error: "Error: password must contain at least special character" });
-    }
-
 
     try {
       const newUser = await dataUser.checkUser(username, password);

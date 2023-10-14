@@ -69,32 +69,6 @@ const checkUser = async (username, password) => {
   helpers.checkString(username);
   helpers.checkString(password);
 
-  if(username.length < 4) {
-    throw "Error: username length too short"
-  }
-
-  const regex = /^[a-zA-Z0-9]*$/;
-
-  if(regex.test(username) === false) {
-    throw "Error: username must contain no spaces and only alphabets and numbers"
-  }
-
-  if(password.length < 6) {
-    throw "Error: password length too short"
-  }
-
-  if(password.search(/[A-Z]/) < 0) {
-    throw "Error: password must contain at least one upper case letter"
-  } 
-  if(password.search(/[0-9]/) < 0) {
-    throw "Error: password must contain at least one number"
-  }
-  if(password.search(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/) < 0) {
-    throw "Error: password must contain at least special character"
-  }
-
-  username = username.toLowerCase();
-
   const usersCollection = await users();
 
   const userData = await usersCollection.findOne({ username: username });
