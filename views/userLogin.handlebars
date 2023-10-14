@@ -12,16 +12,25 @@ You should have a label for both the username and password inputs referencing th
 
 --}}
 
-<h1>Login</h1>
 
-<form id="login-form" action="/login" method="POST">
-    <label for="username">Enter Username: </label>
-    <input type="text" id="usernameInput" name="usernameInput" />
-    <br>
-    <label for="password">Enter Password: </label>
-    <input type="password" id="passwordInput" name="passwordInput" />
-    <br>
-    <button type="submit">Log In</button>
-</form>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <form id="login-form" action="/login" method="POST" class="p-3 border rounded">
+                <h1 class="h3 mb-4 text-center">Log in</h1>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control" name="usernameInput" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" name="passwordInput" placeholder="Enter your password" required>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit">Log in</button>
+            </form>
+        </div>
+    </div>
+</div>
+ <p class="text-center mt-5">{{error}}</p>
 
-<p>{{error}}</p>
+
