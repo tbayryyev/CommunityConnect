@@ -9,9 +9,6 @@ router
   .route('/')
   .get(async (req, res) => {
     //code here for GET
-    if (req.session.user) {
-      return res.redirect('/protected');
-    }
     return res.render('eventList');
   })
 
@@ -20,7 +17,7 @@ router
   .get(async (req, res) => {
     //code here for GET
     if (req.session.user) {
-      return res.redirect('/protected');
+      return res.redirect('/');
     }
     return res.render('userRegister');
   })
@@ -83,7 +80,7 @@ router
   .get(async (req, res) => {
     //code here for GET
     if (req.session.user) {
-      return res.redirect('/protected');
+      return res.redirect('/');
     }
     return res.render('userLogin');
   })
@@ -130,7 +127,7 @@ router
       const newUser = await dataUser.checkUser(username, password);
       if (newUser.authenticatedUser === true) {
         req.session.user = { username: username };
-        res.status(200).redirect('/protected')
+        res.status(200).redirect('/')
       } 
     } 
     catch (e) {
@@ -138,18 +135,18 @@ router
     }
   })
 
-router
-  .route('/protected')
-  .get(async (req, res) => {
+// router
+//   .route('/protected')
+//   .get(async (req, res) => {
     
-    if (req.session.user) {
-      let dateTime = new Date
-      res.render('private', { username: req.session.user.username, date: dateTime });
-    }
-    else {
-      return res.render('forbiddenAccess');
-    }
-  })
+//     if (req.session.user) {
+//       let dateTime = new Date
+//       res.render('private', { username: req.session.user.username, date: dateTime });
+//     }
+//     else {
+//       return res.render('forbiddenAccess');
+//     }
+//   })
 
 router
   .route('/logout')
