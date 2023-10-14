@@ -9,6 +9,9 @@ router
   .route('/')
   .get(async (req, res) => {
     //code here for GET
+    if (req.session.user) {
+      return res.redirect('/protected');
+    }
     return res.render('eventList');
   })
 
@@ -17,7 +20,7 @@ router
   .get(async (req, res) => {
     //code here for GET
     if (req.session.user) {
-      return res.redirect('/');
+      return res.redirect('/protected');
     }
     return res.render('userRegister');
   })
@@ -62,7 +65,7 @@ router
     try {
       const newUser = await dataUser.createUser(username, password);
       if (newUser.insertedUser === true) {
-        return res.status(200).redirect('/')
+        return res.status(200).redirect('/login')
 
       } 
       else {
@@ -80,7 +83,7 @@ router
   .get(async (req, res) => {
     //code here for GET
     if (req.session.user) {
-      return res.redirect('/');
+      return res.redirect('/protected');
     }
     return res.render('userLogin');
   })
@@ -127,7 +130,7 @@ router
       const newUser = await dataUser.checkUser(username, password);
       if (newUser.authenticatedUser === true) {
         req.session.user = { username: username };
-        res.status(200).redirect('/')
+        res.status(200).redirect('/protected');
       } 
     } 
     catch (e) {
@@ -135,25 +138,23 @@ router
     }
   })
 
-// router
-//   .route('/protected')
-//   .get(async (req, res) => {
-    
-//     if (req.session.user) {
-//       let dateTime = new Date
-//       res.render('private', { username: req.session.user.username, date: dateTime });
-//     }
-//     else {
-//       return res.render('forbiddenAccess');
-//     }
-//   })
+router
+  .route('/protected')
+  .get(async (req, res) => {
+    if (req.session.user) {
+      res.render('eventList', { username: req.session.user.username });
+    }
+    else {
+      return res.render('forbiddenAccess');
+    }
+  })
 
 router
   .route('/logout')
   .get(async (req, res) => {
     //code here for GET
     req.session.destroy();
-    return res.status(200).render('logout', { title: "Logout" });
+    return res.status(200).render('eventList');
   })
 
 module.exports = router;
