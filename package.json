@@ -1,12 +1,12 @@
 {
-  "name": "cs-546-lab-10",
+  "name": "communityconnect",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
-  "author": "Elton Vaz 10464607",
+  "author": "Elton Vaz, Tahyr Bayryyev, Cody Fernandez, Sri Hari Shankar",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
