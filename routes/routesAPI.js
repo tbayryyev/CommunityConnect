@@ -65,8 +65,8 @@ router
     try {
       const newUser = await dataUser.createUser(username, password);
       if (newUser.insertedUser === true) {
-        return res.status(200).redirect('/login')
-
+        req.session.user = { username: username };
+        res.status(200).redirect('/protected');
       } 
       else {
         return res.status(500).json({ error: "Internal Server Error" });
