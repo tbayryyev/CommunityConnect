@@ -15,6 +15,14 @@ router
     return res.render('eventList');
   })
 
+  router
+  .route('/termsConditions')
+  .get(async (req, res) => {
+    //code here for GET
+    return res.json({ terms: "Non at the moment" });
+  })
+
+
 router
   .route('/register')
   .get(async (req, res) => {
