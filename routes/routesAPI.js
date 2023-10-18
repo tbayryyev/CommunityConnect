@@ -37,10 +37,18 @@ router
     let userData = req.body;
     let username = userData.usernameInput;
     let password = userData.passwordInput;
+    let birth_date = userData.birthdate;
+    let email = userData.email;
+    let firstname = userData.firstname;
+    let lastname = userData.lastname;
 
     try {
       helpers.checkString(username);
       helpers.checkString(password);
+      helpers.checkString(firstname);
+      helpers.checkString(lastname);
+      helpers.checkString(email);
+
     }
     catch(e) {
       return res.status(400).render('userRegister', { title: "Register", error: e });
@@ -71,7 +79,7 @@ router
     }
 
     try {
-      const newUser = await dataUser.createUser(username, password);
+      const newUser = await dataUser.createUser(username, password, firstname,lastname,birth_date,email);
       if (newUser.insertedUser === true) {
         req.session.user = { username: username };
         res.status(200).redirect('/protected');

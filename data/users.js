@@ -6,10 +6,13 @@ const saltRounds = 2;
 const helpers = require('../helpers');
 
 const createUser = async (
-  username, password
+  username, password,firstname,lastname,birth_date,email
 ) => { 
   helpers.checkString(username);
   helpers.checkString(password);
+  helpers.checkString(firstname);
+  helpers.checkString(lastname);
+  helpers.checkString(email);
 
   if(username.length < 4) {
     throw "Error: username length too short"
@@ -44,13 +47,31 @@ const createUser = async (
   if (userData !== null) {
       throw "Error: the username supplied exists already";
   }
+  const userData1 = await usersCollection.findOne({ email: email });
+  if (userData1 !== null) {
+    throw "Error: the email supplied has already been used to create another account";
+  } 
+
+  var birthdate = new Date(birth_date);
+  var today = new Date();
+  var age = today.getFullYear() - birthdate.getFullYear();
+
+  if(age < 18){
+    throw "Error: you must be 18 or older to create an account"
+  }
+
+
 
   const hashpassword = await bcrypt.hash(password, saltRounds);
 
   let user = {
     _id: ObjectId(),
     username: username,
-    password: hashpassword
+    password: hashpassword,
+    firstname: firstname,
+    lastname: lastname,
+    birthdate: birth_date,
+    email: email
   };
 
   const insertData = await usersCollection.insertOne(user);
