@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "mocha"
   },
   "author": "Elton Vaz, Tahyr Bayryyev, Cody Fernandez, Sri Hari Shankar",
   "license": "ISC",
@@ -13,6 +14,8 @@
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
     "express-session": "^1.17.3",
+    "junit": "^1.4.9",
+    "mocha": "^10.2.0",
     "mongodb": "^4.12.0"
   }
 }
