@@ -81,7 +81,7 @@ router
     try {
       const newUser = await dataUser.createUser(username, password, firstname,lastname,birth_date,email);
       if (newUser.insertedUser === true) {
-        req.session.user = { username: username };
+        req.session.user = { username: username, email: email, firstname: firstname,lastname:lastname,birth_date:birth_date };
         res.status(200).redirect('/protected');
       } 
       else {
@@ -108,6 +108,7 @@ router
     let userData = req.body;
     let username = userData.usernameInput;
     let password = userData.passwordInput;
+  
     
     try {
       helpers.checkString(username);
@@ -121,7 +122,7 @@ router
     try {
       const newUser = await dataUser.checkUser(username, password);
       if (newUser.authenticatedUser === true) {
-        req.session.user = { username: username };
+        req.session.user = { username: username};
         res.status(200).redirect('/protected');
       } 
     } 
@@ -164,5 +165,19 @@ router.route('/postEvent')
     // After processing, redirect to the home page
     res.redirect('/');
   });
+
+router
+  .route('/account')
+  .get(async (req, res) => {
+    if (req.session.user) {
+      // res.render('account', { username: req.session.user.username, email: req.session.user.email});
+      res.render('account',  { email:req.session.user.email,username: req.session.user.username} );
+
+
+    }  
+    else {
+      return res.render('forbiddenAccess');
+    }
+  })
 
 module.exports = router;
