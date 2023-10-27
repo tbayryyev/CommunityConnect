@@ -1,0 +1,42 @@
+<div class="container">
+            <h2>Post an Event</h2>
+            <form action="/postEvent" method="post" enctype="multipart/form-data">
+                <!-- EventName input -->
+                <div class="form-group">
+                    <label for="eventName">Event Name</label>
+                    <input type="text" class="form-control" id="eventName" name="eventName" required>
+                </div>
+
+                <!-- Description input -->
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description" required></textarea>
+                </div>
+
+                <!-- Date input -->
+                <div class="form-group">
+                    <label for="eventDate">Date</label>
+                    <input type="date" class="form-control" id="eventDate" name="eventDate" required>
+                </div>
+
+                <!-- Time input -->
+                <div class="form-group">
+                    <label for="eventTime">Time</label>
+                    <input type="time" class="form-control" id="eventTime" name="eventTime" required>
+                </div>
+
+                <!-- Location input -->
+                <div class="form-group">
+                    <label for="eventLocation">Location</label>
+                    <input type="text" class="form-control" id="eventLocation" name="eventLocation" required>
+                </div>
+
+                <!-- Image input -->
+                <div class="form-group">
+                    <label for="eventImage">Image</label>
+                    <input type="file" class="form-control-file" id="eventImage" name="eventImage">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>

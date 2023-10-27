@@ -149,4 +149,20 @@ router
     return res.status(200).render('eventList');
   })
 
+router.route('/postEvent')
+  .get(async (req, res) => {
+    if (req.session.user) {
+      res.render('postEvent', { username: req.session.user.username });
+    } else {
+      // Redirect the user to the login page or display an error message
+      // if they are not logged in.
+      res.redirect('/login');
+    }
+  })
+  .post(async (req, res) => {
+    // Handle the form submission here (e.g., save event data to a database)
+    // After processing, redirect to the home page
+    res.redirect('/');
+  });
+
 module.exports = router;
