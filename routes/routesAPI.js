@@ -162,13 +162,6 @@ router.route('/postEvent')
     }
   })
   .post(async (req, res) => {
-    let userData = req.body;
-    let username = userData.usernameInput;
-    let password = userData.passwordInput;
-    let birth_date = userData.birthdate;
-    let email = userData.email;
-    let firstname = userData.firstname;
-    let lastname = userData.lastname;
     // Handle the form submission here (e.g., save event data to a database)
     const eventData = req.body;
     let eventName = eventData.eventName;
