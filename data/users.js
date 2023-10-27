@@ -108,4 +108,14 @@ const checkUser = async (username, password) => {
   return { authenticatedUser: true };
 };
 
-module.exports = {createUser, checkUser};
+const getUserByUsername = async(username) => {
+    helpers.checkString(username);
+    const usersCollection = await users();
+    const userData = await usersCollection.findOne({username: username });
+    if(userData == null){
+        throw "Error: Either the username or password is invalid";
+    }
+    return userData;
+}
+
+module.exports = {createUser, checkUser, getUserByUsername};

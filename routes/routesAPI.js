@@ -171,7 +171,15 @@ router
   .get(async (req, res) => {
     if (req.session.user) {
       // res.render('account', { username: req.session.user.username, email: req.session.user.email});
-      res.render('account',  { email:req.session.user.email,username: req.session.user.username} );
+      //username
+      //firstName
+      //lastName
+      //gender
+      //age
+      //account created date
+      const userData = await dataUser.getUserByUsername(req.session.user.username);
+
+      res.render('account',  userData);
 
 
     }  
