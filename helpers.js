@@ -11,4 +11,16 @@ function checkString(string) {
     }
 }
 
-module.exports = {checkString};
+// Helper function to validate the time format (MM-DD-YYYY)
+function isValidDate(date) {
+    const dateRegex = /^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])-\d{4}$/;
+    return dateRegex.test(date);
+}
+
+// Helper function to validate the time format (HH:MM AM/PM)
+function isValidTime(time) {
+    const timeRegex = /^(1[0-2]|0?[1-9]):[0-5][0-9] (AM|PM)$/i;
+    return timeRegex.test(time);
+}
+
+module.exports = {checkString, isValidDate, isValidTime};

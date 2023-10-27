@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const dataUser = data.users;
+const dataEvent = data.event;
 const helpers = require('../helpers');
 
 router
@@ -161,9 +162,47 @@ router.route('/postEvent')
     }
   })
   .post(async (req, res) => {
+    let userData = req.body;
+    let username = userData.usernameInput;
+    let password = userData.passwordInput;
+    let birth_date = userData.birthdate;
+    let email = userData.email;
+    let firstname = userData.firstname;
+    let lastname = userData.lastname;
     // Handle the form submission here (e.g., save event data to a database)
-    // After processing, redirect to the home page
-    res.redirect('/');
+    const eventData = req.body;
+    let eventName = eventData.eventName;
+    let description = eventData.description;
+    let eventDate = eventData.eventDate;
+    let eventTime = eventData.eventTime;
+    let eventLocation = eventData.eventLocation;
+
+    try {
+      // // Validate input data
+      // if (!eventName || !description || !eventDate || !eventTime || !eventLocation) {
+      //   throw new Error('All fields are required');
+      // }
+
+      // // Handle additional validation for eventDate and eventTime if necessary
+      // if (!isValidDate(eventDate) || !isValidTime(eventTime)) {
+      //   throw new Error('Invalid date or time format');
+      // }
+
+      // Additional validation for eventImage if you're handling file uploads
+
+      // Add the event to a database
+      try {
+        const newEvent = await dataEvent.createEvent(eventName, description, eventDate, eventTime, eventLocation);
+      } 
+      catch (e) {
+        return res.status(400).render('userLogin', { title: "Login", error: e });
+      }
+      // Redirect to the home page after successfully creating the event
+      res.redirect('/');
+    } catch (error) {
+      // Handle validation errors or other errors
+      return res.status(400).render('postEvent', { title: "Post an Event", error: error.message });
+    }
   });
 
 router
