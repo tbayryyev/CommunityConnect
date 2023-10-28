@@ -1,12 +1,24 @@
 <!-- account.handlebars -->
-<h1>My Account</h1>
-<div class="user-details">
-    <div class="user-info">
-        <p><strong>Email:</strong> {{email}}</p>
-        <p><strong>Username:</strong> {{username}}</p>
-        <p><strong>First Name:</strong> {{firstname}}</p>
-        <p><strong>Last Name:</strong> {{lastname}}</p>
-        <p><strong>Birth Date:</strong> {{birthdate}}</p>
-       
+    <div class="container mt-5">
+        <div class="card">
+            <h5 class="card-header bg-primary text-white">
+                <i class="fas fa-user-circle"></i> My Account
+            </h5>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><i class="fas fa-envelope"></i> <strong>Email:</strong> {{email}}</li>
+                    <li class="list-group-item"><i class="fas fa-user"></i> <strong>Username:</strong> {{username}}</li>
+                    <li class="list-group-item"><i class="fas fa-user"></i> <strong>First Name:</strong> {{firstname}}</li>
+                    <li class="list-group-item"><i class="fas fa-user"></i> <strong>Last Name:</strong> {{lastname}}</li>
+                    <li class="list-group-item"><i class="fas fa-birthday-cake"></i> <strong>Birth Date:</strong> {{birthdate}}</li>
+                </ul>
+                <a href="#" class="btn btn-danger mt-3">Edit Profile</a>
+            </div>
+        </div>
     </div>
-</div>
+     <style>
+        .card:hover {
+            transform: scale(1.02);
+            transition: transform 0.2s;
+        }
+    </style>
