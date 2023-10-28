@@ -4,7 +4,7 @@ const event = mongoCollections.event_collection;
 const helpers = require('../helpers');
 
 const createEvent = async (
-    eventName, description, eventDate, eventTime, eventLocation,eventImage,eventCost,imageFileName
+    eventName, description, eventDate, eventTime, eventLocation
 ) => {
     //Validate input data
     helpers.checkString(eventName);
@@ -19,9 +19,6 @@ const createEvent = async (
       eventDate,
       eventTime,
       eventLocation,
-      eventImage,
-      eventCost,
-      imageFileName // Include the image file name
     };
 
     const eventCollection = await event();
@@ -36,10 +33,5 @@ const createEvent = async (
       return inserted;
     }  
   }
-  const getEvents = async () => {
-    const eventCollection = await event();
-    const events = await eventCollection.find({}).toArray();
-    return events;
-}
   
-  module.exports = { createEvent,getEvents };
+  module.exports = { createEvent };
