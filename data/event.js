@@ -4,14 +4,14 @@ const event = mongoCollections.event_collection;
 const helpers = require('../helpers');
 
 const createEvent = async (
-    eventName, description, eventDate, eventTime, eventLocation, /*cost*/
+    eventName, description, eventDate, eventTime, eventLocation, cost
 ) => {
     //Validate input data
     helpers.checkString(eventName);
     helpers.checkString(description);
     helpers.checkString(eventLocation);
 
-    //helperss.checkNum(cost);
+    helpers.checkNum(cost);
 
     // Create the event object
     let eventData = {
@@ -21,7 +21,7 @@ const createEvent = async (
       eventDate,
       eventTime,
       eventLocation,
-      //cost
+      cost
     };
 
     const eventCollection = await event();

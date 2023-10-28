@@ -21,9 +21,6 @@ function checkNum(num) {
     if (num < 0) {
         throw "Error: Input cannot be a negative number";
     }
-    if (Math.floor(num) !== num) {
-        throw "Error: Input must be an integer";
-    }
 }
 
 module.exports = {checkString, checkNum};
