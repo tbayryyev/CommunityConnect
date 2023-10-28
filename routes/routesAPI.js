@@ -171,24 +171,26 @@ router.route('/postEvent')
     let eventLocation = eventData.eventLocation;
 
     try {
-      // // Validate input data
+      // Validate input data
       // if (!eventName || !description || !eventDate || !eventTime || !eventLocation) {
       //   throw new Error('All fields are required');
       // }
 
-      // // Handle additional validation for eventDate and eventTime if necessary
+      // helpers.checkString(eventName);
+      // helpers.checkString(description);
+      // helpers.checkString(eventLocation);
+
+      // Handle additional validation for eventDate and eventTime if necessary
       // if (!isValidDate(eventDate) || !isValidTime(eventTime)) {
       //   throw new Error('Invalid date or time format');
       // }
-
-      // Additional validation for eventImage if you're handling file uploads
 
       // Add the event to a database
       try {
         const newEvent = await dataEvent.createEvent(eventName, description, eventDate, eventTime, eventLocation);
       } 
       catch (e) {
-        return res.status(400).render('userLogin', { title: "Login", error: e });
+        return res.status(400).render('postEvent', { title: "Post an Event", error: e });
       }
       // Redirect to the home page after successfully creating the event
       res.redirect('/');

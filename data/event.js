@@ -6,7 +6,7 @@ const helpers = require('../helpers');
 const createEvent = async (
     eventName, description, eventDate, eventTime, eventLocation
 ) => {
-    // Validate input data
+    //Validate input data
     // helpers.checkString(eventName);
     // helpers.checkString(description);
     // helpers.checkString(eventLocation);
@@ -34,10 +34,10 @@ const createEvent = async (
     const insertData =  await eventCollection.insertOne(eventData);
 
     if (!insertData.insertedId || !insertData.acknowledged) {
-        throw 'Error: user was not inserted successfully';
+        throw 'Error: event was not inserted successfully';
     }
     else {
-      let inserted = { insertedUser: true };
+      let inserted = { insertedEvent: true };
       return inserted;
     }  
   }
