@@ -5,15 +5,48 @@ const data = require('../data');
 const dataUser = data.users;
 const dataEvent = data.event;
 const helpers = require('../helpers');
+const eventModel = require('../data/event');
+const multer = require('multer');
+const path = require('path'); // Import the path module
+
+// Set up multer storage configuration
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // Specify the destination directory for user-uploaded images
+   // cb(null, '../uploads/user-uploaded-images'); // Adjust the path as needed
+    const destinationPath = path.join(__dirname, '../uploads/user-uploaded-images/');
+    cb(null, destinationPath);
+  },
+  filename: function (req, file, cb) {
+    // Generate a unique filename for the uploaded image
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+const upload = multer({ storage });
+
+// // Route to handle file upload
+
+
 
 router
   .route('/')
   .get(async (req, res) => {
     //code here for GET
-    if (req.session.user) {
-      return res.redirect('/protected');
+    // if (req.session.user) {
+    //   return res.redirect('/protected');
+    // }
+    // return res.render('eventList');
+    try {
+      // Retrieve events from the database
+      const events = await eventModel.getEvents();
+
+      // Render the 'eventList' template and pass the events data to it
+      res.render('eventList', { events });
+    } catch (error) {
+      // Handle any errors related to fetching events from the database
+      res.status(500).send('Error fetching events: ' + error.message);
     }
-    return res.render('eventList');
   })
 
   router
@@ -161,19 +194,28 @@ router.route('/postEvent')
       res.redirect('/login');
     }
   })
-  .post(async (req, res) => {
+  .post(upload.single('eventImage'),async (req, res) => {
     // Handle the form submission here (e.g., save event data to a database)
     const eventData = req.body;
+    const eventImage = req.file;
+    const imageFileName = req.file.filename; // Get the image file name
+
     let eventName = eventData.eventName;
     let description = eventData.description;
     let eventDate = eventData.eventDate;
     let eventTime = eventData.eventTime;
     let eventLocation = eventData.eventLocation;
+    let eventCost = eventData.eventCost;
+
 
     try {
       // Validate input data
-      if (!eventName || !description || !eventDate || !eventTime || !eventLocation) {
+      if (!eventName || !description || !eventDate || !eventTime || !eventLocation|| !eventImage || !eventCost) {
         throw new Error('All fields are required');
+      }
+       // Process the uploaded image
+       if (!eventImage) {
+        throw new Error('Image upload is required');
       }
 
       helpers.checkString(eventName);
@@ -182,7 +224,7 @@ router.route('/postEvent')
 
       // Add the event to a database
       try {
-        const newEvent = await dataEvent.createEvent(eventName, description, eventDate, eventTime, eventLocation);
+        const newEvent = await dataEvent.createEvent(eventName, description, eventDate, eventTime, eventLocation,eventImage,eventCost,imageFileName);
       } 
       catch (e) {
         return res.status(400).render('postEvent', { title: "Post an Event", error: e });

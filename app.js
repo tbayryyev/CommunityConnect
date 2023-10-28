@@ -8,6 +8,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
+const path = require('path'); // Import the path module
+
+
+// app.use('/user-uploaded-images', express.static(path.join(__dirname, '../uploads/user-uploaded-images/')));
+app.use(express.static('uploads')); // Adjust the path as needed
 
 app.use(session({
     name: 'AuthCookie',
