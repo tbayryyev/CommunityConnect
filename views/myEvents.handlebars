@@ -11,6 +11,12 @@
             <p class="card-text"><strong>Description:</strong> {{description}}</p>
             <p class="card-text"><strong>Date:</strong> {{eventDate}}</p>
             <p class="card-text"><strong>Time:</strong> {{eventTime}}</p>
+            
+            <!-- Edit button -->
+            <button class="btn btn-primary" onclick="editEvent('{{eventId}}')">Edit</button>
+            
+            <!-- Delete button -->
+            <button class="btn btn-danger" onclick="deleteEvent('{{eventId}}')">Delete</button>
           </div>
         </div>
       </div>
