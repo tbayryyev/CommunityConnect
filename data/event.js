@@ -7,17 +7,9 @@ const createEvent = async (
     eventName, description, eventDate, eventTime, eventLocation
 ) => {
     //Validate input data
-    // helpers.checkString(eventName);
-    // helpers.checkString(description);
-    // helpers.checkString(eventLocation);
-  
-    // if (!isValidDate(eventDate)) {
-    //   throw new Error('Event Date must be a valid date string (YYYY-MM-DD)');
-    // }
-  
-    // if (!isValidTime(eventTime)) {
-    //   throw new Error('Event Time must be a valid time string (HH:MM AM/PM)');
-    // }
+    helpers.checkString(eventName);
+    helpers.checkString(description);
+    helpers.checkString(eventLocation);
 
     // Create the event object
     let eventData = {

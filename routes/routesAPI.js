@@ -172,18 +172,13 @@ router.route('/postEvent')
 
     try {
       // Validate input data
-      // if (!eventName || !description || !eventDate || !eventTime || !eventLocation) {
-      //   throw new Error('All fields are required');
-      // }
+      if (!eventName || !description || !eventDate || !eventTime || !eventLocation) {
+        throw new Error('All fields are required');
+      }
 
-      // helpers.checkString(eventName);
-      // helpers.checkString(description);
-      // helpers.checkString(eventLocation);
-
-      // Handle additional validation for eventDate and eventTime if necessary
-      // if (!isValidDate(eventDate) || !isValidTime(eventTime)) {
-      //   throw new Error('Invalid date or time format');
-      // }
+      helpers.checkString(eventName);
+      helpers.checkString(description);
+      helpers.checkString(eventLocation);
 
       // Add the event to a database
       try {
