@@ -11,16 +11,19 @@ function checkString(string) {
     }
 }
 
-// Helper function to validate the time format (MM-DD-YYYY)
-function isValidDate(date) {
-    const dateRegex = /^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])-\d{4}$/;
-    return dateRegex.test(date);
+function checkNum(num) {
+    if (num === undefined || num === null) {
+        throw "Error: You must provide a number for your input";
+    }
+    if (typeof num !== 'number' || isNaN(num)) {
+        throw "Error: Input must be a valid number";
+    }
+    if (num < 0) {
+        throw "Error: Input cannot be a negative number";
+    }
+    if (Math.floor(num) !== num) {
+        throw "Error: Input must be an integer";
+    }
 }
 
-// Helper function to validate the time format (HH:MM AM/PM)
-function isValidTime(time) {
-    const timeRegex = /^(1[0-2]|0?[1-9]):[0-5][0-9] (AM|PM)$/i;
-    return timeRegex.test(time);
-}
-
-module.exports = {checkString, isValidDate, isValidTime};
+module.exports = {checkString, checkNum};

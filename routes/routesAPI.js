@@ -190,10 +190,11 @@ router.route('/postEvent')
     let eventDate = eventData.eventDate;
     let eventTime = eventData.eventTime;
     let eventLocation = eventData.eventLocation;
+    //let cost = eventData.cost;
 
     try {
       // Validate input data
-      if (!eventName || !description || !eventDate || !eventTime || !eventLocation) {
+      if (!eventName || !description || !eventDate || !eventTime || !eventLocation/* || !cost*/) {
         throw new Error('All fields are required');
       }
 
@@ -201,9 +202,11 @@ router.route('/postEvent')
       helpers.checkString(description);
       helpers.checkString(eventLocation);
 
+      // helpers.checkNum(cost);
+
       // Add the event to a database
       try {
-        const newEvent = await dataEvent.createEvent(eventName, description, eventDate, eventTime, eventLocation);
+        const newEvent = await dataEvent.createEvent(eventName, description, eventDate, eventTime, eventLocation/*, cost*/);
       } 
       catch (e) {
         return res.status(400).render('postEvent', { title: "Post an Event", error: e });
