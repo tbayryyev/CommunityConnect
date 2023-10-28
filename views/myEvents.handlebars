@@ -1,0 +1,19 @@
+<div class="container">
+  <h1 class="my-4 text-center">My Events</h1>
+
+  <div class="row">
+    {{#each events}}
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">{{eventName}}</h5>
+            <p class="card-text"><strong>Location:</strong> {{eventLocation}}</p>
+            <p class="card-text"><strong>Description:</strong> {{description}}</p>
+            <p class="card-text"><strong>Date:</strong> {{eventDate}}</p>
+            <p class="card-text"><strong>Time:</strong> {{eventTime}}</p>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>
