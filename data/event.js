@@ -33,5 +33,10 @@ const createEvent = async (
       return inserted;
     }  
   }
+  const getEvents = async () => {
+    const eventCollection = await event();
+    const events = await eventCollection.find({}).toArray();
+    return events;
+}
   
-  module.exports = { createEvent };
+  module.exports = { createEvent,getEvents };

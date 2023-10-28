@@ -1,40 +1,16 @@
-    <div class="container">
-        <h1 class="my-4 text-center">Upcoming Events</h1>
+<div class="container">
+  <h1 class="my-4 text-center">Upcoming Events</h1>
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Sydney-Galaxy-homebush.jpg" class="card-img-top" alt="Event 1 Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Event 1</h5>
-                        <p class="card-text"><strong>Location:</strong> City Park</p>
-                        <p class="card-text"><strong>Cost:</strong> $20</p>
-                        <button class="btn btn-primary interested-button">Interested</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <img src="https://assets.simpleviewcms.com/simpleview/image/fetch/c_fill,h_396,q_75,w_704/https://lasvegas.simpleviewcrm.com/images/listings/original_LVCC-WH-Entrance-OptB_JeffGreen_April-2021_86A553A6-EEA2-AB11-39337D11F666639F-86a552abee02db1.jpg" class="card-img-top" alt="Event 2 Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Event 2</h5>
-                        <p class="card-text"><strong>Location:</strong> Convention Center</p>
-                        <p class="card-text"><strong>Cost:</strong> $30</p>
-                        <button class="btn btn-primary interested-button">Interested</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <img src="https://www.freeimageslive.com/galleries/nature/environment/pics/clean_beach6085.jpg" class="card-img-top" alt="Event 3 Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Event 3</h5>
-                        <p class="card-text"><strong>Location:</strong> Beachfront</p>
-                        <p class="card-text"><strong>Cost:</strong> Free</p>
-                        <button class="btn btn-primary interested-button">Interested</button>
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    {{#each events}}
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">{{eventName}}</h5>
+            <p class="card-text"><strong>Location:</strong> {{eventLocation}}</p>
+          </div>
         </div>
-    </div>
+      </div>
+    {{/each}}
+  </div>
+</div>

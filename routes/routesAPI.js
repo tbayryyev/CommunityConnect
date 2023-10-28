@@ -13,7 +13,17 @@ router
     if (req.session.user) {
       return res.redirect('/protected');
     }
-    return res.render('eventList');
+    try {
+      // Retrieve events from the database
+      const events = await dataEvent.getEvents();
+      return res.render('eventList', { events });
+
+
+    } catch (error) {
+      // Handle any errors related to fetching events from the database
+      res.status(500).send('Error fetching events: ' + error.message);
+    }
+   
   })
 
   router
@@ -134,10 +144,21 @@ router
 
 router
   .route('/protected')
-  .get(async (req, res) => {
+  .get(async (req, res) => {    
     if (req.session.user) {
-      res.render('eventList', { username: req.session.user.username });
-    }
+      try {
+        // Retrieve events from the database
+        const events = await dataEvent.getEvents();
+        return res.render('eventList', { username: req.session.user.username, events });
+  
+  
+      } catch (error) {
+        // Handle any errors related to fetching events from the database
+        res.status(500).send('Error fetching events: ' + error.message);
+      }
+     
+     
+          }
     else {
       return res.render('forbiddenAccess');
     }
@@ -148,7 +169,7 @@ router
   .get(async (req, res) => {
     //code here for GET
     req.session.destroy();
-    return res.status(200).render('eventList');
+    return res.status(200).redirect('/');
   })
 
 router.route('/postEvent')
