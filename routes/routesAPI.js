@@ -54,6 +54,43 @@ router
     }
   })
 
+  // Delete Event
+  router
+  .route("/myEvents/deleteEvent/:eventId")
+  .get(async (req,res) => {
+    try {
+      if (req.session.user) {
+        return res.render('myEvents',{user:req.session.user});
+      } else {
+        return res.render('userLogin',{user:req.session.user});
+      }
+    } catch (error) {
+      return "Error";
+    }
+    
+  })
+  .post(async (req,res) => {
+    try {
+      if (req.session.user) {
+        let eventId = req.params.eventId.trim();
+        if (!eventId) return "Id is not valid" //({ error: 'Invalid ObjectID' });
+        try {
+          const event = await data.event.removeEvent(eventId);
+          if (!event) throw `Could not delete event with id of ${eventId}`
+          return res.redirect('/myEvents')
+        } catch (e) {
+          return "Error";
+        }
+
+        } else return res.render('userLogin',{user:req.session.user});
+
+    } catch (error) {
+      return "Error"
+    }
+    
+  })
+  
+
 
 router
   .route('/register')

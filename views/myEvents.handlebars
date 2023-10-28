@@ -16,7 +16,12 @@
             <button class="btn btn-primary" onclick="editEvent('{{eventId}}')">Edit</button>
             
             <!-- Delete button -->
-            <button class="btn btn-danger" onclick="deleteEvent('{{eventId}}')">Delete</button>
+          {{!-- <button class="btn btn-danger" onclick="deleteEvent('{{eventId}}')">Delete</button>  --}}
+          
+          <form id="removeEvent-form" action="/myEvents/deleteEvent/{{this._id}}" method="POST"> 
+            <button type="submit" class="btn btn-danger"> Delete </button>
+          </form>
+
           </div>
         </div>
       </div>
