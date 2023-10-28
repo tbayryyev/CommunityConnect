@@ -33,8 +33,8 @@ const createEvent = async (
         throw 'Error: event was not inserted successfully';
     }
     else {
-      let inserted = { insertedEvent: true };
-      return inserted;
+      insertData.insertedId = insertData.insertedId.toString();
+      return insertData.insertedId;
     }  
   }
   const getEvents = async () => {
@@ -50,5 +50,23 @@ const createEvent = async (
     }
     return events;
   }
-  
-  module.exports = { createEvent,getEvents,getMyEvents };
+
+  const getEventById = async (eventId) => {
+    eventId = helpers.checkID(eventId.toString());
+    const eventCollection = await event();
+    const newEvent = await eventCollection.findOne({_id: ObjectId(eventId)});
+    if (!newEvent) throw "No event with that id";
+    return newEvent;
+  };
+
+  const removeEvent = async (eventId) => {
+    eventId = helpers.checkID(eventId.toString());
+    const eventCollection = await event();
+    let evtName = await getEventById(eventId.toString());
+    let eventName = evtName.eventName;
+    const deletionInfo = await eventCollection.deleteOne({ _id: ObjectId(eventId) });
+    if (deletionInfo.deletedCount === 0) throw `Could not delete event with id of ${eventId}`;
+    return `${eventName} has been successfully deleted!`; 
+  };
+
+  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent };

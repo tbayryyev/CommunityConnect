@@ -1,4 +1,6 @@
 //You can add and export any helper functions you want here. If you aren't using any, then you can just leave this file as is.
+const { ObjectId, ConnectionCheckOutStartedEvent } = require("mongodb");
+
 function checkString(string) {
     if (!string){
         throw "Error: You must provide a string for your input";
@@ -23,4 +25,13 @@ function checkNum(num) {
     }
 }
 
-module.exports = {checkString, checkNum};
+function checkID(id) {
+    if (!id) throw "You must provide an id to search for";
+    if (typeof id !== "string") throw "Id must be a string";
+    if (id.trim().length === 0) throw "Id cannot be an empty string or just spaces";
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw "invalid object ID";
+    return id;
+  }
+
+module.exports = {checkString, checkNum, checkID};
