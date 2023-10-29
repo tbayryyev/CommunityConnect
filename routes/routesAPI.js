@@ -339,35 +339,14 @@ router
       // Validate the eventId
       const validEventId = helpers.checkID(eventId);
 
-      if (!validEventId) {
-        throw new Error('Invalid event ID');
-      }
-
-      // Update the event in the database
-      const eventCollection = await event();
-      const filter = { _id: ObjectId(eventId) };
-
-      const updateData = {
-        $set: {
-          eventName: eventData.eventName,
-          eventLocation: eventData.eventLocation,
-          eventDate: eventData.eventDate,
-          eventTime: eventData.eventTime
-          // Add other fields to update here
-        }
-      };
-
-      const updateResult = await eventCollection.updateOne(filter, updateData);
-
-      if (updateResult.modifiedCount === 0) {
-        throw new Error('Event not found or not updated');
-      }
+      const updateResult = await dataEvent.updateEvent(validEventId, eventData);
 
       // Redirect to a confirmation page or back to the updated event page
       res.redirect(`/myEvents`);
     } catch (error) {
       // Handle any errors that may occur during the update operation
-      return res.status(400).render('error', { title: "Update Event Error", error: error.message });
+      res.status(400).send('Update Event Error: ' + error.message);
+
     }
   });
 

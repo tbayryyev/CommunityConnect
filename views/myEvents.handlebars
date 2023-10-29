@@ -35,7 +35,7 @@
             <p class="card-text"><strong>Time:</strong> {{eventTime}}</p>
 
             <!-- Edit button -->
-            <button class="btn btn-primary" data-toggle="modal" data-target="#updateEventModal{{eventId}}">Edit</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#updateEventModal{{this._id}}">Edit</button>
 
             <!-- Delete button -->
             {{!-- <button class="btn btn-danger" onclick="deleteEvent('{{eventId}}')">Delete</button> --}}
@@ -47,7 +47,7 @@
       </div>
       
       <!-- Update Event Modal -->
-      <div class="modal fade" id="updateEventModal{{eventId}}" tabindex="-1" role="dialog" aria-labelledby="updateEventModalLabel" aria-hidden="true">
+      <div class="modal fade" id="updateEventModal{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="updateEventModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -58,26 +58,26 @@
             </div>
             <div class="modal-body">
               <!-- Include the form for updating all event details -->
-              <form action="/updateEvent/{{eventId}}" method="post">
+              <form action="/updateEvent/{{this._id}}" method="post">
                 <div class="form-group">
-                  <label for="eventName{{eventId}}">Event Name</label>
-                  <input type="text" class="form-control" id="eventName{{eventId}}" name="eventName" value="{{eventName}}" required>
+                  <label for="eventName{{this._id}}">Event Name</label>
+                  <input type="text" class="form-control" id="eventName{{this._id}}" name="eventName" value="{{eventName}}" required>
                 </div>
                 <div class="form-group">
-                  <label for="description{{eventId}}">Description</label>
-                  <textarea class="form-control" id="description{{eventId}}" name="description" required>{{description}}</textarea>
+                  <label for="description{{this._id}}">Description</label>
+                  <textarea class="form-control" id="description{{this._id}}" name="description" required>{{description}}</textarea>
                 </div>
                 <div class="form-group">
-                  <label for="eventLocation{{eventId}}">Location</label>
-                  <input type="text" class="form-control" id="eventLocation{{eventId}}" name="eventLocation" value="{{eventLocation}}" required>
+                  <label for="eventLocation{{this._id}}">Location</label>
+                  <input type="text" class="form-control" id="eventLocation{{this._id}}" name="eventLocation" value="{{eventLocation}}" required>
                 </div>
                 <div class="form-group">
-                  <label for="eventDate{{eventId}}">Date</label>
-                  <input type="date" class="form-control" id="eventDate{{eventId}}" name="eventDate" value="{{eventDate}}" required>
+                  <label for="eventDate{{this._id}}">Date</label>
+                  <input type="date" class="form-control" id="eventDate{{this._id}}" name="eventDate" value="{{eventDate}}" required>
                 </div>
                 <div class="form-group">
-                  <label for="eventTime{{eventId}}">Time</label>
-                  <input type="time" class="form-control" id="eventTime{{eventId}}" name="eventTime" value="{{eventTime}}" required>
+                  <label for="eventTime{{this._id}}">Time</label>
+                  <input type="time" class="form-control" id="eventTime{{this._id}}" name="eventTime" value="{{eventTime}}" required>
                 </div>
                 <!-- Include an "Update" button for submitting the changes -->
                 <button type="submit" class="btn btn-primary">Update</button>
