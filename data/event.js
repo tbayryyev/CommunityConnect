@@ -4,7 +4,7 @@ const event = mongoCollections.event_collection;
 const helpers = require('../helpers');
 
 const createEvent = async (
-    username,eventName, description, eventDate, eventTime, eventLocation, cost
+    username,eventName, description, eventDate, eventTime, eventLocation, cost, eventImage, imageFileName
 ) => {
     //Validate input data
     helpers.checkString(eventName);
@@ -22,7 +22,8 @@ const createEvent = async (
       eventDate,
       eventTime,
       eventLocation,
-      cost
+      cost, eventImage,      // Save the image data
+      imageFileName   // Save the image file name
     };
 
     const eventCollection = await event();
@@ -51,6 +52,7 @@ const createEvent = async (
     return events;
   }
 
+
   const getEventById = async (eventId) => {
     eventId = helpers.checkID(eventId.toString());
     const eventCollection = await event();
@@ -69,4 +71,40 @@ const createEvent = async (
     return `${eventName} has been successfully deleted!`; 
   };
 
-  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent };
+
+  const updateEvent = async (eventId, updatedEventData) => {
+    eventId = helpers.checkID(eventId.toString());
+    const eventCollection = await event();
+    const existingEvent = await eventCollection.findOne({ _id: ObjectId(eventId) });
+  
+    if (!existingEvent) {
+      throw "No event with that id";
+    }
+  
+    // Construct the updated event object
+    const updatedEvent = {
+      username: updatedEventData.username || existingEvent.username,
+      eventName: updatedEventData.eventName || existingEvent.eventName,
+      description: updatedEventData.description || existingEvent.description,
+      eventDate: updatedEventData.eventDate || existingEvent.eventDate,
+      eventTime: updatedEventData.eventTime || existingEvent.eventTime,
+      eventLocation: updatedEventData.eventLocation || existingEvent.eventLocation,
+      cost: updatedEventData.cost || existingEvent.cost,
+      eventImage: updatedEventData.eventImage || existingEvent.eventImage,
+      imageFileName: updatedEventData.imageFileName || existingEvent.imageFileName,
+    };
+  
+    const updatedData = await eventCollection.updateOne(
+      { _id: ObjectId(eventId) },
+      { $set: updatedEvent }
+    );
+  
+    if (updatedData.modifiedCount === 0) {
+      throw `Could not update event with id of ${eventId}`;
+    }
+  
+    return await getEventById(eventId); // Return the updated event
+  };
+
+  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent, updateEvent };
+

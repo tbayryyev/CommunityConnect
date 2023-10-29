@@ -1,6 +1,6 @@
 <div class="container">
             <h2>Post an Event</h2>
-            <form action="/postEvent" method="post">
+            <form action="/postEvent" method="post" enctype="multipart/form-data">
                 <!-- EventName input -->
                 <div class="form-group">
                     <label for="eventName">Event Name</label>
@@ -37,8 +37,17 @@
                     <input type="number" class="form-control" id="eventCost" name="eventCost" step="1" required>
                 </div>
 
+                <!-- Image upload input -->
+        <div class="form-group">
+            <label for="eventImage">Event Image</label>
+            <input type="file" class="form-control" id="eventImage" name="eventImage" accept="image/*" required>
+        </div>
+
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
 
+
         <p class="text-center mt-5">{{error}}</p>
+
+

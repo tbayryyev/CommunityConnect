@@ -6,6 +6,9 @@ const dataUser = data.users;
 const dataEvent = data.event;
 const helpers = require('../helpers');
 
+const multer = require('multer'); // Import Multer
+const upload = multer({ dest: 'uploads/user-uploaded-images' });
+
 router
   .route('/')
   .get(async (req, res) => {
@@ -240,9 +243,10 @@ router.route('/postEvent')
       res.redirect('/login');
     }
   })
-  .post(async (req, res) => {
+  .post(upload.single('eventImage'), async (req, res) => {
     // Handle the form submission here (e.g., save event data to a database)
     const eventData = req.body;
+    const eventImage = req.file; // Extract the uploaded image file
     let eventName = eventData.eventName;
     let description = eventData.description;
     let eventDate = eventData.eventDate;
@@ -253,7 +257,7 @@ router.route('/postEvent')
 
     try {
       // Validate input data
-      if (!eventName || !description || !eventDate || !eventTime || !eventLocation || !cost) {
+      if (!eventName || !description || !eventDate || !eventTime || !eventLocation || !cost || !eventImage) {
         throw new Error('All fields are required');
       }
 
@@ -262,10 +266,12 @@ router.route('/postEvent')
       helpers.checkString(eventLocation);
 
       helpers.checkNum(cost);
+      // Process the uploaded image and get the file name
+      const imageFileName = eventImage.filename;
 
       // Add the event to a database
       try {
-        const newEvent = await dataEvent.createEvent(username, eventName, description, eventDate, eventTime, eventLocation, cost);
+        const newEvent = await dataEvent.createEvent(username, eventName, description, eventDate, eventTime, eventLocation, cost, imageFileName);
       } 
       catch (e) {
         return res.status(400).render('postEvent', { title: "Post an Event", error: e });
@@ -299,5 +305,70 @@ router
       return res.render('forbiddenAccess');
     }
   })
+
+
+  router
+  .route('/updateEvent/:eventId')
+  .get(async (req, res) => {
+    if (req.session.user) {
+      try {
+        const eventId = req.params.eventId;
+        // Fetch the event details by eventId
+        const event = await dataEvent.getEventById(eventId);
+
+        if (event.username === req.session.user.username) {
+          // Render the update event form with event details
+          res.render('updateEvent', { event });
+        } else {
+          // The user doesn't have permission to update this event
+          res.render('forbiddenAccess');
+        }
+      } catch (error) {
+        // Handle any errors related to fetching events or event not found
+        res.status(500).send('Error fetching event: ' + error.message);
+      }
+    } else {
+      res.redirect('/login');
+    }
+  })
+  .post(async (req, res) => {
+    const eventId = req.params.eventId; // Extract the event ID from the URL
+    const eventData = req.body; // This will contain the updated event details
+
+    try {
+      // Validate the eventId
+      const validEventId = helpers.checkID(eventId);
+
+      if (!validEventId) {
+        throw new Error('Invalid event ID');
+      }
+
+      // Update the event in the database
+      const eventCollection = await event();
+      const filter = { _id: ObjectId(eventId) };
+
+      const updateData = {
+        $set: {
+          eventName: eventData.eventName,
+          eventLocation: eventData.eventLocation,
+          eventDate: eventData.eventDate,
+          eventTime: eventData.eventTime
+          // Add other fields to update here
+        }
+      };
+
+      const updateResult = await eventCollection.updateOne(filter, updateData);
+
+      if (updateResult.modifiedCount === 0) {
+        throw new Error('Event not found or not updated');
+      }
+
+      // Redirect to a confirmation page or back to the updated event page
+      res.redirect(`/myEvents`);
+    } catch (error) {
+      // Handle any errors that may occur during the update operation
+      return res.status(400).render('error', { title: "Update Event Error", error: error.message });
+    }
+  });
 
 module.exports = router;
