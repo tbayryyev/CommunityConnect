@@ -7,6 +7,12 @@ jobs:
       - run: node --version
       - run: npm --version
       - uses: actions/checkout@v3
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.10.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-replica-set: test-rs
+          mongodb-port: 27017
       - run: npm install
       - run: node seed.js
       - run: node app.js
