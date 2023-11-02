@@ -26,7 +26,6 @@ const main = async () =>
         let event2 = await event.createEvent("eltonvaz623","Art Gallery","Discover local talent and global creativity at our university art gallery","2023-11-01","20:00","Stevens UCC", 10);
         let event3 = await event.createEvent("SriBL","Haunted House","Experience spine-tingling thrills and eerie chills at our haunted house","2023-10-30","19:00","Hoboken Haunted House", 20);
 
-        let RemEvent2 = await event.removeEvent(event2);
       
     } 
     catch (e) 
