@@ -35,12 +35,12 @@
             <p class="card-text"><strong>Time:</strong> {{eventTime}}</p>
 
             <!-- Edit button -->
-            <button class="btn btn-primary" data-toggle="modal" data-target="#updateEventModal{{this._id}}">Edit</button>
+            <button class="btn btn-primary w-25" data-toggle="modal" data-target="#updateEventModal{{this._id}}">Edit</button>
 
             <!-- Delete button -->
             {{!-- <button class="btn btn-danger" onclick="deleteEvent('{{eventId}}')">Delete</button> --}}
-                <form id="removeEvent-form" action="/myEvents/deleteEvent/{{this._id}}" method="POST"> 
-            <button type="submit" class="btn btn-danger"> Delete </button>
+                <form id="removeEvent-form" class="mt-1" action="/myEvents/deleteEvent/{{this._id}}" method="POST"> 
+            <button type="submit" class="btn btn-danger w-25"> Delete </button>
           </form>
           </div>
         </div>
