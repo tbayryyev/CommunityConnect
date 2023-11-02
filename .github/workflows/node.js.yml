@@ -2,6 +2,9 @@ on: push
 jobs:
   build-node:
     runs-on: ubuntu-latest
+     strategy:
+      matrix:
+        mongodb-version: ['4.2', '4.4', '5.0', '6.0.3']
     container: node:16
     steps:
       - run: node --version
@@ -10,8 +13,7 @@ jobs:
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.10.0
         with:
-          mongodb-version: ['4.2', '4.4', '5.0', '6.0.3']
-          mongodb-replica-set: test-rs
+          mongodb-version: ${{ matrix.mongodb-version }}
           mongodb-port: 27017
       - run: npm install
       - run: node seed.js
