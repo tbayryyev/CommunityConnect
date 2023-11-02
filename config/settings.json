@@ -1,6 +1,6 @@
 {
   "mongoConfig": {
-    "serverUrl": "mongodb://localhost:27017/",
+    "serverUrl": "mongodb+srv://agile2:ufbmw916Vmro0rQm@communityconnect.byt2uem.mongodb.net/?retryWrites=true&w=majority",
     "database": "CommunityConnect"
   }
 } 
