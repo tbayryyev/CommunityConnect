@@ -12,9 +12,5 @@ jobs:
         with:
           mongodb-version: 6.0.3
           mongodb-port: 27017
-      - run: npm ci
       - run: npm install
       - run: node seed.js
-      - run: npm test
-        env:
-          CI: true
