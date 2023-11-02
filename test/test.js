@@ -3,11 +3,11 @@ const users = require('../data/users');
 
 describe('Login Function', () => {
     it('should return true since this user is in database', async () => {
-        const user = await users.checkUser('agilebreezy', 'Team2rules!');
+        const user = await users.checkUser('codyf02', 'Password1!');
         assert.equal(user.authenticatedUser,true);
     });
     it('should return true since this user is in database', async () => {
-        const user = await users.checkUser('tbay123', 'Tahyr123!');
+        const user = await users.checkUser('eltonvaz623', 'Eltonv#05');
         assert.equal(user.authenticatedUser,true);
     });
     it('should throw an error for an invalid login because password is incorrect', async () => {
