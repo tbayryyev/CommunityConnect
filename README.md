@@ -1,4 +1,4 @@
-# Team2-Agile
+# CommunityConnect
 Welcome to Community Connect! A website that promotes local events such as art exhibitions, charity events, local sports events, cultural festivals, and many others. We will have an account feature where users can sign up and log in to interact with the app's features.
 
 
