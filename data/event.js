@@ -22,8 +22,10 @@ const createEvent = async (
       eventDate,
       eventTime,
       eventLocation,
-      cost, eventImage,      // Save the image data
-      imageFileName   // Save the image file name
+      cost, 
+      eventImage,      // Save the image data
+      imageFileName,   // Save the image file name
+      interestCount: 0
     };
 
     const eventCollection = await event();
@@ -92,6 +94,7 @@ const createEvent = async (
       cost: updatedEventData.cost || existingEvent.cost,
       eventImage: updatedEventData.eventImage || existingEvent.eventImage,
       imageFileName: updatedEventData.imageFileName || existingEvent.imageFileName,
+      interestCount: existingEvent.interestCount
     };
   
     const updatedData = await eventCollection.updateOne(
