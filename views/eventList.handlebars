@@ -13,7 +13,7 @@
             <p class="card-text"><strong>Date:</strong> {{eventDate}}</p>
             <p class="card-text"><strong>Time:</strong> {{eventTime}}</p>
             <p class="card-text"><strong>Cost:</strong> ${{cost}}</p>
-            <button type="button" class="btn btn-primary">Interested</button>
+            <button type="button" class="btn btn-primary" id="myButton">Interested</button>
           </div>
         </div>
       </div>
@@ -21,32 +21,16 @@
   </div>
 </div>
 
+<!-- Add this script to the end of your HTML body or in a separate JavaScript file -->
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Get all interested buttons on the page
-    const interestedButtons = document.querySelectorAll('.interested-btn');
+    // Get all elements with the class "btn-primary" (assuming you are using Bootstrap)
+    const interestedButtons = document.querySelectorAll('.btn-primary');
 
-    // Add a click event listener to each interested button
+    // Add a click event listener to each button
     interestedButtons.forEach(button => {
-      button.addEventListener('click', async function () {
-        const eventId = button.dataset.eventId;
-
-        try {
-          // Send a POST request to mark interest
-          const response = await fetch(`/api/interested/${eventId}`, {
-            method: 'POST',
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            alert(`You are interested! Total interested users: ${data.interestCount}`);
-          } else {
-            alert('Failed to mark as interested. Please try again.');
-          }
-        } catch (error) {
-          console.error('Error:', error);
-        }
-      });
+        button.addEventListener('click', function () {
+            // Toggle the 'btn-success' class to change the button color
+            this.classList.toggle('btn-success');
+        });
     });
-  });
 </script>
