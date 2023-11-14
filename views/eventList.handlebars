@@ -5,15 +5,19 @@
     {{#each events}}
       <div class="col-md-4">
         <div class="card mb-4">
-          <img src="/uploads/user-uploaded-images/{{imageFileName}}" class="card-img-top" alt="{{eventName}} Image">
+          <img src="/uploads/user-uploaded-images/{{this.imageFileName}}" class="card-img-top" alt="{{this.eventName}} Image">
           <div class="card-body">
-            <h5 class="card-title">{{eventName}}</h5>
-            <p class="card-text"><strong>Location:</strong> {{eventLocation}}</p>
-            <p class="card-text"><strong>Description:</strong> {{description}}</p>
-            <p class="card-text"><strong>Date:</strong> {{eventDate}}</p>
-            <p class="card-text"><strong>Time:</strong> {{eventTime}}</p>
-            <p class="card-text"><strong>Cost:</strong> ${{cost}}</p>
-            <button type="button" class="btn btn-primary" id="myButton">Interested</button>
+            <h5 class="card-title">{{this.eventName}}</h5>
+            <p class="card-text"><strong>Location:</strong> {{this.eventLocation}}</p>
+            <p class="card-text"><strong>Description:</strong> {{this.description}}</p>
+            <p class="card-text"><strong>Date:</strong> {{this.eventDate}}</p>
+            <p class="card-text"><strong>Time:</strong> {{this.eventTime}}</p>
+            <p class="card-text"><strong>Cost:</strong> ${{this.cost}}</p>
+            <p>Posted by: {{this.eventUsername}}</p>
+            {{#if ../username}}
+              <button type="button" class="btn btn-primary" id="myButton">Interested</button>
+            {{/if}}
+            <p>{{this.interestCount}} users are interested in this event!</p>
           </div>
         </div>
       </div>
@@ -23,14 +27,16 @@
 
 <!-- Add this script to the end of your HTML body or in a separate JavaScript file -->
 <script>
+
     // Get all elements with the class "btn-primary" (assuming you are using Bootstrap)
     const interestedButtons = document.querySelectorAll('.btn-primary');
 
     // Add a click event listener to each button
-    interestedButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            // Toggle the 'btn-success' class to change the button color
-            this.classList.toggle('btn-success');
+        interestedButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                // Toggle the 'btn-success' class to change the button color
+                this.classList.toggle('btn-success');
+            });
         });
-    });
+    //}
 </script>

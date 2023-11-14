@@ -4,7 +4,7 @@ const event = mongoCollections.event_collection;
 const helpers = require('../helpers');
 
 const createEvent = async (
-    username,eventName, description, eventDate, eventTime, eventLocation, cost, eventImage, imageFileName
+    eventUsername,eventName, description, eventDate, eventTime, eventLocation, cost, eventImage, imageFileName
 ) => {
     //Validate input data
     helpers.checkString(eventName);
@@ -16,7 +16,7 @@ const createEvent = async (
     // Create the event object
     let eventData = {
       _id: ObjectId(),
-      username,
+      eventUsername,
       eventName,
       description,
       eventDate,
@@ -25,7 +25,8 @@ const createEvent = async (
       cost, 
       eventImage,      // Save the image data
       imageFileName,   // Save the image file name
-      interestCount: 0
+      interestCount: 0,
+      interestedUsers: [] // Initialize the interestedUsers array
     };
 
     const eventCollection = await event();
@@ -44,16 +45,16 @@ const createEvent = async (
     const eventCollection = await event();
     const events = await eventCollection.find({}).toArray();
     return events;
-}
+  }
+
   const getMyEvents = async(username) => {
     const eventCollection = await event();
-    const events = await eventCollection.find({ username: username }).toArray();
+    const events = await eventCollection.find({ eventUsername: username }).toArray();
     if(events == null){
         throw "Error: Either the username or password is invalid";
     }
     return events;
   }
-
 
   const getEventById = async (eventId) => {
     eventId = helpers.checkID(eventId.toString());
@@ -85,7 +86,7 @@ const createEvent = async (
   
     // Construct the updated event object
     const updatedEvent = {
-      username: updatedEventData.username || existingEvent.username,
+      eventUsername: updatedEventData.eventUsername || existingEvent.eventUsername,
       eventName: updatedEventData.eventName || existingEvent.eventName,
       description: updatedEventData.description || existingEvent.description,
       eventDate: updatedEventData.eventDate || existingEvent.eventDate,
@@ -109,17 +110,34 @@ const createEvent = async (
     return await getEventById(eventId); // Return the updated event
   };
 
-  const markInterest = async (eventId) => {
+  const toggleInterestedUser = async (eventId, username) => {
     const eventCollection = await event();
+    const events = await eventCollection.findOne({ _id: ObjectId(eventId) });
+    if(events == null){
+        throw "Error: event not found";
+    }
 
-    const result = await eventCollection.findOneAndUpdate(
-      { _id: ObjectId(eventId) },
-      { $inc: { interestCount: 1 } }, // Increment interestCount by 1
-      { returnDocument: 'after' } // Return the updated document
-    );
+    // Check if the username is already in the interestedUsers array
+    const index = events.interestedUsers.indexOf(username);
 
-    return result.value;
-  };
+    if (index !== -1) {
+      // Username is already in the array, so remove it
+      events.interestedUsers.splice(index, 1);
+    } else {
+      // Username is not in the array, so add it
+      events.interestedUsers.push(username);
+    }
 
-  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent, updateEvent, markInterest };
+    events.interestedUsers.push(username);
+
+    // Update the interestCount variable based on the length of the interestedUsers array
+    const interestCount = events.interestedUsers.length;
+
+
+    await eventCollection.updateOne({ _id: ObjectId(eventId) }, { $set: { interestedUsers: events.interestedUsers, interestCount } });
+
+    return events;
+  }
+
+  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent, updateEvent, toggleInterestedUser };
 

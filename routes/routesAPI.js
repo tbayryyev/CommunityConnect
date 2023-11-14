@@ -208,10 +208,10 @@ router
   .get(async (req, res) => {    
     if (req.session.user) {
       try {
+        console.log(req.session.user)
         // Retrieve events from the database
         const events = await dataEvent.getEvents();
         return res.render('eventList', { username: req.session.user.username, events });
-  
   
       } catch (error) {
         // Handle any errors related to fetching events from the database
