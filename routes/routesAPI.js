@@ -349,4 +349,27 @@ router
     }
   });
 
+
+  router
+  .route('/event/:eventId')
+  .get(async (req, res) => {
+    if (req.session.user) {
+      try {
+        const eventId = req.params.eventId;
+        // Fetch the event details by eventId
+        const event = await dataEvent.getEventById(eventId);
+
+    
+        return res.render('event', { username: req.session.user.username, event });
+       
+      } catch (error) {
+        // Handle any errors related to fetching events or event not found
+        res.status(500).send('Error fetching event: ' + error.message);
+      }
+    } else {
+      res.redirect('/login');
+    }
+  });
+
+
 module.exports = router;

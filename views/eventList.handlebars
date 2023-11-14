@@ -7,7 +7,11 @@
         <div class="card mb-4">
           <img src="/uploads/user-uploaded-images/{{this.imageFileName}}" class="card-img-top" alt="{{this.eventName}} Image">
           <div class="card-body">
-            <h5 class="card-title">{{this.eventName}}</h5>
+              <h5 class="card-title">
+            <a href="/event/{{this._id}}" class="event-link">
+              {{this.eventName}}
+            </a>
+          </h5>
             <p class="card-text"><strong>Location:</strong> {{this.eventLocation}}</p>
             <p class="card-text"><strong>Description:</strong> {{this.description}}</p>
             <p class="card-text"><strong>Date:</strong> {{this.eventDate}}</p>

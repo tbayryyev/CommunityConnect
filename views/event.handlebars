@@ -1,0 +1,22 @@
+<div class="container">
+  <h1 class="my-4 text-center mt-5">{{event.eventName}}</h1>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card mb-4 text-center">
+        <img src="/uploads/user-uploaded-images/{{event.imageFileName}}" class="card-img-top" alt="{{event.eventName}} Image">
+        <div class="card-body">
+          <p class="card-text"><strong>Location:</strong> {{event.eventLocation}}</p>
+          <p class="card-text"><strong>Description:</strong> {{event.description}}</p>
+          <p class="card-text"><strong>Date:</strong> {{event.eventDate}}</p>
+          <p class="card-text"><strong>Time:</strong> {{event.eventTime}}</p>
+          <p class="card-text"><strong>Cost:</strong> ${{event.cost}}</p>
+          <p>Posted by: {{event.eventUsername}}</p>
+          {{#if username}}
+            <button type="button" class="btn btn-primary">Interested</button>
+          {{/if}}
+          <p>{{event.interestCount}} users are interested in this event!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
