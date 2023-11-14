@@ -109,5 +109,17 @@ const createEvent = async (
     return await getEventById(eventId); // Return the updated event
   };
 
-  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent, updateEvent };
+  const markInterest = async (eventId) => {
+    const eventCollection = await event();
+
+    const result = await eventCollection.findOneAndUpdate(
+      { _id: ObjectId(eventId) },
+      { $inc: { interestCount: 1 } }, // Increment interestCount by 1
+      { returnDocument: 'after' } // Return the updated document
+    );
+
+    return result.value;
+  };
+
+  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent, updateEvent, markInterest };
 

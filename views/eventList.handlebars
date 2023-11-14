@@ -1,24 +1,3 @@
-{{!-- <div class="container">
-  <h1 class="my-4 text-center">Upcoming Events</h1>
-
-  <div class="row">
-    {{#each events}}
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">{{eventName}}</h5>
-            <p class="card-text"><strong>Location:</strong> {{eventLocation}}</p>
-            <p class="card-text"><strong>Description:</strong> {{description}}</p>
-            <p class="card-text"><strong>Date:</strong> {{eventDate}}</p>
-            <p class="card-text"><strong>Time:</strong> {{eventTime}}</p>
-            <p class="card-text"><strong>Cost:</strong> ${{cost}}</p>
-          </div>
-        </div>
-      </div>
-    {{/each}}
-  </div>
-</div> --}}
-
 <div class="container">
   <h1 class="my-4 text-center mt-5">Upcoming Events</h1>
 
@@ -41,3 +20,33 @@
     {{/each}}
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get all interested buttons on the page
+    const interestedButtons = document.querySelectorAll('.interested-btn');
+
+    // Add a click event listener to each interested button
+    interestedButtons.forEach(button => {
+      button.addEventListener('click', async function () {
+        const eventId = button.dataset.eventId;
+
+        try {
+          // Send a POST request to mark interest
+          const response = await fetch(`/api/interested/${eventId}`, {
+            method: 'POST',
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            alert(`You are interested! Total interested users: ${data.interestCount}`);
+          } else {
+            alert('Failed to mark as interested. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+  });
+</script>
