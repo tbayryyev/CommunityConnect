@@ -28,11 +28,17 @@
         <div class="card mb-4">
           <img src="/uploads/user-uploaded-images/{{imageFileName}}" class="card-img-top" alt="{{eventName}} Image">
           <div class="card-body">
-            <h5 class="card-title">{{eventName}}</h5>
+             <h5 class="card-title">
+            <a href="/event/{{this._id}}" class="event-link">
+              {{this.eventName}}
+            </a>
+          </h5>
             <p class="card-text"><strong>Location:</strong> {{eventLocation}}</p>
             <p class="card-text"><strong>Description:</strong> {{description}}</p>
             <p class="card-text"><strong>Date:</strong> {{eventDate}}</p>
             <p class="card-text"><strong>Time:</strong> {{eventTime}}</p>
+            <p class="card-text"><strong>Cost:</strong> ${{cost}}</p>
+
 
             <!-- Edit button -->
             <button class="btn btn-primary w-25" data-toggle="modal" data-target="#updateEventModal{{this._id}}">Edit</button>
