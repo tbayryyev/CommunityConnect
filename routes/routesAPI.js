@@ -371,5 +371,28 @@ router
     }
   });
 
+  router
+  .route('/addComment/:eventId')
+  .post(async (req, res) => {
+    if (req.session.user) {
+      try {
+        const eventId = req.params.eventId;
+        const commentText = req.body.commentText;
+
+
+        // Fetch the event details by eventId
+        const comment = await dataEvent.createComment(eventId,commentText,req.session.user.username);
+    
+        res.redirect(`/event/${eventId}`);
+       
+      } catch (error) {
+        // Handle any errors related to fetching events or event not found
+        res.status(500).send('Error adding comment: ' + error.message);
+      }
+    } else {
+      res.redirect('/login');
+    }
+  });
+
 
 module.exports = router;

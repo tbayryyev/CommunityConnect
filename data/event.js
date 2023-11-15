@@ -26,7 +26,8 @@ const createEvent = async (
       eventImage,      // Save the image data
       imageFileName,   // Save the image file name
       interestCount: 0,
-      interestedUsers: [] // Initialize the interestedUsers array
+      interestedUsers: [], // Initialize the interestedUsers array
+      comments: []
     };
 
     const eventCollection = await event();
@@ -137,7 +138,33 @@ const createEvent = async (
     await eventCollection.updateOne({ _id: ObjectId(eventId) }, { $set: { interestedUsers: events.interestedUsers, interestCount } });
 
     return events;
-  }
+  };
+  const createComment =  async (eventId, commentText, username) => {
+    eventId = helpers.checkID(eventId.toString());
+    helpers.checkString(commentText);
 
-  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent, updateEvent, toggleInterestedUser };
+    const eventCollection = await event();
+    const existingEvent = await eventCollection.findOne({ _id: ObjectId(eventId) });
+  
+    if (!existingEvent) {
+      throw "No event with that id";
+    };
+
+
+    const newComment = {
+      comment_id: ObjectId(),
+      username: username,
+      commentText: commentText,
+    }
+    const updateInfo = await eventCollection.updateOne({ _id: ObjectId(eventId) }, { $addToSet: { comments: newComment } });
+
+    if (updateInfo.modifiedCount === 0) {
+      throw "could not add the comment successfully";
+
+    }
+    return newComment
+
+  };
+
+  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent, updateEvent, toggleInterestedUser, createComment };
 
