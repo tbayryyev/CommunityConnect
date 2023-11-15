@@ -3,25 +3,23 @@
 
   <div class="row">
     {{#each events}}
-      <div class="col-md-4">
-        <div class="card mb-4">
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
           <img src="/uploads/user-uploaded-images/{{this.imageFileName}}" class="card-img-top" alt="{{this.eventName}} Image">
           <div class="card-body">
-              <h5 class="card-title">
-            <a href="/event/{{this._id}}" class="event-link">
-              {{this.eventName}}
-            </a>
-          </h5>
+            <h5 class="card-title">
+              <a href="/event/{{this._id}}" class="event-link">{{this.eventName}}</a>
+            </h5>
             <p class="card-text"><strong>Location:</strong> {{this.eventLocation}}</p>
             <p class="card-text"><strong>Description:</strong> {{this.description}}</p>
             <p class="card-text"><strong>Date:</strong> {{this.eventDate}}</p>
             <p class="card-text"><strong>Time:</strong> {{this.eventTime}}</p>
             <p class="card-text"><strong>Cost:</strong> ${{this.cost}}</p>
-            <p>Posted by: {{this.eventUsername}}</p>
-            {{#if ../username}}
-              <button type="button" class="btn btn-primary" id="myButton">Interested</button>
-            {{/if}}
-            <p>{{this.interestCount}} users are interested in this event!</p>
+            <p class="card-text"><small class="text-muted">Posted by: {{this.eventUsername}}</small></p>
+          </div>
+          <div class="card-footer">
+            <button type="button" class="btn btn-primary btn-interested btn-block">Interested</button>
+            <p class="text-center mt-2"><small>{{this.interestCount}} users are interested in this event!</small></p>
           </div>
         </div>
       </div>
@@ -31,16 +29,13 @@
 
 <!-- Add this script to the end of your HTML body or in a separate JavaScript file -->
 <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const interestedButtons = document.querySelectorAll('.btn-interested');
 
-    // Get all elements with the class "btn-primary" (assuming you are using Bootstrap)
-    const interestedButtons = document.querySelectorAll('.btn-primary');
-
-    // Add a click event listener to each button
-        interestedButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                // Toggle the 'btn-success' class to change the button color
-                this.classList.toggle('btn-success');
-            });
-        });
-    //}
+    interestedButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        this.classList.toggle('btn-success');
+      });
+    });
+  });
 </script>
