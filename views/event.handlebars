@@ -1,13 +1,11 @@
 <div class="container">
   <!-- Event Details -->
-  <h1 class="my-4 text-center mt-5">{{event.eventName}}</h1>
-  <div class="row justify-content-center">
-    <div class="col-md-6">
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-8">
       <div class="card mb-4 text-center">
-        <!-- Event Image and Details -->
         <img src="/uploads/user-uploaded-images/{{event.imageFileName}}" class="card-img-top" alt="{{event.eventName}} Image">
         <div class="card-body">
-          <!-- Event Information -->
+          <h1 class="card-title">{{event.eventName}}</h1>
           <p class="card-text"><strong>Location:</strong> {{event.eventLocation}}</p>
           <p class="card-text"><strong>Description:</strong> {{event.description}}</p>
           <p class="card-text"><strong>Date:</strong> {{event.eventDate}}</p>
@@ -23,7 +21,6 @@
     </div>
   </div>
 
- <div class="container">
   <!-- Comments Section -->
   <div class="row justify-content-center">
     <div class="col-md-8">
@@ -31,9 +28,9 @@
         <div class="card-body">
           <h3 class="card-title text-center mb-4">Comments</h3>
           <!-- Form for adding a new comment -->
-          <form  id="commentForm" action="/addComment/{{event._id}}" method="POST">
+          <form id="commentForm" action="/addComment/{{event._id}}" method="POST">
             <div class="form-group">
-              <textarea class="form-control" id="commentText" name= "commentText" rows="3" placeholder="Type your comment here"></textarea>
+              <textarea class="form-control" id="commentText" name="commentText" rows="3" placeholder="Type your comment here"></textarea>
             </div>
             <!-- You might add more fields for user info, etc., if needed -->
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -54,4 +51,3 @@
     </div>
   </div>
 </div>
-
