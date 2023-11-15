@@ -63,6 +63,12 @@
                   <label for="eventTime{{this._id}}">Time</label>
                   <input type="time" class="form-control" id="eventTime{{this._id}}" name="eventTime" value="{{this.eventTime}}" required>
                 </div>
+                <div class="form-group">
+                  <label for="cost{{this._id}}">Cost</label>
+                  <input type="number" class="form-control" id="cost{{this._id}}" name="cost" value="{{this.cost}}" required>
+                </div>
+
+
                 <!-- Include an "Update" button for submitting the changes -->
                 <button type="submit" class="btn btn-primary">Update</button>
               </form>
