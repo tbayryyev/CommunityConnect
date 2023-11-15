@@ -2,50 +2,58 @@
   <!-- Event Details -->
   <div class="row justify-content-center mt-5">
     <div class="col-md-8">
-      <div class="card mb-4 text-center">
-        <img src="/uploads/user-uploaded-images/{{event.imageFileName}}" class="card-img-top" alt="{{event.eventName}} Image">
-        <div class="card-body">
-          <h1 class="card-title">{{event.eventName}}</h1>
-          <p class="card-text"><strong>Location:</strong> {{event.eventLocation}}</p>
-          <p class="card-text"><strong>Description:</strong> {{event.description}}</p>
-          <p class="card-text"><strong>Date:</strong> {{event.eventDate}}</p>
-          <p class="card-text"><strong>Time:</strong> {{event.eventTime}}</p>
-          <p class="card-text"><strong>Cost:</strong> ${{event.cost}}</p>
-          <p>Posted by: {{event.eventUsername}}</p>
-          {{#if username}}
-            <button type="button" class="btn btn-primary">Interested</button>
-          {{/if}}
-          <p>{{event.interestCount}} users are interested in this event!</p>
+      <div class="card border-0 shadow-lg">
+        <div class="card-body text-center">
+          <div class="row">
+            <div class="col-md-6">
+              <img src="https://cloudfront-us-east-2.images.arcpublishing.com/reuters/7YKAJ3JWWJNL7PGRPZKY2TEU5Y.jpg" class="img-fluid event-image " alt="{{event.eventName}} Image">
+            </div>
+            <div class="col-md-6">
+              <h1 class="card-title">{{event.eventName}}</h1>
+              <p class="card-text"><strong>Location:</strong> {{event.eventLocation}}</p>
+              <p class="card-text"><strong>Description:</strong> {{event.description}}</p>
+              <p class="card-text"><strong>Date:</strong> {{event.eventDate}}</p>
+              <p class="card-text"><strong>Time:</strong> {{event.eventTime}}</p>
+              <p class="card-text"><strong>Cost:</strong> ${{event.cost}}</p>
+              <p>Posted by: {{event.eventUsername}}</p>
+              {{#if username}}
+                <button type="button" class="btn btn-primary btn-block">I'm Interested</button>
+              {{/if}}
+              <p class="mt-3">{{event.interestCount}} users are interested in this event!</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
+
+<div class="container">
   <!-- Comments Section -->
-  <div class="row justify-content-center">
+  <div class="row justify-content-center mt-5">
     <div class="col-md-8">
-      <div class="card mb-4">
+      <div class="card border-0 shadow-lg">
         <div class="card-body">
           <h3 class="card-title text-center mb-4">Comments</h3>
           <!-- Form for adding a new comment -->
           <form id="commentForm" action="/addComment/{{event._id}}" method="POST">
             <div class="form-group">
-              <textarea class="form-control" id="commentText" name="commentText" rows="3" placeholder="Type your comment here"></textarea>
+              <textarea class="form-control" id="commentText" name="commentText" rows="3" placeholder="Add your comment here"></textarea>
             </div>
             <!-- You might add more fields for user info, etc., if needed -->
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
           </form>
 
           <!-- Display existing comments -->
           <div class="mt-4">
             {{#each event.comments}}
-              <div class="comment border rounded p-3 mb-3">
+              <div class="comment bg-light p-3 rounded mb-3">
                 <p class="mb-1">{{this.commentText}}</p>
                 <p class="text-muted small">Posted by: {{this.username}}</p>
               </div>
             {{/each}}
           </div>
-
         </div>
       </div>
     </div>
