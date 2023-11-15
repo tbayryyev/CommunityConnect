@@ -17,10 +17,12 @@
             <p class="card-text"><strong>Cost:</strong> ${{this.cost}}</p>
             <p class="card-text"><small class="text-muted">Posted by: {{this.eventUsername}}</small></p>
           </div>
+          {{#if ../username}}
           <div class="card-footer">
             <button type="button" class="btn btn-primary btn-interested btn-block">Interested</button>
             <p class="text-center mt-2"><small>{{this.interestCount}} users are interested in this event!</small></p>
           </div>
+            {{/if}}
         </div>
       </div>
     {{/each}}
