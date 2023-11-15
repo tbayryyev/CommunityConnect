@@ -1,53 +1,31 @@
-{{!-- <div class="container">
-  <h1 class="my-4 text-center">My Events</h1>
-
-  <div class="row">
-    {{#each events}}
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">{{eventName}}</h5>
-            <p class="card-text"><strong>Location:</strong> {{eventLocation}}</p>
-            <p class="card-text"><strong>Description:</strong> {{description}}</p>
-            <p class="card-text"><strong>Date:</strong> {{eventDate}}</p>
-            <p class="card-text"><strong>Time:</strong> {{eventTime}}</p>
-            
-            <!-- Edit button -->
-            <button class="btn btn-primary" onclick="editEvent('{{eventId}}')">Edit</button>
-            
-            <!-- Delete button -->
-          {{!-- <button class="btn btn-danger" onclick="deleteEvent('{{eventId}}')">Delete</button>  --}}
-          
-
 <div class="container">
   <h1 class="my-4 text-center">My Events</h1>
 
   <div class="row">
     {{#each events}}
       <div class="col-md-4">
-        <div class="card mb-4">
+        <div class="card mb-4 h-100">
           <img src="/uploads/user-uploaded-images/{{imageFileName}}" class="card-img-top" alt="{{eventName}} Image">
           <div class="card-body">
-             <h5 class="card-title">
-            <a href="/event/{{this._id}}" class="event-link">
-              {{this.eventName}}
-            </a>
-          </h5>
-            <p class="card-text"><strong>Location:</strong> {{eventLocation}}</p>
-            <p class="card-text"><strong>Description:</strong> {{description}}</p>
-            <p class="card-text"><strong>Date:</strong> {{eventDate}}</p>
-            <p class="card-text"><strong>Time:</strong> {{eventTime}}</p>
-            <p class="card-text"><strong>Cost:</strong> ${{cost}}</p>
-
-
-            <!-- Edit button -->
-            <button class="btn btn-primary w-25" data-toggle="modal" data-target="#updateEventModal{{this._id}}">Edit</button>
-
-            <!-- Delete button -->
-            {{!-- <button class="btn btn-danger" onclick="deleteEvent('{{eventId}}')">Delete</button> --}}
-                <form id="removeEvent-form" class="mt-1" action="/myEvents/deleteEvent/{{this._id}}" method="POST"> 
-            <button type="submit" class="btn btn-danger w-25"> Delete </button>
-          </form>
+            <h5 class="card-title">
+              <a href="/event/{{this._id}}" class="event-link">{{this.eventName}}</a>
+            </h5>
+            <p class="card-text"><strong>Location:</strong> {{this.eventLocation}}</p>
+            <p class="card-text"><strong>Description:</strong> {{this.description}}</p>
+            <p class="card-text"><strong>Date:</strong> {{this.eventDate}}</p>
+            <p class="card-text"><strong>Time:</strong> {{this.eventTime}}</p>
+            <p class="card-text"><strong>Cost:</strong> ${{this.cost}}</p>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex justify-content-between align-items-center">
+              <!-- Edit button -->
+              <button class="btn btn-primary" data-toggle="modal" data-target="#updateEventModal{{this._id}}">Edit</button>
+              
+              <!-- Delete button -->
+              <form id="removeEvent-form" action="/myEvents/deleteEvent/{{this._id}}" method="POST">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -57,7 +35,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="updateEventModalLabel">Update Event: {{eventName}}</h5>
+              <h5 class="modal-title" id="updateEventModalLabel">Update Event: {{this.eventName}}</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -67,23 +45,23 @@
               <form action="/updateEvent/{{this._id}}" method="post">
                 <div class="form-group">
                   <label for="eventName{{this._id}}">Event Name</label>
-                  <input type="text" class="form-control" id="eventName{{this._id}}" name="eventName" value="{{eventName}}" required>
+                  <input type="text" class="form-control" id="eventName{{this._id}}" name="eventName" value="{{this.eventName}}" required>
                 </div>
                 <div class="form-group">
                   <label for="description{{this._id}}">Description</label>
-                  <textarea class="form-control" id="description{{this._id}}" name="description" required>{{description}}</textarea>
+                  <textarea class="form-control" id="description{{this._id}}" name="description" required>{{this.description}}</textarea>
                 </div>
                 <div class="form-group">
                   <label for="eventLocation{{this._id}}">Location</label>
-                  <input type="text" class="form-control" id="eventLocation{{this._id}}" name="eventLocation" value="{{eventLocation}}" required>
+                  <input type="text" class="form-control" id="eventLocation{{this._id}}" name="eventLocation" value="{{this.eventLocation}}" required>
                 </div>
                 <div class="form-group">
                   <label for="eventDate{{this._id}}">Date</label>
-                  <input type="date" class="form-control" id="eventDate{{this._id}}" name="eventDate" value="{{eventDate}}" required>
+                  <input type="date" class="form-control" id="eventDate{{this._id}}" name="eventDate" value="{{this.eventDate}}" required>
                 </div>
                 <div class="form-group">
                   <label for="eventTime{{this._id}}">Time</label>
-                  <input type="time" class="form-control" id="eventTime{{this._id}}" name="eventTime" value="{{eventTime}}" required>
+                  <input type="time" class="form-control" id="eventTime{{this._id}}" name="eventTime" value="{{this.eventTime}}" required>
                 </div>
                 <!-- Include an "Update" button for submitting the changes -->
                 <button type="submit" class="btn btn-primary">Update</button>
@@ -95,7 +73,3 @@
     {{/each}}
   </div>
 </div>
-
-
-
-
