@@ -87,22 +87,17 @@ const createUser = async (
 };
 
 const checkUser = async (username, password) => { 
+
+  //validate the input strings
   helpers.checkString(username);
   helpers.checkString(password);
 
   const usersCollection = await users();
+  const userData = await usersCollection.findOne({ username });
 
-  const userData = await usersCollection.findOne({ username: username });
-
-  if (userData === null) {
-      throw "Error: Either the username or password is invalid";
-  }
-
-  let hashpassword = false;
-  hashpassword = await bcrypt.compare(password, userData.password);
-
-  if (hashpassword === false) {
-      throw "Error: Either the username or password is invalid";
+  // If no user found, or password doesn't match, throw an error
+  if (!userData || !(await bcrypt.compare(password, userData.password))) {
+    throw "Error: Either the username or password is invalid";
   }
 
   return { authenticatedUser: true };

@@ -1,53 +1,59 @@
 <div class="container">
-            <h2>Post an Event</h2>
-            <form action="/postEvent" method="post" enctype="multipart/form-data">
-                <!-- EventName input -->
+    <div class="row justify-content-center ">
+        <div class="col-md-8">
+            <h2 class="text-center mt-5 mb-4">Post an Event</h2>
+            <form action="/postEvent" method="post" class="p-4 border rounded shadow" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="eventName">Event Name</label>
-                    <input type="text" class="form-control" id="eventName" name="eventName" required>
+                    <input type="text" class="form-control" id="eventName" name="eventName" required aria-label="Event Name">
                 </div>
 
-                <!-- Description input -->
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea class="form-control" id="description" name="description" required></textarea>
+                    <textarea class="form-control" id="description" name="description" rows="4" required aria-label="Event Description"></textarea>
                 </div>
 
-                <!-- Date input -->
-                <div class="form-group">
-                    <label for="eventDate">Date</label>
-                    <input type="date" class="form-control" id="eventDate" name="eventDate" required>
+                <div class="form-row">
+                    <div class="col-md-6 form-group">
+                        <label for="eventDate">Date</label>
+                        <input type="date" class="form-control" id="eventDate" name="eventDate" required aria-label="Event Date">
+                    </div>
+
+                    <div class="col-md-6 form-group">
+                        <label for="eventTime">Time</label>
+                        <input type="time" class="form-control" id="eventTime" name="eventTime" required aria-label="Event Time">
+                    </div>
                 </div>
 
-                <!-- Time input -->
-                <div class="form-group">
-                    <label for="eventTime">Time</label>
-                    <input type="time" class="form-control" id="eventTime" name="eventTime" required>
-                </div>
-
-                <!-- Location input -->
                 <div class="form-group">
                     <label for="eventLocation">Location</label>
-                    <input type="text" class="form-control" id="eventLocation" name="eventLocation" required>
+                    <input type="text" class="form-control" id="eventLocation" name="eventLocation" required aria-label="Event Location">
                 </div>
 
-                <!-- Cost input -->
                 <div class="form-group">
                     <label for="eventCost">Cost</label>
-                    <input type="number" class="form-control" id="eventCost" name="eventCost" step="1" required>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input type="number" class="form-control" id="eventCost" name="eventCost" step="1" required aria-label="Event Cost">
+                    </div>
                 </div>
 
-                <!-- Image upload input -->
-        <div class="form-group">
-            <label for="eventImage">Event Image</label>
-            <input type="file" class="form-control" id="eventImage" name="eventImage" accept="image/*" required>
-        </div>
+                <div class="form-group">
+                    <label for="eventImage">Event Image</label>
+                    <input type="file" class="form-control-file" id="eventImage" name="eventImage" accept="image/*" required aria-label="Event Image">
+                </div>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Post</button>
+                </div>
             </form>
         </div>
-
-
-        <p class="text-center mt-5">{{error}}</p>
-
-
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-8 offset-md-2">
+            <p class="text-center text-danger">{{ error }}</p>
+        </div>
+    </div>
+</div>

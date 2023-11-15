@@ -34,6 +34,23 @@ describe('Login Function', () => {
           assert.strictEqual(error, 'Error: Either the username or password is invalid');
         }
       });
+      it('should throw an error for using number as username instead of string', async () => {
+        try {
+          await users.checkUser(123, 'hello1234!');
+          assert.fail('Expected an error to be thrown');
+        } catch (error) {
+          assert.strictEqual(error, 'Error: input must be a string');
+        }
+      });
+      it('should throw an error for using number as password instead of string', async () => {
+        try {
+          await users.checkUser('hello', 1242);
+          assert.fail('Expected an error to be thrown');
+        } catch (error) {
+          assert.strictEqual(error, 'Error: input must be a string');
+        }
+      });
+    
 
     
 

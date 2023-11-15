@@ -1,42 +1,43 @@
-{{!-- <div class="container">
-  <h1 class="my-4 text-center">Upcoming Events</h1>
-
-  <div class="row">
-    {{#each events}}
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">{{eventName}}</h5>
-            <p class="card-text"><strong>Location:</strong> {{eventLocation}}</p>
-            <p class="card-text"><strong>Description:</strong> {{description}}</p>
-            <p class="card-text"><strong>Date:</strong> {{eventDate}}</p>
-            <p class="card-text"><strong>Time:</strong> {{eventTime}}</p>
-            <p class="card-text"><strong>Cost:</strong> ${{cost}}</p>
-          </div>
-        </div>
-      </div>
-    {{/each}}
-  </div>
-</div> --}}
-
 <div class="container">
   <h1 class="my-4 text-center mt-5">Upcoming Events</h1>
 
   <div class="row">
     {{#each events}}
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <img src="/uploads/user-uploaded-images/{{imageFileName}}" class="card-img-top" alt="{{eventName}} Image">
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+          <img src="/uploads/user-uploaded-images/{{this.imageFileName}}" class="card-img-top" alt="{{this.eventName}} Image">
           <div class="card-body">
-            <h5 class="card-title">{{eventName}}</h5>
-            <p class="card-text"><strong>Location:</strong> {{eventLocation}}</p>
-            <p class="card-text"><strong>Description:</strong> {{description}}</p>
-            <p class="card-text"><strong>Date:</strong> {{eventDate}}</p>
-            <p class="card-text"><strong>Time:</strong> {{eventTime}}</p>
-            <p class="card-text"><strong>Cost:</strong> ${{cost}}</p>
+            <h5 class="card-title">
+              <a href="/event/{{this._id}}" class="event-link">{{this.eventName}}</a>
+            </h5>
+            <p class="card-text"><strong>Location:</strong> {{this.eventLocation}}</p>
+            <p class="card-text"><strong>Description:</strong> {{this.description}}</p>
+            <p class="card-text"><strong>Date:</strong> {{this.eventDate}}</p>
+            <p class="card-text"><strong>Time:</strong> {{this.eventTime}}</p>
+            <p class="card-text"><strong>Cost:</strong> ${{this.cost}}</p>
+            <p class="card-text"><small class="text-muted">Posted by: {{this.eventUsername}}</small></p>
           </div>
+          {{#if ../username}}
+          <div class="card-footer">
+            <button type="button" class="btn btn-primary btn-interested btn-block">Interested</button>
+            <p class="text-center mt-2"><small>{{this.interestCount}} users are interested in this event!</small></p>
+          </div>
+            {{/if}}
         </div>
       </div>
     {{/each}}
   </div>
 </div>
+
+<!-- Add this script to the end of your HTML body or in a separate JavaScript file -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const interestedButtons = document.querySelectorAll('.btn-interested');
+
+    interestedButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        this.classList.toggle('btn-success');
+      });
+    });
+  });
+</script>

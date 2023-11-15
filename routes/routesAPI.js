@@ -212,7 +212,6 @@ router
         const events = await dataEvent.getEvents();
         return res.render('eventList', { username: req.session.user.username, events });
   
-  
       } catch (error) {
         // Handle any errors related to fetching events from the database
         res.status(500).send('Error fetching events: ' + error.message);
@@ -349,5 +348,51 @@ router
 
     }
   });
+
+
+  router
+  .route('/event/:eventId')
+  .get(async (req, res) => {
+    if (req.session.user) {
+      try {
+        const eventId = req.params.eventId;
+        // Fetch the event details by eventId
+        const event = await dataEvent.getEventById(eventId);
+
+    
+        return res.render('event', { username: req.session.user.username, event });
+       
+      } catch (error) {
+        // Handle any errors related to fetching events or event not found
+        res.status(500).send('Error fetching event: ' + error.message);
+      }
+    } else {
+      res.redirect('/login');
+    }
+  });
+
+  router
+  .route('/addComment/:eventId')
+  .post(async (req, res) => {
+    if (req.session.user) {
+      try {
+        const eventId = req.params.eventId;
+        const commentText = req.body.commentText;
+
+
+        // Fetch the event details by eventId
+        const comment = await dataEvent.createComment(eventId,commentText,req.session.user.username);
+    
+        res.redirect(`/event/${eventId}`);
+       
+      } catch (error) {
+        // Handle any errors related to fetching events or event not found
+        res.status(500).send('Error adding comment: ' + error.message);
+      }
+    } else {
+      res.redirect('/login');
+    }
+  });
+
 
 module.exports = router;
