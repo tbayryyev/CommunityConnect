@@ -13,4 +13,3 @@ jobs:
           mongodb-version: 6.0.3
           mongodb-port: 27017
       - run: npm install
-      - run: node seed.js

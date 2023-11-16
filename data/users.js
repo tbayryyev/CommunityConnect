@@ -5,9 +5,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 2;
 const helpers = require('../helpers');
 
-const createUser = async (
-  username, password,firstname,lastname,birth_date,email
-) => { 
+const createUser = async (username, password,firstname,lastname,birth_date,email) => { 
   helpers.checkString(username);
   helpers.checkString(password);
   helpers.checkString(firstname);
@@ -104,13 +102,65 @@ const checkUser = async (username, password) => {
 };
 
 const getUserByUsername = async(username) => {
-    helpers.checkString(username);
-    const usersCollection = await users();
-    const userData = await usersCollection.findOne({username: username });
-    if(userData == null){
-        throw "Error: Either the username or password is invalid";
+    try{
+        helpers.checkString(username);
+        const usersCollection = await users();
+        const userData = await usersCollection.findOne({"username": username });
+        if(userData == null){
+            throw "Error: Either the username or password is invalid";
+        }
+        delete userData.password;
+        return userData;
+    } catch(e){
+        console.log(e);
     }
-    return userData;
+    
+}   
+
+const getAll = async() => {
+    const usersCollection = await users();
+    const allUsers = await usersCollection.find({}).toArray();
+    return allUsers;
 }
 
-module.exports = {createUser, checkUser, getUserByUsername};
+const getUserIDByUsername = async(username) => {
+    try {    
+        helpers.checkString(username);
+        const usersCollection = await users();
+        const userData = await usersCollection.findOne({"username": username});
+        if(userData == null){
+            throw "Error: A user with username '" + username + "' does not exist";
+        }
+        return userData._id;
+    } catch(e){
+        console.log(e);
+    }
+}
+
+//Username is immutable, for now
+const updateUserInfo = async(username, firstname, lastname, email) => {
+    try{
+        helpers.checkString(username);
+        helpers.checkString(firstname);
+        helpers.checkString(lastname);
+        helpers.checkString(email);
+        const usersCollection = await users();
+        const result = await usersCollection.updateOne(
+            { username: username },
+            {
+                $set: {
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email
+                }
+            }
+        );
+        return result;
+    } catch(e){
+        console.log(e);
+    }
+
+    return 0;
+}
+
+module.exports = {createUser, checkUser, getUserByUsername, updateUserInfo, getAll};

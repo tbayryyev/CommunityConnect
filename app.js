@@ -9,6 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 const path = require('path');
+const userCollection = require("./data/users")
 
 // app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -23,7 +24,6 @@ app.use((req, res, next) => {
     let userType = "";
     if (req.session.user) {
         userType = "(Authenticated User)";
-
     } 
     else {
         userType = "(Non-Authenticated User)";

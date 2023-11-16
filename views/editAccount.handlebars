@@ -1,0 +1,27 @@
+<!-- account.handlebars -->
+    <div class="container mt-5">
+        <div class="card">
+            <h5 class="card-header bg-primary text-white">
+                <i class="fas fa-user-circle"></i> My Account
+            </h5>
+            <div class="card-body">
+                <form id="edit-account-form" action="/editAccount" method="POST">
+                    <ul class="list-group">
+                        <li class="list-group-item"><i class="fas fa-user"></i> <strong>Email:</strong> <input type="text" value={{email}} required name="email"></li>
+                        <li class="list-group-item"><i class="fas fa-user"></i> <strong>Username:</strong> <input type="text" value={{username}} required name="username"></li>
+                        <li class="list-group-item"><i class="fas fa-user"></i> <strong>First Name:</strong> <input type="text" value={{firstname}} required name="firstname"></li>
+                        <li class="list-group-item"><i class="fas fa-user"></i> <strong>Last Name:</strong> <input type="text" value={{lastname}} required name="lastname"></li>
+                        <li class="list-group-item"><i class="fas fa-birthday-cake"></i> <strong>Birth Date:</strong> <input type="text" value={{birthdate}} required "birthdate"></li>
+                    </ul>
+                    <button class="btn btn-danger mt-3" type="submit">Submit Changes</button>
+                </form>
+                <h5 color="red">{{error}}</h5>
+            </div>
+        </div>
+    </div>
+     <style>
+        .card:hover {
+            transform: scale(1.02);
+            transition: transform 0.2s;
+        }
+    </style>
