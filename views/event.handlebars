@@ -20,9 +20,7 @@
               {{/if}}
               <p>Posted by: {{event.eventUsername}}</p>
 
-              {{#if username}}
-                <button type="button" class="btn btn-primary btn-block">I'm Interested</button>
-              {{/if}}
+            <button type="button" class="btn btn-primary btn-interested btn-block">Interested</button>
               <p class="mt-3">{{event.interestCount}} users are interested in this event!</p>
             </div>
           </div>
@@ -66,43 +64,96 @@
 
 
 <script>
-  $(document).ready(function () {
-    // Submit comment form
-    $('#commentForm').submit(function (event) {
-      event.preventDefault(); // Prevent the default form submission
+$(document).ready(function () {
+  // Submit comment form
+  $('#commentForm').submit(function (event) {
+    event.preventDefault(); // Prevent the default form submission
 
-      var commentText = $('#commentText').val(); // Get the comment text from the form
-      var eventId = $('#eventContainer').data('event-id'); // Retrieve the event ID from the data attribute
+    var commentText = $('#commentText').val(); // Get the comment text from the form
+    var eventId = $('#eventContainer').data('event-id'); // Retrieve the event ID from the data attribute
 
-      // AJAX POST request to submit the comment
-      $.ajax({
-        type: 'POST',
-        url: '/addComment/' + eventId,
-        data: { commentText: commentText },
-        success: function (response) {
-          var newComment = '<div class="comment bg-light p-3 rounded mb-3">' +
-            '<p class="mb-1">' + response.commentText + '</p>' +
-            '<p class="text-muted small">Posted by: ' + response.username + '</p>' +
-            '</div>';
+    // AJAX POST request to submit the comment
+    $.ajax({
+      type: 'POST',
+      url: '/addComment/' + eventId,
+      data: { commentText: commentText },
+      success: function (response) {
+        var newComment = '<div class="comment bg-light p-3 rounded mb-3">' +
+          '<p class="mb-1">' + response.commentText + '</p>' +
+          '<p class="text-muted small">Posted by: ' + response.username + '</p>' +
+          '</div>';
 
-          var $newComment = $(newComment).hide(); // Hide the new comment initially
-          $('.commentSection').append($newComment);
+        var $newComment = $(newComment).hide(); // Hide the new comment initially
+        $('.commentSection').append($newComment);
 
-          // Scroll to the new comment after it's appended
-          $newComment.slideDown('fast', function () {
-            $('html, body').animate({
-              scrollTop: $(this).offset().top
-            }, 'slow');
-          });
+        // Scroll to the new comment after it's appended
+        $newComment.slideDown('fast', function () {
+          $('html, body').animate({
+            scrollTop: $(this).offset().top
+          }, 'slow');
+        });
 
-          // Clear the comment input field
-          $('#commentText').val('');
-        },
-        error: function (error) {
-          console.error('Error adding comment:', error);
-          // Handle errors here (e.g., display an error message)
-        }
+        // Clear the comment input field
+        $('#commentText').val('');
+      },
+      error: function (error) {
+        console.error('Error adding comment:', error);
+        // Handle errors here (e.g., display an error message)
+      }
+    });
+  });
+});
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const interestedButtons = document.querySelectorAll('.btn-interested');
+
+    interestedButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        this.classList.toggle('btn-success');
       });
     });
   });
 </script>
+
+
+{{!-- <script>
+  document.addEventListener('DOMContentLoaded', function () {
+  var interestedButton = document.getElementById('btn-interested');
+
+  if (interestedButton) {
+    interestedButton.addEventListener('click', function (event) {
+      try {
+        console.log('Button clicked!');
+        var eventId = $('#eventContainer').data('event-id'); // Retrieve the event ID from the data attribute
+        
+        // Check if eventId is retrieved successfully
+        if (!eventId) {
+          console.error('Error: eventId is not retrieved.');
+          return;
+        }
+
+        // AJAX POST request to submit the comment
+        $.ajax({
+          type: 'POST',
+          url: '/toggleInterestButton/' + eventId,
+          success: function (response) {
+            // Handle the success response from the server if needed
+            console.log(response);
+
+            // Toggle the 'btn-success' class to change the button color
+            $('#btn-interested').toggleClass('btn-success');
+          },
+          error: function (error) {
+            console.error('Error toggling button:', error);
+            // Handle errors here (e.g., display an error message)
+          }
+        });
+      } catch (err) {
+        console.error('Unexpected error:', err);
+      }
+    });
+  }
+});
+</script> --}}

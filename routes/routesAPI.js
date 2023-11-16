@@ -416,7 +416,7 @@ router
       res.redirect('/login');
     }
   });
-  
+
   router.route('/addComment/:eventId').post(async (req, res) => {
     if (req.session.user) {
       try {
@@ -437,6 +437,22 @@ router
         res.status(500).json({ error: 'Error adding comment' });
       }
     } else {
+      res.status(401).json({ error: 'Unauthorized' });
+    }
+  });
+
+  router.route('/toggleInterestButton/:eventId').post(async (req, res) => {
+    if (req.session.user) {
+      try {
+        const eventId = req.params.eventId;
+        const toggleButton = await dataEvent.toggleInterestedUser(eventId, req.session.user.username);
+      }
+      catch {
+         // Handle any errors related to clicking button
+         res.status(500).json({ error: 'Error clicking button' });
+      }
+    }
+    else {
       res.status(401).json({ error: 'Unauthorized' });
     }
   });

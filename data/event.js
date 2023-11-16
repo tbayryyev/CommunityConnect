@@ -131,13 +131,10 @@ const createEvent = async (
       events.interestedUsers.push(username);
     }
 
-    events.interestedUsers.push(username);
-
     // Update the interestCount variable based on the length of the interestedUsers array
-    const interestCount = events.interestedUsers.length;
+    // const interestCount = events.interestedUsers.length;
 
-
-    await eventCollection.updateOne({ _id: ObjectId(eventId) }, { $set: { interestedUsers: events.interestedUsers, interestCount } });
+    await eventCollection.updateOne({ _id: ObjectId(eventId) }, { $set: { interestedUsers: events.interestedUsers/*, interestCount*/ } });
 
     return events;
   };
