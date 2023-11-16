@@ -194,6 +194,7 @@ router
     try {
       const newUser = await dataUser.checkUser(username, password);
       if (newUser.authenticatedUser === true) {
+        console.log(JSON.stringify(newUser));
         req.session.user = { username: username};
         res.status(200).redirect('/protected');
       } 
@@ -305,6 +306,50 @@ router
     }
   })
 
+//TODO: Either make session token store userid or change edit account handlebars to not allow user to change their username
+router
+  .route("/editAccount")
+  .get(async(req, res) => {
+    if(req.session.user){
+        const userData = await dataUser.getUserByUsername(req.session.user.username);
+        res.render("editAccount", userData);
+    } else{
+        return res.render("forbiddenAccess");ß
+    }
+  })
+  .post(async(req, res) => {
+    let updatedData = req.body;
+    try{
+        let username = updatedData.username;
+        if(username.length < 4) {
+            updatedData["error"] = "Username must be at least 4 characters long";
+            return res.render("editAccount", updatedData);
+        }
+    
+        const regex = /^[a-zA-Z0-9]*$/;
+    
+        if(regex.test(username) === false) {
+            updatedData["error"] = "Username can only contain letters and numbers";
+            return res.render("editAccount", updatedData);
+        }
+
+        const result = await dataUser.updateUserInfo(
+            updatedData.username, 
+            updatedData.firstname, 
+            updatedData.lastname, 
+            updatedData.email);
+        const userData = await dataUser.getUserByUsername(req.session.user.username);
+        if(!result){
+            //could not update user info
+            userData["error"] = "Could not edit user info";
+            return res.render("editAccount", userData);
+        }
+        return res.render("account", userData);
+
+    } catch(e) {
+        console.log(e);
+    }
+  })
 
   router
   .route('/updateEvent/:eventId')

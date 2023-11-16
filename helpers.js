@@ -32,6 +32,19 @@ function checkID(id) {
     id = id.trim();
     if (!ObjectId.isValid(id)) throw "invalid object ID";
     return id;
-  }
+}
 
-module.exports = {checkString, checkNum, checkID};
+function isValidUsername(username) {
+    const regex = /^[a-zA-Z0-9]*$/;
+  
+    if (typeof username !== "string") {
+      return false;
+    }
+  
+    if (username.length <= 3) {
+      return false;
+    }
+  
+    return regex.test(username);
+  }
+module.exports = {checkString, checkNum, checkID, isValidUsername};
