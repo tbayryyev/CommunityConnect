@@ -254,6 +254,7 @@ router.route('/postEvent')
     let eventLocation = eventData.eventLocation;
     let cost = Number(eventData.eventCost);
     let username = req.session.user.username;
+    let eventLink = eventData.link;
 
     try {
       // Validate input data
@@ -271,7 +272,7 @@ router.route('/postEvent')
 
       // Add the event to a database
       try {
-        const newEvent = await dataEvent.createEvent(username, eventName, description, eventDate, eventTime, eventLocation, cost, imageFileName);
+        const newEvent = await dataEvent.createEvent(username, eventName, description, eventDate, eventTime, eventLocation, cost, eventLink, imageFileName);
       } 
       catch (e) {
         return res.status(400).render('postEvent', { title: "Post an Event", error: e });

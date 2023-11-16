@@ -4,7 +4,7 @@ const event = mongoCollections.event_collection;
 const helpers = require('../helpers');
 
 const createEvent = async (
-    eventUsername,eventName, description, eventDate, eventTime, eventLocation, cost, eventImage, imageFileName
+    eventUsername,eventName, description, eventDate, eventTime, eventLocation, cost, link, eventImage, imageFileName
 ) => {
     //Validate input data
     helpers.checkString(eventName);
@@ -23,6 +23,7 @@ const createEvent = async (
       eventTime,
       eventLocation,
       cost, 
+      link,
       eventImage,      // Save the image data
       imageFileName,   // Save the image file name
       interestCount: 0,
@@ -94,6 +95,7 @@ const createEvent = async (
       eventTime: updatedEventData.eventTime || existingEvent.eventTime,
       eventLocation: updatedEventData.eventLocation || existingEvent.eventLocation,
       cost: updatedEventData.cost || existingEvent.cost,
+      link: updatedEventData.link,
       eventImage: updatedEventData.eventImage || existingEvent.eventImage,
       imageFileName: updatedEventData.imageFileName || existingEvent.imageFileName,
       interestCount: existingEvent.interestCount

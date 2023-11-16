@@ -15,7 +15,11 @@
               <p class="card-text"><strong>Date:</strong> {{event.eventDate}}</p>
               <p class="card-text"><strong>Time:</strong> {{event.eventTime}}</p>
               <p class="card-text"><strong>Cost:</strong> ${{event.cost}}</p>
+              {{#if event.link}}
+                <p class="card-text"><strong>Link:</strong> <a href="{{event.link}}" target="_blank">{{event.link}}</a></p>
+              {{/if}}
               <p>Posted by: {{event.eventUsername}}</p>
+
               {{#if username}}
                 <button type="button" class="btn btn-primary btn-block">I'm Interested</button>
               {{/if}}
