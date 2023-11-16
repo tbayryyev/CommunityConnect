@@ -110,7 +110,6 @@ const getUserByUsername = async(username) => {
             throw "Error: Either the username or password is invalid";
         }
         delete userData.password;
-        console.log("USER DATA: " + JSON.stringify(userData));
         return userData;
     } catch(e){
         console.log(e);
@@ -146,9 +145,6 @@ const updateUserInfo = async(username, firstname, lastname, email) => {
         helpers.checkString(lastname);
         helpers.checkString(email);
         const usersCollection = await users();
-        if(age < 18){
-            throw "Error: you must be 18 or older to create an account";
-        }
         const result = await usersCollection.updateOne(
             { username: username },
             {
