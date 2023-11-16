@@ -194,7 +194,7 @@ router
     try {
       const newUser = await dataUser.checkUser(username, password);
       if (newUser.authenticatedUser === true) {
-        console.log(JSON.stringify(newUser));
+        //console.log(JSON.stringify(newUser));
         req.session.user = { username: username};
         res.status(200).redirect('/protected');
       } 
@@ -416,29 +416,31 @@ router
       res.redirect('/login');
     }
   });
-
-  router
-  .route('/addComment/:eventId')
-  .post(async (req, res) => {
+  
+  router.route('/addComment/:eventId').post(async (req, res) => {
     if (req.session.user) {
       try {
         const eventId = req.params.eventId;
         const commentText = req.body.commentText;
-
-
-        // Fetch the event details by eventId
-        const comment = await dataEvent.createComment(eventId,commentText,req.session.user.username);
-    
-        res.redirect(`/event/${eventId}`);
-       
+  
+        // Assume dataEvent.createComment returns the newly added comment
+        const newComment = await dataEvent.createComment(eventId, commentText, req.session.user.username);
+  
+        // Send a JSON response with the newly added comment details
+        res.status(201).json({
+          commentText: newComment.commentText,
+          username: newComment.username,
+          // Add other necessary details about the comment if available
+        });
       } catch (error) {
-        // Handle any errors related to fetching events or event not found
-        res.status(500).send('Error adding comment: ' + error.message);
+        // Handle any errors related to adding comments
+        res.status(500).json({ error: 'Error adding comment' });
       }
     } else {
-      res.redirect('/login');
+      res.status(401).json({ error: 'Unauthorized' });
     }
   });
+  
 
 
 module.exports = router;

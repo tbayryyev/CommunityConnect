@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" id="eventContainer" data-event-id="{{event._id}}">
   <!-- Event Details -->
   <div class="row justify-content-center mt-5">
     <div class="col-md-8">
@@ -50,7 +50,7 @@
           </form>
 
           <!-- Display existing comments -->
-          <div class="mt-4">
+          <div class="mt-4 commentSection">
             {{#each event.comments}}
               <div class="comment bg-light p-3 rounded mb-3">
                 <p class="mb-1">{{this.commentText}}</p>
@@ -63,3 +63,46 @@
     </div>
   </div>
 </div>
+
+
+<script>
+  $(document).ready(function () {
+    // Submit comment form
+    $('#commentForm').submit(function (event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      var commentText = $('#commentText').val(); // Get the comment text from the form
+      var eventId = $('#eventContainer').data('event-id'); // Retrieve the event ID from the data attribute
+
+      // AJAX POST request to submit the comment
+      $.ajax({
+        type: 'POST',
+        url: '/addComment/' + eventId,
+        data: { commentText: commentText },
+        success: function (response) {
+          var newComment = '<div class="comment bg-light p-3 rounded mb-3">' +
+            '<p class="mb-1">' + response.commentText + '</p>' +
+            '<p class="text-muted small">Posted by: ' + response.username + '</p>' +
+            '</div>';
+
+          var $newComment = $(newComment).hide(); // Hide the new comment initially
+          $('.commentSection').append($newComment);
+
+          // Scroll to the new comment after it's appended
+          $newComment.slideDown('fast', function () {
+            $('html, body').animate({
+              scrollTop: $(this).offset().top
+            }, 'slow');
+          });
+
+          // Clear the comment input field
+          $('#commentText').val('');
+        },
+        error: function (error) {
+          console.error('Error adding comment:', error);
+          // Handle errors here (e.g., display an error message)
+        }
+      });
+    });
+  });
+</script>
