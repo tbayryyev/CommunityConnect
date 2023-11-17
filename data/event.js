@@ -116,6 +116,7 @@ const createEvent = async (
   const toggleInterestedUser = async (eventId, username) => {
     const eventCollection = await event();
     const events = await eventCollection.findOne({ _id: ObjectId(eventId) });
+    
     if(events == null){
         throw "Error: event not found";
     }
@@ -132,11 +133,11 @@ const createEvent = async (
     }
 
     // Update the interestCount variable based on the length of the interestedUsers array
-    // const interestCount = events.interestedUsers.length;
+    const interestCount = events.interestedUsers.length;
 
-    await eventCollection.updateOne({ _id: ObjectId(eventId) }, { $set: { interestedUsers: events.interestedUsers/*, interestCount*/ } });
+    await eventCollection.updateOne({ _id: ObjectId(eventId) }, { $set: { interestedUsers: events.interestedUsers, interestCount } });
 
-    return events;
+    return interestCount;
   };
   const createComment =  async (eventId, commentText, username) => {
     eventId = helpers.checkID(eventId.toString());

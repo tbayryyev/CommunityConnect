@@ -446,6 +446,12 @@ router
       try {
         const eventId = req.params.eventId;
         const toggleButton = await dataEvent.toggleInterestedUser(eventId, req.session.user.username);
+
+         // Send a JSON response with the newly added comment details
+         res.status(201).json({
+          interestCount: toggleButton
+         });
+
       }
       catch {
          // Handle any errors related to clicking button

@@ -19,8 +19,7 @@
                 <p class="card-text"><strong>Link:</strong> <a href="{{event.link}}" target="_blank">{{event.link}}</a></p>
               {{/if}}
               <p>Posted by: {{event.eventUsername}}</p>
-
-            <button type="button" class="btn btn-primary btn-interested btn-block">Interested</button>
+              <button type="button" class="btn btn-primary btn-interested btn-block">Interested</button>
               <p class="mt-3">{{event.interestCount}} users are interested in this event!</p>
             </div>
           </div>
@@ -61,7 +60,6 @@
     </div>
   </div>
 </div>
-
 
 <script>
 $(document).ready(function () {
@@ -107,25 +105,13 @@ $(document).ready(function () {
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const interestedButtons = document.querySelectorAll('.btn-interested');
+  const interestedButton = document.querySelector('.btn-interested');
+  console.log(interestedButton);
 
-    interestedButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        this.classList.toggle('btn-success');
-      });
-    });
-  });
-</script>
-
-
-{{!-- <script>
-  document.addEventListener('DOMContentLoaded', function () {
-  var interestedButton = document.getElementById('btn-interested');
 
   if (interestedButton) {
     interestedButton.addEventListener('click', function (event) {
       try {
-        console.log('Button clicked!');
         var eventId = $('#eventContainer').data('event-id'); // Retrieve the event ID from the data attribute
         
         // Check if eventId is retrieved successfully
@@ -143,7 +129,7 @@ $(document).ready(function () {
             console.log(response);
 
             // Toggle the 'btn-success' class to change the button color
-            $('#btn-interested').toggleClass('btn-success');
+            interestedButton.classList.toggle('btn-success');
           },
           error: function (error) {
             console.error('Error toggling button:', error);
@@ -156,4 +142,4 @@ $(document).ready(function () {
     });
   }
 });
-</script> --}}
+</script>
