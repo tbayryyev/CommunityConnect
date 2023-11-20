@@ -20,7 +20,7 @@
           {{#if ../username}}
           <div class="card-footer">
             <button type="button" class="btn btn-primary btn-interested btn-block">Interested</button>
-            <p class="text-center mt-2"><small>{{this.interestCount}} users are interested in this event!</small></p>
+            <p class="text-center mt-2 interest-count"><small>{{this.interestCount}} users are interested in this event!</small></p>
           </div>
             {{/if}}
         </div>
@@ -30,47 +30,53 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const interestedButtons = document.querySelectorAll('.btn-interested');
-    console.log(interestedButtons);
+document.addEventListener('DOMContentLoaded', function () {
+  const interestedButtons = document.querySelectorAll('.btn-interested');
 
-    if (interestedButtons) {
-      interestedButtons.forEach(function (interestedButton) {
-        interestedButton.addEventListener('click', function (event) {
-          try {
-            // Find the closest parent element with the class 'card'
-            var card = interestedButton.closest('.card');
+  if (interestedButtons) {
+    interestedButtons.forEach(function (interestedButton) {
+      interestedButton.addEventListener('click', function (event) {
+        try {
+          // Find the closest parent element with the class 'card'
+          var card = interestedButton.closest('.card');
 
-            // Retrieve the event ID from the data attribute of the card
-            var eventId = card.dataset.eventId;
+          // Retrieve the event ID from the data attribute of the card
+          var eventId = card.dataset.eventId;
 
-            // Check if eventId is retrieved successfully
-            if (!eventId) {
-              console.error('Error: eventId is not retrieved.');
-              return;
-            }
+          // Find the interestCount element within the specific card
+          var interestCountElement = card.querySelector('.interest-count');
 
-            // AJAX POST request to submit the comment
-            $.ajax({
-              type: 'POST',
-              url: '/toggleInterestButton/' + eventId,
-              success: function (response) {
-                // Handle the success response from the server if needed
-                console.log(response);
-
-                // Toggle the 'btn-success' class to change the button color
-                interestedButton.classList.toggle('btn-success');
-              },
-              error: function (error) {
-                console.error('Error toggling button:', error);
-                // Handle errors here (e.g., display an error message)
-              }
-            });
-          } catch (err) {
-            console.error('Unexpected error:', err);
+          // Check if eventId and interestCountElement are retrieved successfully
+          if (!eventId || !interestCountElement) {
+            console.error('Error: eventId or interestCountElement not retrieved.');
+            return;
           }
-        });
+
+          // AJAX POST request to toggle the interest button
+          $.ajax({
+            type: 'POST',
+            url: '/toggleInterestButton/' + eventId,
+            success: function (response) {
+              // Handle the success response from the server if needed
+              console.log(response);
+
+              // Toggle the 'btn-success' class to change the button color
+              interestedButton.classList.toggle('btn-success');
+
+              // Update the interestCount in the DOM within the specific card
+              interestCountElement.textContent = response.interestCount + ' users are interested in this event!';
+              interestCountElement.style.fontSize = 'small';
+            },
+            error: function (error) {
+              console.error('Error toggling button:', error);
+              // Handle errors here (e.g., display an error message)
+            }
+          });
+        } catch (err) {
+          console.error('Unexpected error:', err);
+        }
       });
-    }
-  });
+    });
+  }
+});
 </script>
