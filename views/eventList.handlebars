@@ -4,7 +4,7 @@
   <div class="row">
     {{#each events}}
       <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card h-100">
+        <div class="card h-100" data-event-id="{{this._id}}">
           <img src="/uploads/user-uploaded-images/{{this.imageFileName}}" class="card-img-top" alt="{{this.eventName}} Image">
           <div class="card-body">
             <h5 class="card-title">
@@ -29,15 +29,48 @@
   </div>
 </div>
 
-<!-- Add this script to the end of your HTML body or in a separate JavaScript file -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const interestedButtons = document.querySelectorAll('.btn-interested');
+    console.log(interestedButtons);
 
-    interestedButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        this.classList.toggle('btn-success');
+    if (interestedButtons) {
+      interestedButtons.forEach(function (interestedButton) {
+        interestedButton.addEventListener('click', function (event) {
+          try {
+            // Find the closest parent element with the class 'card'
+            var card = interestedButton.closest('.card');
+
+            // Retrieve the event ID from the data attribute of the card
+            var eventId = card.dataset.eventId;
+
+            // Check if eventId is retrieved successfully
+            if (!eventId) {
+              console.error('Error: eventId is not retrieved.');
+              return;
+            }
+
+            // AJAX POST request to submit the comment
+            $.ajax({
+              type: 'POST',
+              url: '/toggleInterestButton/' + eventId,
+              success: function (response) {
+                // Handle the success response from the server if needed
+                console.log(response);
+
+                // Toggle the 'btn-success' class to change the button color
+                interestedButton.classList.toggle('btn-success');
+              },
+              error: function (error) {
+                console.error('Error toggling button:', error);
+                // Handle errors here (e.g., display an error message)
+              }
+            });
+          } catch (err) {
+            console.error('Unexpected error:', err);
+          }
+        });
       });
-    });
+    }
   });
 </script>
