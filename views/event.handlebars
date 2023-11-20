@@ -20,7 +20,7 @@
               {{/if}}
               <p>Posted by: {{event.eventUsername}}</p>
               <button type="button" class="btn btn-primary btn-interested btn-block">Interested</button>
-              <p class="mt-3">{{event.interestCount}} users are interested in this event!</p>
+              <p class="mt-3 interest-count">{{event.interestCount}} users are interested in this event!</p>
             </div>
           </div>
         </div>
@@ -104,10 +104,8 @@ $(document).ready(function () {
 </script>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
   const interestedButton = document.querySelector('.btn-interested');
-  console.log(interestedButton);
-
 
   if (interestedButton) {
     interestedButton.addEventListener('click', function (event) {
@@ -120,7 +118,7 @@ $(document).ready(function () {
           return;
         }
 
-        // AJAX POST request to submit the comment
+        // AJAX POST request to toggle the interest button
         $.ajax({
           type: 'POST',
           url: '/toggleInterestButton/' + eventId,
@@ -130,6 +128,12 @@ $(document).ready(function () {
 
             // Toggle the 'btn-success' class to change the button color
             interestedButton.classList.toggle('btn-success');
+
+            // Update the interestCount in the DOM
+            var interestCountElement = document.querySelector('.interest-count');
+            if (interestCountElement) {
+              interestCountElement.textContent = response.interestCount + ' users are interested in this event!';
+            }
           },
           error: function (error) {
             console.error('Error toggling button:', error);
