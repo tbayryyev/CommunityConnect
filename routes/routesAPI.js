@@ -462,6 +462,27 @@ router
       res.status(401).json({ error: 'Unauthorized' });
     }
   });
+  router.route('/checkInterstedUser/:eventId').get(async (req, res) => {
+    if (req.session.user) {
+      try {
+        const eventId = req.params.eventId;
+        const interstedUser = await dataEvent.checkInterstedUser(eventId, req.session.user.username);
+
+         // Send a JSON response 
+         res.status(201).json({
+          interstedUser: interstedUser
+         });
+
+      }
+      catch {
+         // Handle any errors 
+         res.status(500).json({ error: 'Error checking intersted user' });
+      }
+    }
+    else {
+      res.status(401).json({ error: 'Unauthorized' });
+    }
+  });
   
 
 

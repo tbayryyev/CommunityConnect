@@ -31,52 +31,48 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  const interestedButtons = document.querySelectorAll('.btn-interested');
+  const eventCards = document.querySelectorAll('.card');
 
-  if (interestedButtons) {
-    interestedButtons.forEach(function (interestedButton) {
-      interestedButton.addEventListener('click', function (event) {
-        try {
-          // Find the closest parent element with the class 'card'
-          var card = interestedButton.closest('.card');
+  eventCards.forEach(function (card) {
+    var eventId = card.dataset.eventId;
+    var interestedButton = card.querySelector('.btn-interested');
+    var interestCountElement = card.querySelector('.interest-count');
 
-          // Retrieve the event ID from the data attribute of the card
-          var eventId = card.dataset.eventId;
 
-          // Find the interestCount element within the specific card
-          var interestCountElement = card.querySelector('.interest-count');
+  // checking if the user is interested in the event then make the button green
+    $.ajax({
+      type: 'GET',
+      url: '/checkInterstedUser/' + eventId,
+      success: function (response) {
+        if (response.interstedUser === true) {
+          interestedButton.classList.add('btn-success');
+        }
+      },
+      error: function (error) {
+        console.error('Error checking interest:', error);
+        // Handle errors here
+      }
+    });
 
-          // Check if eventId and interestCountElement are retrieved successfully
-          if (!eventId || !interestCountElement) {
-            console.error('Error: eventId or interestCountElement not retrieved.');
-            return;
+    // adding the user to the interstedUser array after clicking the intersted button
+    interestedButton.addEventListener('click', function () {
+      $.ajax({
+        type: 'POST',
+        url: '/toggleInterestButton/' + eventId,
+        success: function (response) {
+          interestedButton.classList.toggle('btn-success');
+          if (interestCountElement) {
+            interestCountElement.textContent = response.interestCount + ' users are interested in this event!';
+            interestCountElement.style.fontSize = 'small'; // Set font size inline
           }
-
-          // AJAX POST request to toggle the interest button
-          $.ajax({
-            type: 'POST',
-            url: '/toggleInterestButton/' + eventId,
-            success: function (response) {
-              // Handle the success response from the server if needed
-              console.log(response);
-
-              // Toggle the 'btn-success' class to change the button color
-              interestedButton.classList.toggle('btn-success');
-
-              // Update the interestCount in the DOM within the specific card
-              interestCountElement.textContent = response.interestCount + ' users are interested in this event!';
-              interestCountElement.style.fontSize = 'small';
-            },
-            error: function (error) {
-              console.error('Error toggling button:', error);
-              // Handle errors here (e.g., display an error message)
-            }
-          });
-        } catch (err) {
-          console.error('Unexpected error:', err);
+        },
+        error: function (error) {
+          console.error('Error toggling button:', error);
+          // Handle errors here
         }
       });
     });
-  }
+  });
 });
+
 </script>

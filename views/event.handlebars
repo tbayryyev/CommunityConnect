@@ -63,6 +63,23 @@
 
 <script>
 $(document).ready(function () {
+  var eventId = $('#eventContainer').data('event-id');
+
+  // Check if the user is already interested in the event
+  $.ajax({
+    type: 'GET',
+    url: '/checkInterstedUser/' + eventId,
+    success: function (response) {
+      if (response.interstedUser == true) {
+        // If the user is already interested, update the button color to green
+        $('.btn-interested').addClass('btn-success');
+      }
+    },
+    error: function (error) {
+      console.error('Error checking interest:', error);
+      // Handle errors here
+    }
+  });
   // Submit comment form
   $('#commentForm').submit(function (event) {
     event.preventDefault(); // Prevent the default form submission

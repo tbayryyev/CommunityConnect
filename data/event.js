@@ -139,6 +139,25 @@ const createEvent = async (
 
     return interestCount;
   };
+
+  const checkInterstedUser = async (eventId, username) => {
+    const eventCollection = await event();
+    const events = await eventCollection.findOne({ _id: ObjectId(eventId) });
+    
+    if(events == null){
+        throw "Error: event not found";
+    }
+
+    // Check if the username is already in the interestedUsers array
+    const index = events.interestedUsers.indexOf(username);
+
+    if (index !== -1) {
+    // username in array
+      return true;
+    }
+
+    return false;
+  };
   const createComment =  async (eventId, commentText, username) => {
     eventId = helpers.checkID(eventId.toString());
     helpers.checkString(commentText);
@@ -166,5 +185,5 @@ const createEvent = async (
 
   };
 
-  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent, updateEvent, toggleInterestedUser, createComment };
+  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent, updateEvent, toggleInterestedUser, createComment, checkInterstedUser };
 
