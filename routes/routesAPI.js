@@ -425,16 +425,42 @@ router
   
         // Assume dataEvent.createComment returns the newly added comment
         const newComment = await dataEvent.createComment(eventId, commentText, req.session.user.username);
-  
+        console.log(newComment.comment_id);
         // Send a JSON response with the newly added comment details
         res.status(201).json({
           commentText: newComment.commentText,
           username: newComment.username,
+          eventId: eventId,
+          commentId: newComment.comment_id
           // Add other necessary details about the comment if available
         });
       } catch (error) {
         // Handle any errors related to adding comments
         res.status(500).json({ error: 'Error adding comment' });
+      }
+    } else {
+      res.status(401).json({ error: 'Unauthorized' });
+    }
+  });
+  router.route('/addReply/:eventId/:commentId').post(async (req, res) => {
+    if (req.session.user) {
+      try {
+        const eventId = req.params.eventId;
+        const commentId = req.params.commentId;
+        const replyText = req.body.replyText;
+  
+        // Assume dataEvent.replyToComment returns the newly added reply
+        const newReply = await dataEvent.replyToComment(eventId, commentId, replyText, req.session.user.username);
+  
+        // Send a JSON response with the newly added reply details
+        res.status(201).json({
+          replyText: newReply.replyText,
+          username: newReply.username,
+          // Add other necessary details about the reply if available
+        });
+      } catch (error) {
+        // Handle any errors related to adding replies
+        res.status(500).json({ error: 'Error adding reply' });
       }
     } else {
       res.status(401).json({ error: 'Unauthorized' });

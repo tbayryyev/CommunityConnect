@@ -49,12 +49,46 @@
           <!-- Display existing comments -->
           <div class="mt-4 commentSection">
             {{#each event.comments}}
-              <div class="comment bg-light p-3 rounded mb-3">
+              <div class="comment bg-light p-3 rounded mb-3" data-comment-id="{{this.comment_id}}">
                 <p class="mb-1">{{this.commentText}}</p>
                 <p class="text-muted small">Posted by: {{this.username}}</p>
+
+           
+    
+                <div class="tab-content" id="replyTabContent{{this.comment_id}}">
+                  <!-- Tab for displaying existing replies -->
+                  <div class="tab-pane fade show active" id="reply{{this.comment_id}}-replies" role="tabpanel" aria-labelledby="reply{{this.comment_id}}-replies-tab">
+                  
+                  
+                
+    <!-- Button to toggle replies -->
+                  <button class="btn btn-sm btn-info toggleReplies">Show Replies</button>
+                  <div class="replies mt-3" style="display: none; padding-left: 20px;">
+                  
+ <form class="replyForm mt-2" action="/addReply/{{../event._id}}/{{this.comment_id}}" method="POST">
+            <div class="input-group mb-3">
+                  <textarea class="form-control" name="replyText" rows="2" placeholder="Reply to this comment"></textarea>
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-sm btn-primary">Reply</button>
+                  </div>
+                </div>
+              </form>
+                    {{#each this.replies}}
+                      <div class="reply bg-light p-2 rounded mb-2">
+                        <p>{{this.replyText}}</p>
+                        <p class="text-muted small">Replied by: {{this.username}}</p>
+                      </div>
+                    {{/each}}
+                    
+                  </div>
+                  </div>
+
+                 
+                </div>
               </div>
             {{/each}}
           </div>
+
         </div>
       </div>
     </div>
@@ -93,10 +127,12 @@ $(document).ready(function () {
       url: '/addComment/' + eventId,
       data: { commentText: commentText },
       success: function (response) {
-        var newComment = '<div class="comment bg-light p-3 rounded mb-3">' +
-          '<p class="mb-1">' + response.commentText + '</p>' +
-          '<p class="text-muted small">Posted by: ' + response.username + '</p>' +
-          '</div>';
+        var newComment = '<div class="comment bg-light p-3 rounded mb-3"' + 'data-comment-id="' + response.commentId + '"">' + 
+  '<p class="mb-1">' + response.commentText + '</p>' +
+  '<p class="text-muted small">Posted by: ' + response.username + '</p>' +
+
+  '</div>';
+
 
         var $newComment = $(newComment).hide(); // Hide the new comment initially
         $('.commentSection').append($newComment);
@@ -106,6 +142,7 @@ $(document).ready(function () {
           $('html, body').animate({
             scrollTop: $(this).offset().top
           }, 'slow');
+
         });
 
         // Clear the comment input field
@@ -117,6 +154,44 @@ $(document).ready(function () {
       }
     });
   });
+   // Submit comment form
+  $(document).on('submit', '.replyForm', function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    var replyText = $(this).find('textarea[name="replyText"]').val(); // Get the reply text from the form
+    var eventId = $('#eventContainer').data('event-id'); // Retrieve the event ID from the data attribute
+  var commentId = $(this).closest('.comment').data('comment-id'); // Get comment_id from the closest '.comment'
+    // AJAX POST request to submit the comment
+    console.log(replyText);
+    $.ajax({
+      type: 'POST',
+      url: '/addReply/' + eventId + '/'+ commentId,
+      data: { replyText: replyText },
+      success: function (response) {
+          var newReply = '<div class="reply bg-light p-2 rounded mb-2">' +
+          '<p>' + response.replyText + '</p>' +
+          '<p class="text-muted small">Replied by: ' + response.username + '</p>' +
+          '</div>';
+
+        var $newReply = $(newReply).hide();
+        $(event.target).closest('.comment').find('.replies').append($newReply);
+
+    $newReply.slideDown('fast', function () {
+    // Scroll to the new reply after it's appended and shown
+    $('html, body').animate({
+      scrollTop: $repliesSection.offset().top + $repliesSection.height()
+    }, 'slow');
+  });
+
+    $(event.target).find('textarea[name="replyText"]').val('');
+      },
+      error: function (error) {
+        console.error('Error adding reply:', error);
+        // Handle errors here (e.g., display an error message)
+      }
+    });
+  });
+
 });
 </script>
 
@@ -162,5 +237,22 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+});
+
+
+
+$(document).ready(function () {
+  // Toggle replies when clicking the button
+  $(document).on('click', '.toggleReplies', function () {
+    // Find the closest comment container and toggle the replies section within it
+    $(this).closest('.comment').find('.replies').slideToggle();
+  });
+});
+$(document).ready(function () {
+  // Toggle replies when clicking the button
+  $(document).on('click', '.toggleForm', function () {
+    // Find the closest comment container and toggle the replies section within it
+    $(this).closest('.comment').find('.replyForm').slideToggle();
+  });
 });
 </script>

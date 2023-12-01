@@ -174,6 +174,8 @@ const createEvent = async (
       comment_id: ObjectId(),
       username: username,
       commentText: commentText,
+      replies: [] // Add a property to hold replies for this comment
+
     }
     const updateInfo = await eventCollection.updateOne({ _id: ObjectId(eventId) }, { $addToSet: { comments: newComment } });
 
@@ -181,9 +183,38 @@ const createEvent = async (
       throw "could not add the comment successfully";
 
     }
+    newComment.comment_id = newComment.comment_id.toString();
     return newComment
 
   };
+  const replyToComment = async (eventId, commentId, replyText, username) => {
+    eventId = helpers.checkID(eventId.toString());
+    helpers.checkString(replyText);
+  
+    const eventCollection = await event(); // Assuming `event()` is a function that returns the event collection
+  
+    const existingEvent = await eventCollection.findOne({ _id: ObjectId(eventId) });
+    if (!existingEvent) {
+      throw "No event with that id";
+    }
+  
+    const reply = {
+      reply_id: ObjectId(),
+      username: username,
+      replyText: replyText
+    };
+  
+    const updateInfo = await eventCollection.updateOne(
+      { _id: ObjectId(eventId), "comments.comment_id": ObjectId(commentId) },
+      { $push: { "comments.$.replies": reply } }
+    );
+  
+    if (updateInfo.modifiedCount === 0) {
+      throw "Could not add the reply successfully";
+    }
+  
+    return reply;
+  };
 
-  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent, updateEvent, toggleInterestedUser, createComment, checkInterstedUser };
+  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent, updateEvent, toggleInterestedUser, createComment, checkInterstedUser,replyToComment };
 
