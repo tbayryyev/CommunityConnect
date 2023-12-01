@@ -43,7 +43,7 @@
               <textarea class="form-control" id="commentText" name="commentText" rows="3" placeholder="Add your comment here"></textarea>
             </div>
             <!-- You might add more fields for user info, etc., if needed -->
-            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            <button type="submit" class="btn btn-dark btn-block">Submit</button>
           </form>
 
           <!-- Display existing comments -->
@@ -62,23 +62,25 @@
                   
                 
     <!-- Button to toggle replies -->
-                  <button class="btn btn-sm btn-info toggleReplies">Show Replies</button>
+                  <button class="btn btn-sm btn-dark toggleReplies">Show Replies</button>
                   <div class="replies mt-3" style="display: none; padding-left: 20px;">
                   
  <form class="replyForm mt-2" action="/addReply/{{../event._id}}/{{this.comment_id}}" method="POST">
             <div class="input-group mb-3">
                   <textarea class="form-control" name="replyText" rows="2" placeholder="Reply to this comment"></textarea>
                   <div class="input-group-append">
-                    <button type="submit" class="btn btn-sm btn-primary">Reply</button>
+                    <button type="submit" class="btn btn-sm btn-dark">Reply</button>
                   </div>
                 </div>
               </form>
-                    {{#each this.replies}}
-                      <div class="reply bg-light p-2 rounded mb-2">
-                        <p>{{this.replyText}}</p>
-                        <p class="text-muted small">Replied by: {{this.username}}</p>
-                      </div>
-                    {{/each}}
+                    <div class="replySection">
+  {{#each this.replies}}
+    <div class="reply bg-light p-2 rounded" style="margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+      <p>{{this.replyText}}</p>
+      <p class="text-muted small">Replied by: {{this.username}}</p>
+    </div>
+  {{/each}}
+</div>
                     
                   </div>
                   </div>
@@ -168,7 +170,7 @@ $(document).ready(function () {
       url: '/addReply/' + eventId + '/'+ commentId,
       data: { replyText: replyText },
       success: function (response) {
-          var newReply = '<div class="reply bg-light p-2 rounded mb-2">' +
+          var newReply = ' <div class="reply bg-light p-2 rounded" style="margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 10px;"' +
           '<p>' + response.replyText + '</p>' +
           '<p class="text-muted small">Replied by: ' + response.username + '</p>' +
           '</div>';
