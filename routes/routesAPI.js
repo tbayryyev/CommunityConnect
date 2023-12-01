@@ -19,6 +19,24 @@ router
     try {
       // Retrieve events from the database
       const events = await dataEvent.getEvents();
+      for(let i = 0; i < events.length; i++){
+        let time = events[i]["eventTime"]
+        let hour = parseInt(time.split(":")[0]);
+        let minute = time.split(":")[1];
+        let newTime = time;
+        if(hour == 0){
+            newTime = "12:" + minute + " AM";
+        }
+        else if(hour > 12){
+            let newHour = hour - 12;
+            newTime = newHour + ":" + minute + " PM";
+        }
+        else{
+            newTime = time + " PM";
+        }
+        events[i]["eventTime"] = newTime;
+
+      }
       return res.render('eventList', { events });
 
 
