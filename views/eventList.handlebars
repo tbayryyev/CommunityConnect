@@ -9,6 +9,7 @@
   }
 
   .card:hover {
+    cursor: pointer;
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
@@ -24,9 +25,7 @@
     color: black; /* Updated color for the event name */
     text-decoration: none;
     transition: color 0.3s ease-in-out;
-    font-size: 1.5rem; 
-    
-
+    font-size: 1.5rem;
   }
 
   .card-title a:hover {
@@ -45,7 +44,6 @@
     padding: 10px 20px;
   }
 
-
   .btn-success {
     background-color: #28a745;
     border-color: #28a745;
@@ -62,33 +60,31 @@
 
   <div class="row">
     {{#each events}}
-      <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card h-100" data-event-id="{{this._id}}">
-          <img src="https://media.istockphoto.com/id/974238866/photo/audience-listens-to-the-lecturer-at-the-conference.jpg?s=612x612&w=0&k=20&c=p_BQCJWRQQtZYnQlOtZMzTjeB_csic8OofTCAKLwT0M=" class="card-img-top" alt="{{this.eventName}} Image">
-          <div class="card-body">
-            <h5 class="card-title">
-              <a href="/event/{{this._id}}" class="event-link">{{this.eventName}}</a>
-            </h5>
-            <p class="card-text"><strong>Location:</strong> {{this.eventLocation}}</p>
-            <p class="card-text"><strong>Description:</strong> {{this.description}}</p>
-            <p class="card-text"><strong>Date:</strong> {{this.eventDate}}</p>
-            <p class="card-text"><strong>Time:</strong> {{this.eventTime}}</p>
-            <p class="card-text"><strong>Cost:</strong> ${{this.cost}}</p>
-            <p class="card-text"><small class="text-muted">Posted by: {{this.eventUsername}}</small></p>
-          </div>
-          {{#if ../username}}
-          <div class="card-footer">
-            <button type="button" class="btn btn-primary btn-interested btn-block">Interested</button>
-            <p class="text-center mt-2 interest-count"><small>{{this.interestCount}} users are interested in this event!</small></p>
-          </div>
-          {{/if}}
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card h-100" data-event-id="{{this._id}}">
+        <img src="https://media.istockphoto.com/id/974238866/photo/audience-listens-to-the-lecturer-at-the-conference.jpg?s=612x612&w=0&k=20&c=p_BQCJWRQQtZYnQlOtZMzTjeB_csic8OofTCAKLwT0M=" class="card-img-top" alt="{{this.eventName}} Image">
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="/event/{{this._id}}" class="event-link">{{this.eventName}}</a>
+          </h5>
+          <p class="card-text"><strong>Location:</strong> {{this.eventLocation}}</p>
+          <p class="card-text"><strong>Description:</strong> {{this.description}}</p>
+          <p class="card-text"><strong>Date:</strong> {{this.eventDate}}</p>
+          <p class="card-text"><strong>Time:</strong> {{this.eventTime}}</p>
+          <p class="card-text"><strong>Cost:</strong> ${{this.cost}}</p>
+          <p class="card-text"><small class="text-muted">Posted by: {{this.eventUsername}}</small></p>
         </div>
+        {{#if ../username}}
+        <div class="card-footer">
+          <button type="button" class="btn btn-primary btn-interested btn-block">Interested</button>
+          <p class="text-center mt-2 interest-count"><small>{{this.interestCount}} users are interested in this event!</small></p>
+        </div>
+        {{/if}}
       </div>
+    </div>
     {{/each}}
   </div>
 </div>
-
-
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -99,8 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var interestedButton = card.querySelector('.btn-interested');
     var interestCountElement = card.querySelector('.interest-count');
 
-
-  // checking if the user is interested in the event then make the button green
+    // checking if the user is interested in the event then make the button green
     $.ajax({
       type: 'GET',
       url: '/checkInterstedUser/' + eventId,
@@ -116,7 +111,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // adding the user to the interstedUser array after clicking the intersted button
-    interestedButton.addEventListener('click', function () {
+    interestedButton.addEventListener('click', function (event) {
+      event.stopPropagation(); // Stop the event from propagating to the card click event
       $.ajax({
         type: 'POST',
         url: '/toggleInterestButton/' + eventId,
@@ -133,7 +129,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     });
+
+    // Redirect to the event page when the card is clicked
+    card.addEventListener('click', function () {
+      window.location.href = '/event/' + eventId;
+    });
   });
 });
-
 </script>
