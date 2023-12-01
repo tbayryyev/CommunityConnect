@@ -2,6 +2,7 @@ const mongoCollections = require("../config/mongoCollections");
 const { ObjectId } = require('mongodb');
 const event = mongoCollections.event_collection;
 const helpers = require('../helpers');
+const profanityList = ['wtf', 'fck', 'smd']; // profanity words here
 
 const createEvent = async (
     eventUsername,eventName, description, eventDate, eventTime, eventLocation, cost, link, eventImage, imageFileName
@@ -169,6 +170,15 @@ const createEvent = async (
       throw "No event with that id";
     };
 
+      // Profanity filter implementation
+    const containsProfanity = profanityList.some((word) =>
+    commentText.toLowerCase().includes(word)
+    );
+
+    if (containsProfanity) {
+    throw "Comment contains profanity and cannot be posted.";
+    }
+
 
     const newComment = {
       comment_id: ObjectId(),
@@ -197,6 +207,15 @@ const createEvent = async (
     if (!existingEvent) {
       throw "No event with that id";
     }
+       // Profanity filter implementation
+       const containsProfanity = profanityList.some((word) =>
+       replyText.toLowerCase().includes(word)
+       );
+   
+       if (containsProfanity) {
+       throw "reply contains profanity and cannot be posted.";
+       }
+   
   
     const reply = {
       reply_id: ObjectId(),

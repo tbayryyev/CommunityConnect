@@ -436,7 +436,7 @@ router
         });
       } catch (error) {
         // Handle any errors related to adding comments
-        res.status(500).json({ error: 'Error adding comment' });
+        res.status(500).json(error);
       }
     } else {
       res.status(401).json({ error: 'Unauthorized' });
@@ -460,7 +460,7 @@ router
         });
       } catch (error) {
         // Handle any errors related to adding replies
-        res.status(500).json({ error: 'Error adding reply' });
+        res.status(500).json(error);
       }
     } else {
       res.status(401).json({ error: 'Unauthorized' });

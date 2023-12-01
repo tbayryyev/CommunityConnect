@@ -45,6 +45,8 @@
             <!-- You might add more fields for user info, etc., if needed -->
             <button type="submit" class="btn btn-dark btn-block">Submit</button>
           </form>
+          <!-- Error message display area -->
+<div class="error-message mt-2" style="display: none; color:red;"></div>
 
           <!-- Display existing comments -->
           <div class="mt-4 commentSection">
@@ -73,6 +75,8 @@
                   </div>
                 </div>
               </form>
+              <div class="error-message-reply" style="display: none; color:red;"></div>
+
                     <div class="replySection">
   {{#each this.replies}}
     <div class="reply bg-light p-2 rounded" style="margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
@@ -151,9 +155,17 @@ $(document).ready(function () {
         $('#commentText').val('');
       },
       error: function (error) {
-        console.error('Error adding comment:', error);
-        // Handle errors here (e.g., display an error message)
-      }
+      var errorMessage = error.responseText;
+      console.log(errorMessage); // Log the error (optional)
+
+      // Show the error message on the page
+      $('.error-message').text(errorMessage).show();
+
+      // Hide the error message after a few seconds (optional)
+      setTimeout(function() {
+        $('.error-message').fadeOut('slow');
+      }, 7000); // 7000 milliseconds (7 seconds) for example; adjust as needed
+    }
     });
   });
    // Submit comment form
@@ -187,10 +199,18 @@ $(document).ready(function () {
 
     $(event.target).find('textarea[name="replyText"]').val('');
       },
-      error: function (error) {
-        console.error('Error adding reply:', error);
-        // Handle errors here (e.g., display an error message)
-      }
+       error: function (error) {
+      var errorMessage = error.responseText;
+      console.log(errorMessage); // Log the error (optional)
+
+      // Show the error message on the page
+      $('.error-message-reply').text(errorMessage).show();
+
+      // Hide the error message after a few seconds (optional)
+      setTimeout(function() {
+        $('.error-message-reply').fadeOut('slow');
+      }, 7000); // 7000 milliseconds (7 seconds) for example; adjust as needed
+    }
     });
   });
 
