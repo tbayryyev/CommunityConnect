@@ -20,7 +20,7 @@
               {{/if}}
               <p>Posted by: {{event.eventUsername}}</p>
               <button type="button" class="btn btn-primary btn-interested btn-block">Interested</button>
-              <p class="mt-3 interest-count">{{event.interestCount}} users are interested in this event!</p>
+              <p class="mt-3 interest-count" data-initial-count="{{event.interestCount}}">{{event.interestCount}} users are interested in this event!</p>
             </div>
           </div>
         </div>
@@ -120,6 +120,12 @@ $(document).ready(function () {
       // Handle errors here
     }
   });
+
+   // Display initial interest count with correct singular or plural form
+  var initialInterestCount = $('.interest-count').data('initial-count');
+  var interestText = initialInterestCount === 1 ? 'user is' : 'users are';
+  $('.interest-count').text(initialInterestCount + ' ' + interestText + ' interested in this event!');
+
   // Submit comment form
   $('#commentForm').submit(function (event) {
     event.preventDefault(); // Prevent the default form submission
@@ -246,7 +252,9 @@ document.addEventListener('DOMContentLoaded', function () {
             // Update the interestCount in the DOM
             var interestCountElement = document.querySelector('.interest-count');
             if (interestCountElement) {
-              interestCountElement.textContent = response.interestCount + ' users are interested in this event!';
+              var interestCount = response.interestCount;
+              var interestText = interestCount === 1 ? 'user is' : 'users are';
+              interestCountElement.textContent = interestCount + ' ' + interestText + ' interested in this event!';
             }
           },
           error: function (error) {
@@ -261,8 +269,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-
-
 $(document).ready(function () {
   // Toggle replies when clicking the button
   $(document).on('click', '.toggleReplies', function () {
@@ -270,6 +276,7 @@ $(document).ready(function () {
     $(this).closest('.comment').find('.replies').slideToggle();
   });
 });
+
 $(document).ready(function () {
   // Toggle replies when clicking the button
   $(document).on('click', '.toggleForm', function () {
