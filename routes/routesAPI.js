@@ -169,40 +169,43 @@ router
 router
   .route('/login')
   .get(async (req, res) => {
-    //code here for GET
     if (req.session.user) {
       return res.redirect('/protected');
     }
     return res.render('userLogin');
   })
   .post(async (req, res) => {
-    //code here for POST
     let userData = req.body;
     let username = userData.usernameInput;
     let password = userData.passwordInput;
-  
-    
+
     try {
       helpers.checkString(username);
       helpers.checkString(password);
-    }
-    catch(e) {
+    } catch (e) {
       return res.status(400).render('userLogin', { title: "Login", error: e });
     }
-
 
     try {
       const newUser = await dataUser.checkUser(username, password);
       if (newUser.authenticatedUser === true) {
-        //console.log(JSON.stringify(newUser));
-        req.session.user = { username: username};
-        res.status(200).redirect('/protected');
-      } 
-    } 
-    catch (e) {
+        req.session.user = { username: username };
+        
+        // Check if there's a lastVisitedEvent in the session
+        if (req.session.lastVisitedEvent) {
+          const lastVisitedEvent = req.session.lastVisitedEvent;
+          // Clear lastVisitedEvent in the session
+          delete req.session.lastVisitedEvent;
+          return res.status(200).redirect(`/event/${lastVisitedEvent}`);
+        } else {
+          return res.status(200).redirect('/protected');
+        }
+      }
+    } catch (e) {
       return res.status(400).render('userLogin', { title: "Login", error: e });
     }
-  })
+  });
+
 
 router
   .route('/protected')
@@ -399,23 +402,27 @@ router
   router
   .route('/event/:eventId')
   .get(async (req, res) => {
-    if (req.session.user) {
-      try {
-        const eventId = req.params.eventId;
-        // Fetch the event details by eventId
-        const event = await dataEvent.getEventById(eventId);
+    try {
+      const eventId = req.params.eventId;
 
-    
+      // Store the last visited event in the session
+      req.session.lastVisitedEvent = eventId;
+
+      // Fetch the event details by eventId
+      const event = await dataEvent.getEventById(eventId);
+
+      if (req.session.user) {
         return res.render('event', { username: req.session.user.username, event });
-       
-      } catch (error) {
-        // Handle any errors related to fetching events or event not found
-        res.status(500).send('Error fetching event: ' + error.message);
+      } else {
+        // User is not logged in, redirect to login page
+        res.redirect('/login');
       }
-    } else {
-      res.redirect('/login');
+    } catch (error) {
+      // Handle any errors related to fetching events or event not found
+      res.status(500).send('Error fetching event: ' + error.message);
     }
   });
+
 
   router.route('/addComment/:eventId').post(async (req, res) => {
     if (req.session.user) {
