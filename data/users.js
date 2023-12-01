@@ -138,7 +138,7 @@ const getUserIDByUsername = async(username) => {
 }
 
 //Username is immutable, for now
-const updateUserInfo = async(username, firstname, lastname, email) => {
+const updateUserInfo = async(originalUsername, username, firstname, lastname, email) => {
     try{
         helpers.checkString(username);
         helpers.checkString(firstname);
@@ -146,9 +146,10 @@ const updateUserInfo = async(username, firstname, lastname, email) => {
         helpers.checkString(email);
         const usersCollection = await users();
         const result = await usersCollection.updateOne(
-            { username: username },
+            { username: originalUsername },
             {
                 $set: {
+                    username: username,
                     firstname: firstname,
                     lastname: lastname,
                     email: email

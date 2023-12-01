@@ -318,7 +318,7 @@ router
         const userData = await dataUser.getUserByUsername(req.session.user.username);
         res.render("editAccount", userData);
     } else{
-        return res.render("forbiddenAccess");ß
+        return res.render("forbiddenAccess");
     }
   })
   .post(async(req, res) => {
@@ -338,6 +338,7 @@ router
         }
 
         const result = await dataUser.updateUserInfo(
+            req.session.user.username,
             updatedData.username, 
             updatedData.firstname, 
             updatedData.lastname, 
@@ -348,7 +349,14 @@ router
             userData["error"] = "Could not edit user info";
             return res.render("editAccount", userData);
         }
-        return res.render("account", userData);
+        console.log(result);
+        //update the session info
+        console.log(JSON.stringify(req.session));
+        req.session.user.username = updatedData.username;
+        console.log(JSON.stringify(req.session));
+        const newUserData = await dataUser.getUserByUsername(updatedData.username);
+        console.log(newUserData);
+        return res.render("account", newUserData);
 
     } catch(e) {
         console.log(e);
