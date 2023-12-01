@@ -1,85 +1,96 @@
 <div class="container">
   <h1 class="my-4 text-center">My Events</h1>
 
-  <div class="row">
-    {{#each events}}
-      <div class="col-md-4">
-        <div class="card mb-4 h-100">
-          <img src="https://st2.depositphotos.com/4210273/6171/i/450/depositphotos_61710951-stock-photo-friends-sitting-on-the-grass.jpg" class="card-img-top" alt="{{eventName}} Image">
-          <div class="card-body">
-            <h5 class="card-title">
-              <a href="/event/{{this._id}}" class="event-link">{{this.eventName}}</a>
-            </h5>
-            <p class="card-text"><strong>Location:</strong> {{this.eventLocation}}</p>
-            <p class="card-text"><strong>Description:</strong> {{this.description}}</p>
-            <p class="card-text"><strong>Date:</strong> {{this.eventDate}}</p>
-            <p class="card-text"><strong>Time:</strong> {{this.eventTime}}</p>
-            <p class="card-text"><strong>Cost:</strong> ${{this.cost}}</p>
-          </div>
-          <div class="card-footer">
-            <div class="d-flex justify-content-between align-items-center">
-              <!-- Edit button -->
-              <button class="btn btn-primary" data-toggle="modal" data-target="#updateEventModal{{this._id}}">Edit</button>
-              
-              <!-- Delete button -->
-              <form id="removeEvent-form" action="/myEvents/deleteEvent/{{this._id}}" method="POST">
-                <button type="submit" class="btn btn-danger">Delete</button>
-              </form>
+  {{#if events.length}}
+    <div class="row">
+      {{#each events}}
+        <div class="col-md-4">
+          <div class="card mb-4 h-100">
+            <img src="https://st2.depositphotos.com/4210273/6171/i/450/depositphotos_61710951-stock-photo-friends-sitting-on-the-grass.jpg" class="card-img-top" alt="{{eventName}} Image">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a href="/event/{{this._id}}" class="event-link">{{this.eventName}}</a>
+              </h5>
+              <p class="card-text"><strong>Location:</strong> {{this.eventLocation}}</p>
+              <p class="card-text"><strong>Description:</strong> {{this.description}}</p>
+              <p class="card-text"><strong>Date:</strong> {{this.eventDate}}</p>
+              <p class="card-text"><strong>Time:</strong> {{this.eventTime}}</p>
+              <p class="card-text"><strong>Cost:</strong> ${{this.cost}}</p>
+            </div>
+            <div class="card-footer">
+              <div class="d-flex justify-content-between align-items-center">
+                <!-- Edit button -->
+                <button class="btn btn-primary" data-toggle="modal" data-target="#updateEventModal{{this._id}}">Edit</button>
+                
+                <!-- Delete button -->
+                <form id="removeEvent-form" action="/myEvents/deleteEvent/{{this._id}}" method="POST">
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      <!-- Update Event Modal -->
-      <div class="modal fade" id="updateEventModal{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="updateEventModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="updateEventModalLabel">Update Event: {{this.eventName}}</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <!-- Include the form for updating all event details -->
-              <form action="/updateEvent/{{this._id}}" method="post">
-                <div class="form-group">
-                  <label for="eventName{{this._id}}">Event Name</label>
-                  <input type="text" class="form-control" id="eventName{{this._id}}" name="eventName" value="{{this.eventName}}" required>
-                </div>
-                <div class="form-group">
-                  <label for="description{{this._id}}">Description</label>
-                  <textarea class="form-control" id="description{{this._id}}" name="description" required>{{this.description}}</textarea>
-                </div>
-                <div class="form-group">
-                  <label for="eventLocation{{this._id}}">Location</label>
-                  <input type="text" class="form-control" id="eventLocation{{this._id}}" name="eventLocation" value="{{this.eventLocation}}" required>
-                </div>
-                <div class="form-group">
-                  <label for="eventDate{{this._id}}">Date</label>
-                  <input type="date" class="form-control" id="eventDate{{this._id}}" name="eventDate" value="{{this.eventDate}}" required>
-                </div>
-                <div class="form-group">
-                  <label for="eventTime{{this._id}}">Time</label>
-                  <input type="time" class="form-control" id="eventTime{{this._id}}" name="eventTime" value="{{this.eventTime}}" required>
-                </div>
-                <div class="form-group">
-                  <label for="cost{{this._id}}">Cost</label>
-                  <input type="number" class="form-control" id="cost{{this._id}}" name="cost" value="{{this.cost}}" required>
-                </div>
-                <div class="form-group">
-                  <label for="eventLink{{this._id}}">Event Link (optional)</label>
-                  <input type="url" class="form-control" id="eventLink{{this._id}}" name="link" value="{{this.link}}">
-                </div>
+        
+        <!-- Update Event Modal -->
+        <div class="modal fade" id="updateEventModal{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="updateEventModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="updateEventModalLabel">Update Event: {{this.eventName}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <!-- Include the form for updating all event details -->
+                <form action="/updateEvent/{{this._id}}" method="post">
+                  <div class="form-group">
+                    <label for="eventName{{this._id}}">Event Name</label>
+                    <input type="text" class="form-control" id="eventName{{this._id}}" name="eventName" value="{{this.eventName}}" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="description{{this._id}}">Description</label>
+                    <textarea class="form-control" id="description{{this._id}}" name="description" required>{{this.description}}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="eventLocation{{this._id}}">Location</label>
+                    <input type="text" class="form-control" id="eventLocation{{this._id}}" name="eventLocation" value="{{this.eventLocation}}" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="eventDate{{this._id}}">Date</label>
+                    <input type="date" class="form-control" id="eventDate{{this._id}}" name="eventDate" value="{{this.eventDate}}" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="eventTime{{this._id}}">Time</label>
+                    <input type="time" class="form-control" id="eventTime{{this._id}}" name="eventTime" value="{{this.eventTime}}" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="cost{{this._id}}">Cost</label>
+                    <input type="number" class="form-control" id="cost{{this._id}}" name="cost" value="{{this.cost}}" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="eventLink{{this._id}}">Event Link (optional)</label>
+                    <input type="url" class="form-control" id="eventLink{{this._id}}" name="link" value="{{this.link}}">
+                  </div>
 
 
-                <!-- Include an "Update" button for submitting the changes -->
-                <button type="submit" class="btn btn-primary">Update</button>
-              </form>
+                  <!-- Include an "Update" button for submitting the changes -->
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    {{/each}}
-  </div>
+      {{/each}}
+    </div>
+    {{else}}
+    <!-- Popup message for no events -->
+    <div class="text-center">
+      <p>You have no posted events yet.</p>
+      <!-- Button to trigger the popup -->
+      <a href='/postEvent' class="btn btn-primary">Post an Event</a>
+    </div>
+    {{/if}}
+
+
 </div>
