@@ -121,7 +121,7 @@ $(document).ready(function () {
     }
   });
 
-   // Display initial interest count with correct singular or plural form
+  // Display initial interest count with correct singular or plural form
   var initialInterestCount = $('.interest-count').data('initial-count');
   var interestText = initialInterestCount === 1 ? 'user is' : 'users are';
   $('.interest-count').text(initialInterestCount + ' ' + interestText + ' interested in this event!');

@@ -77,7 +77,7 @@
         {{#if ../username}}
         <div class="card-footer">
           <button type="button" class="btn btn-primary btn-interested btn-block">Interested</button>
-          <p class="text-center mt-2 interest-count"><small>{{this.interestCount}} users are interested in this event!</small></p>
+          <p class="text-center mt-2 interest-count" data-initial-count="{{this.interestCount}}"><small>{{this.interestCount}} users are interested in this event!</small></p>
         </div>
         {{/if}}
       </div>
@@ -110,7 +110,20 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // adding the user to the interstedUser array after clicking the intersted button
+    // Display initial interest count with correct singular or plural form
+    if (interestCountElement) {
+      var interestCount = interestCountElement.dataset.initialCount;
+      var interestText = interestCount === '1' ? 'user is' : 'users are';
+      interestCountElement.textContent = interestCount + ' ' + interestText + ' interested in this event!';
+      interestCountElement.style.fontSize = 'small'; // Set font size inline
+    }
+
+    // Redirect to the event page when the card is clicked
+    card.addEventListener('click', function () {
+      window.location.href = '/event/' + eventId;
+    });
+
+    // Adding event listener for the interested button
     interestedButton.addEventListener('click', function (event) {
       event.stopPropagation(); // Stop the event from propagating to the card click event
       $.ajax({
@@ -119,7 +132,9 @@ document.addEventListener('DOMContentLoaded', function () {
         success: function (response) {
           interestedButton.classList.toggle('btn-success');
           if (interestCountElement) {
-            interestCountElement.textContent = response.interestCount + ' users are interested in this event!';
+            var interestCount = response.interestCount;
+            var interestText = interestCount === 1 ? 'user is' : 'users are';
+            interestCountElement.textContent = interestCount + ' ' + interestText + ' interested in this event!';
             interestCountElement.style.fontSize = 'small'; // Set font size inline
           }
         },
@@ -128,11 +143,6 @@ document.addEventListener('DOMContentLoaded', function () {
           // Handle errors here
         }
       });
-    });
-
-    // Redirect to the event page when the card is clicked
-    card.addEventListener('click', function () {
-      window.location.href = '/event/' + eventId;
     });
   });
 });
