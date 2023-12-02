@@ -9,6 +9,16 @@ const helpers = require('../helpers');
 const multer = require('multer'); // Import Multer
 const upload = multer({ dest: 'uploads/user-uploaded-images' });
 
+// Middleware function to format event time and date
+const formatEventDateTime = (events) => {
+  for (let i = 0; i < events.length; i++) {
+    let time = events[i]["eventTime"];
+    events[i]["eventTime"] = helpers.convert24HourTime(time);
+    let date = events[i]["eventDate"];
+    events[i]["eventDate"] = helpers.formatDateString(date);
+  }
+};
+
 router
   .route('/')
   .get(async (req, res) => {
@@ -19,12 +29,9 @@ router
     try {
       // Retrieve events from the database
       const events = await dataEvent.getEvents();
-      for(let i = 0; i < events.length; i++){
-        let time = events[i]["eventTime"]
-        events[i]["eventTime"] = helpers.convert24HourTime(time);
-        let date = events[i]["eventDate"];
-        events[i]["eventDate"] = helpers.formatDateString(date);
-      }
+      
+      formatEventDateTime(events);
+
       return res.render('eventList', { events });
 
 
@@ -48,6 +55,9 @@ router
       try {
         // Retrieve events from the database
         const events = await dataEvent.getMyEvents(req.session.user.username);
+
+        formatEventDateTime(events);
+
         return res.render('myEvents', { username: req.session.user.username, events });
   
   
@@ -220,12 +230,9 @@ router
       try {
         // Retrieve events from the database
         const events = await dataEvent.getEvents();
-        for(let i = 0; i < events.length; i++){
-            let time = events[i]["eventTime"]
-            events[i]["eventTime"] = helpers.convert24HourTime(time);
-            let date = events[i]["eventDate"];
-            events[i]["eventDate"] = helpers.formatDateString(date);
-          }
+        
+        formatEventDateTime(events);
+
         return res.render('eventList', { username: req.session.user.username, events });
   
       } catch (error) {
@@ -431,6 +438,8 @@ router
 
       // Fetch the event details by eventId
       const event = await dataEvent.getEventById(eventId);
+
+      formatEventDateTime([event]);
 
       if (req.session.user) {
         return res.render('event', { username: req.session.user.username, event });
