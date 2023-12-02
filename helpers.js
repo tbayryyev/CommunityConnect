@@ -47,4 +47,48 @@ function isValidUsername(username) {
   
     return regex.test(username);
   }
-module.exports = {checkString, checkNum, checkID, isValidUsername};
+
+function convert24HourTime(time){
+    let hour = parseInt(time.split(":")[0]);
+    let minute = time.split(":")[1];
+    let newTime = time;
+    if(hour == 0){
+        newTime = "12:" + minute + " AM";
+    }
+    else if(hour > 12){
+        let newHour = hour - 12;
+        newTime = newHour + ":" + minute + " PM";
+    }
+    else{
+        newTime = time + " PM";
+    }
+    return newTime;
+}
+
+function getMonthNameFromMonthIndex(monthIndex){
+    let months = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+    return months[monthIndex];
+}
+
+function getOrdinalString(num){
+    let remainder = num%10;
+    if(remainder == 1){
+        return num + "st";
+    } else if(remainder == 2){
+        return num + "nd";
+    } else if(remainder == 3){
+        return num + "rd";
+    } 
+    return num + "th";
+}
+
+function formatDateString(dateString) {
+    let splitDate = dateString.split("-");
+    let year = splitDate[0];
+    let month = parseInt(splitDate[1]);
+    let day = parseInt(splitDate[2]);
+    let newDate = getMonthNameFromMonthIndex(month) + " " + getOrdinalString(day) + ", " + year;
+    return newDate;
+}
+module.exports = {checkString, checkNum, checkID, isValidUsername, convert24HourTime, formatDateString};
