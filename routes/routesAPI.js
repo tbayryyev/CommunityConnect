@@ -320,8 +320,7 @@ router
       //account created date
       const userData = await dataUser.getUserByUsername(req.session.user.username);
       const events = await dataEvent.getInterestedEvents(req.session.user.username);
-
-      res.render('account',  {userData, events});
+      res.render('account',  {userData, events, username: userData.username});
 
 
     }  
@@ -344,6 +343,7 @@ router
   .post(async(req, res) => {
     let updatedData = req.body;
     try{
+        let password = updatedData.password;
         let username = updatedData.username;
         if(username.length < 4) {
             updatedData["error"] = "Username must be at least 4 characters long";
@@ -357,26 +357,43 @@ router
             return res.render("editAccount", updatedData);
         }
 
+        if(password.length < 6) {
+            updatedData["error"] = "Password must be at least 6 characters long";
+            return res.status(400).render('editAccount',  updatedData);
+        }
+    
+        if(password.search(/[A-Z]/) < 0) {
+            updatedData["error"] = "Password must contain at least one upper case letter";
+            return res.status(400).render('editAccount', updatedData);
+        } 
+        if(password.search(/[0-9]/) < 0) {
+            updatedData["error"] = "Password must contain at least one number"
+            return res.status(400).render('editAccount', updatedData);
+        }
+        if(password.search(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/) < 0) {
+            updatedData["error"] = "Password must contain at least special character"
+            return res.status(400).render('editAccount', updatedData);
+        }
+
         const result = await dataUser.updateUserInfo(
             req.session.user.username,
             updatedData.username, 
             updatedData.firstname, 
             updatedData.lastname, 
-            updatedData.email);
+            updatedData.email,
+            updatedData.password);
         const userData = await dataUser.getUserByUsername(req.session.user.username);
         if(!result){
             //could not update user info
             userData["error"] = "Could not edit user info";
             return res.render("editAccount", userData);
         }
-        console.log(result);
-        //update the session info
-        console.log(JSON.stringify(req.session));
-        req.session.user.username = updatedData.username;
-        console.log(JSON.stringify(req.session));
+        
         const newUserData = await dataUser.getUserByUsername(updatedData.username);
-        console.log(newUserData);
-        return res.render("account", newUserData);
+        req.session.user.username = newUserData.username;
+
+        const events = await dataEvent.getInterestedEvents(req.session.user.username);
+        return res.render("account", {userData: newUserData, events: events, username: newUserData.username});
 
     } catch(e) {
         console.log(e);

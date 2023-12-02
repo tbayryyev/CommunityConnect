@@ -138,8 +138,9 @@ const getUserIDByUsername = async(username) => {
 }
 
 //Username is immutable, for now
-const updateUserInfo = async(originalUsername, username, firstname, lastname, email) => {
+const updateUserInfo = async(originalUsername, username, firstname, lastname, email, password) => {
     try{
+        const hashpassword = await bcrypt.hash(password, saltRounds);
         helpers.checkString(username);
         helpers.checkString(firstname);
         helpers.checkString(lastname);
@@ -152,7 +153,8 @@ const updateUserInfo = async(originalUsername, username, firstname, lastname, em
                     username: username,
                     firstname: firstname,
                     lastname: lastname,
-                    email: email
+                    email: email,
+                    password: hashpassword
                 }
             }
         );
