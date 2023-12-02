@@ -328,7 +328,7 @@ router
 
     }  
     else {
-      return res.render('forbiddenAccess');
+      return res.redirect('/login');
     }
   })
 
