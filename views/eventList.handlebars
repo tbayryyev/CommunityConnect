@@ -93,9 +93,6 @@ document.addEventListener('DOMContentLoaded', function () {
   eventCards.forEach(function (card) {
     var eventId = card.dataset.eventId;
 
-
-
-
     // Redirect to the event page when the card is clicked
     card.addEventListener('click', function () {
       window.location.href = '/event/' + eventId;

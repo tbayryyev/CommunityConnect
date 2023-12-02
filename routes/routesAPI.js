@@ -69,7 +69,7 @@ router
      
           }
     else {
-      return res.render('forbiddenAccess');
+      return res.redirect('/login');
     }
   })
 
@@ -243,7 +243,7 @@ router
      
           }
     else {
-      return res.render('forbiddenAccess');
+      return res.redirect('/login');
     }
   })
 
@@ -340,7 +340,7 @@ router
         const userData = await dataUser.getUserByUsername(req.session.user.username);
         res.render("editAccount", userData);
     } else{
-        return res.render("forbiddenAccess");
+        return res.redirect("/login");
     }
   })
   .post(async(req, res) => {
@@ -417,7 +417,7 @@ router
           res.render('updateEvent', { event });
         } else {
           // The user doesn't have permission to update this event
-          res.render('forbiddenAccess');
+          res.redirect('/login');
         }
       } catch (error) {
         // Handle any errors related to fetching events or event not found
