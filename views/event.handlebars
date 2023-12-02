@@ -75,7 +75,7 @@
                   </div>
                 </div>
               </form>
-              <div class="error-message-reply" style="display: none; color:red;"></div>
+              <div class="error-message-reply-{{this.comment_id}}" style="display: none; color:red;"></div>
 
                     <div class="replySection">
   {{#each this.replies}}
@@ -210,11 +210,11 @@ $(document).ready(function () {
       console.log(errorMessage); // Log the error (optional)
 
       // Show the error message on the page
-      $('.error-message-reply').text(errorMessage).show();
+      $('.error-message-reply-'+commentId).text(errorMessage).show();
 
       // Hide the error message after a few seconds (optional)
       setTimeout(function() {
-        $('.error-message-reply').fadeOut('slow');
+        $('.error-message-reply-'+commentId).fadeOut('slow');
       }, 7000); // 7000 milliseconds (7 seconds) for example; adjust as needed
     }
     });
