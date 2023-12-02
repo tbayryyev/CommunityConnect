@@ -320,6 +320,9 @@ router
       //account created date
       const userData = await dataUser.getUserByUsername(req.session.user.username);
       const events = await dataEvent.getInterestedEvents(req.session.user.username);
+
+      formatEventDateTime(events);
+
       res.render('account',  {userData, events, username: userData.username});
 
 

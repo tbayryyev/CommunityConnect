@@ -26,8 +26,10 @@
               <!-- Provide a link to the event page using the eventId -->
               <a href="/event/{{_id}}" class="event-link">
                 <!-- Display the event name -->
-                {{eventName}}
+                <span>{{eventName}}</span>
               </a>
+                <!-- Display the event date with float-right to move it to the right -->
+                <span class="float-right">{{eventDate}}</span>
             </li>
           {{/each}}
           {{!-- {{#unless eventsWithInterest}}
@@ -54,5 +56,9 @@
 
   .list-group-item a:hover {
     color: #007bff; /* Set the text color when hovering over the link */
+  }
+
+  .float-right {
+    float: right;
   }
 </style>
