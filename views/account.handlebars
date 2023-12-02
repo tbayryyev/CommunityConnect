@@ -1,24 +1,58 @@
 <!-- account.handlebars -->
-    <div class="container mt-5">
-        <div class="card">
-            <h5 class="card-header bg-primary text-white">
-                <i class="fas fa-user-circle"></i> My Account
-            </h5>
-            <div class="card-body">
-                <ul class="list-group">
-                    <li class="list-group-item"><i class="fas fa-envelope"></i> <strong>Email:</strong> {{email}}</li>
-                    <li class="list-group-item"><i class="fas fa-user"></i> <strong>Username:</strong> {{username}}</li>
-                    <li class="list-group-item"><i class="fas fa-user"></i> <strong>First Name:</strong> {{firstname}}</li>
-                    <li class="list-group-item"><i class="fas fa-user"></i> <strong>Last Name:</strong> {{lastname}}</li>
-                    <li class="list-group-item"><i class="fas fa-birthday-cake"></i> <strong>Birth Date:</strong> {{birthdate}}</li>
-                </ul>
-                <a href="/editAccount" class="btn btn-danger mt-3">Edit Account</a>
-            </div>
-        </div>
+<div class="container mt-5">
+  <div class="card">
+    <h5 class="card-header bg-primary text-white">
+      <i class="fas fa-user-circle"></i> My Account
+    </h5>
+    <div class="card-body">
+      <ul class="list-group">
+        <!-- Display user information -->
+        <li class="list-group-item"><i class="fas fa-envelope"></i> <strong>Email:</strong> {{userData.email}}</li>
+        <li class="list-group-item"><i class="fas fa-user"></i> <strong>Username:</strong> {{userData.username}}</li>
+        <li class="list-group-item"><i class="fas fa-user"></i> <strong>First Name:</strong> {{userData.firstname}}</li>
+        <li class="list-group-item"><i class="fas fa-user"></i> <strong>Last Name:</strong> {{userData.lastname}}</li>
+        <li class="list-group-item"><i class="fas fa-birthday-cake"></i> <strong>Birth Date:</strong> {{userData.birthdate}}</li>
+      </ul>
+      <a href="/editAccount" class="btn btn-danger mt-3">Edit Account</a>
+
+      <!-- Display interested events -->
+      <div class="mt-4">
+        <h5 class="card-header bg-info text-white">
+          <i class="fas fa-star"></i> Interested Events
+        </h5>
+        <ul class="list-group">
+          {{#each events}}
+            <li class="list-group-item">
+              <!-- Provide a link to the event page using the eventId -->
+              <a href="/event/{{_id}}" class="event-link">
+                <!-- Display the event name -->
+                {{eventName}}
+              </a>
+            </li>
+          {{/each}}
+          {{!-- {{#unless eventsWithInterest}}
+            <li class="list-group-item">You have not shown interest in any events yet.</li>
+          {{/unless}} --}}
+        </ul>
+      </div>
+      <!-- End of interested events section -->
     </div>
-     <style>
-        .card:hover {
-            transform: scale(1.02);
-            transition: transform 0.2s;
-        }
-    </style>
+  </div>
+</div>
+
+<style>
+  .card:hover {
+    transform: scale(1.02);
+    transition: transform 0.2s;
+  }
+
+  .list-group-item a {
+    color: black; /* Set the initial text color */
+    text-decoration: none; /* Remove the default underline */
+    transition: color 0.2s; /* Smooth transition for the text color */
+  }
+
+  .list-group-item a:hover {
+    color: #007bff; /* Set the text color when hovering over the link */
+  }
+</style>

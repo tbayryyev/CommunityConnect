@@ -159,6 +159,22 @@ const createEvent = async (
 
     return false;
   };
+
+  const getInterestedEvents = async (username) => {
+    const eventCollection = await event();
+    const events = [];
+
+    const allEvents = await eventCollection.find({}).toArray();
+
+    for (const i of allEvents) {
+        if (await checkInterstedUser(i._id, username)) {
+            events.push(i);
+        }
+    }
+
+    return events;
+  };
+
   const createComment =  async (eventId, commentText, username) => {
     eventId = helpers.checkID(eventId.toString());
     helpers.checkString(commentText);
@@ -197,6 +213,7 @@ const createEvent = async (
     return newComment
 
   };
+
   const replyToComment = async (eventId, commentId, replyText, username) => {
     eventId = helpers.checkID(eventId.toString());
     helpers.checkString(replyText);
@@ -235,5 +252,5 @@ const createEvent = async (
     return reply;
   };
 
-  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent, updateEvent, toggleInterestedUser, createComment, checkInterstedUser,replyToComment };
+  module.exports = { createEvent,getEvents,getMyEvents, getEventById, removeEvent, updateEvent, toggleInterestedUser, createComment, checkInterstedUser, getInterestedEvents, replyToComment };
 

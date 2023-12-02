@@ -312,8 +312,9 @@ router
       //age
       //account created date
       const userData = await dataUser.getUserByUsername(req.session.user.username);
+      const events = await dataEvent.getInterestedEvents(req.session.user.username);
 
-      res.render('account',  userData);
+      res.render('account',  {userData, events});
 
 
     }  
