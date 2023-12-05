@@ -1,0 +1,118 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": [
+        "Hi",
+        "Hey",
+        "How are you",
+        "Hello"
+      ],
+      "responses": [
+        "Hey ",
+        "Hello, thanks for visiting",
+        "Hi there, what can I do for you?",
+        "Hi there, how can I help?"
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["Bye", "See you later", "Goodbye"],
+      "responses": [
+        "Have a nice day",
+        "Bye! Come back again soon."
+      ]
+    },
+    {
+      "tag": "thanks",
+      "patterns": ["Thanks", "Thank you", "That's helpful", "Thank's a lot!"],
+      "responses": ["Happy to help!", "Any time!", "My pleasure"]
+    },
+    {
+      "tag": "events",
+      "patterns": [
+        "Which events are going on?",
+        "Which event is the cheapest?",
+        "What do you sell?"
+      ],
+      "responses": [
+        "Soccer Match at the Hoboken HS, Art Gallery at Stevens UCC, and Haunted House at Hoboken Haunted House"
+      ]
+    },
+    {
+      "tag": "soccer ",
+      "patterns": [
+        "Where is Soccer match ?"
+      ],
+      "responses": [
+        "Soccer Match at the Hoboken HS"
+      ]
+    },
+    {
+      "tag": "time",
+      "patterns": [
+        "What time does it start?",
+        "What time would it start?",
+        "the time of soccer match "
+      ],
+      "responses": [
+        "Soccer Match at the Hoboken HS at 1 pm",
+        "Soccer Match at 1 pm "
+      ]
+    },
+    {
+      "tag": "art gallery ",
+      "patterns": [
+        "Where is art gallery ?"
+      ],
+      "responses": [
+        "Art Gallery is  at the Stevens UCC"
+      ]
+    },
+    {
+      "tag": "time",
+      "patterns": [
+        "What time does gallery start?",
+        "What time would art gaklery start?",
+        "Art gallery start time?"
+      ],
+      "responses": [
+        "Art gallery at the Stevens UCC at 8 pm",
+        "art gallery  at 8 pm "
+      ]
+    },
+    
+    {
+      "tag": "price",
+      "patterns": [
+        "How much does tickets cost??",
+        "Are you cash only?"
+      ],
+      "responses": [
+        "5 to 20",
+        "Can Not be purchased through me"
+      ]
+    },
+    {
+      "tag": "pay",
+      "patterns": [
+        "Can I pay with you ?",
+        "Are you cash only?"
+      ],
+      "responses": [
+        "Can Not be purchased through me"
+      ]
+    },
+    {
+      "tag": "funny",
+      "patterns": [
+        "Tell me a joke!",
+        "Tell me something funny!",
+        "Do you know a joke?"
+      ],
+      "responses": [
+        "Boo"
+      ]
+    }
+  ]
+}

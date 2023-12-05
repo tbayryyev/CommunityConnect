@@ -13,6 +13,8 @@ const userCollection = require("./data/users")
 
 // app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+app.use(express.static('chatbot'));
+
 app.use(session({
     name: 'AuthCookie',
     secret: 'some secret string!',
