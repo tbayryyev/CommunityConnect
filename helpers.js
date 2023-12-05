@@ -88,7 +88,7 @@ function formatDateString(dateString) {
     let year = splitDate[0];
     let month = parseInt(splitDate[1]);
     let day = parseInt(splitDate[2]);
-    let newDate = getMonthNameFromMonthIndex(month) + " " + getOrdinalString(day) + ", " + year;
+    let newDate = getMonthNameFromMonthIndex(month-1) + " " + getOrdinalString(day) + ", " + year;
     return newDate;
 }
 module.exports = {checkString, checkNum, checkID, isValidUsername, convert24HourTime, formatDateString};
