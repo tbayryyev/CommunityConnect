@@ -7,7 +7,13 @@ Welcome to Community Connect! A website that promotes local events such as art e
 ```
 npm install
 ```
-2. Finally you can run the program using the following command:
+2. Once installed, run app.py first before running following step using the following command:
+```
+python app.py
+
+```
+
+3. Finally you can run the program using the following command in another terminal:
 ```
 npm start
 ```
