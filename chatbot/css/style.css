@@ -4,12 +4,7 @@
     padding: 0;
 }
 
-body {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 400;
-    font-size: 100%;
-    background: #F1F1F1;
-}
+
 
 *, html {
     --primaryGradient: linear-gradient(93.12deg, #2a1b98 0.52%, rgb(29, 53, 231) 100%);
@@ -25,6 +20,8 @@ body {
     position: absolute;
     bottom: 30px;
     right: 30px;
+    z-index: 9999; /* Set a higher value compared to other elements */
+
 }
 
 /* CONTENT IS CLOSE */
