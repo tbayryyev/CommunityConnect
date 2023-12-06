@@ -62,7 +62,7 @@
     {{#each events}}
     <div class="col-lg-4 col-md-6 mb-4">
       <div class="card h-100" data-event-id="{{this._id}}">
-        <img src="https://media.istockphoto.com/id/974238866/photo/audience-listens-to-the-lecturer-at-the-conference.jpg?s=612x612&w=0&k=20&c=p_BQCJWRQQtZYnQlOtZMzTjeB_csic8OofTCAKLwT0M=" class="card-img-top" alt="{{this.eventName}} Image">
+        <img src={{this.eventImage}} class="card-img-top" alt="{{this.eventName}} Image">
         <div class="card-body">
           <h5 class="card-title">
             <a href="/event/{{this._id}}" class="event-link">{{this.eventName}}</a>
