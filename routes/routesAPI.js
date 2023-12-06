@@ -288,7 +288,7 @@ router.route('/postEvent')
       
       // Add the event to a database
       try {
-        const newEvent = await dataEvent.createEvent(username, eventName, description, eventDate, eventTime, eventLocation, cost, eventLink,"https://www.outdoyo.com/media/filer_public/fd/e2/fde2caf2-deb8-437b-9aea-2eaed1b726d8/hiking-trail.jpg");
+        const newEvent = await dataEvent.createEvent(username, eventName, description, eventDate, eventTime, eventLocation, cost, eventLink,"https://www.eventbrite.ie/blog/wp-content/uploads/2022/09/dance-event.jpg");
       } 
       catch (e) {
         return res.status(400).render('postEvent', { title: "Post an Event", error: e });
