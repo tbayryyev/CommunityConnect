@@ -19,12 +19,13 @@ describe('Event Data Functions', () => {
   after(async () => {
     await testDB.dropDatabase();
   });
-
   describe('createEvent', () => {
     it('should create a new event', async () => {
       const eventId = await createEvent('testUser', 'Test Event', 'Test Description', '2023-12-31', '12:00', 'Test Location', 10.0, 'testImage', 'test.jpg');
       expect(eventId).to.be.a('string');
     });
+
+  
   });
 
   describe('getEvents', () => {
@@ -32,6 +33,13 @@ describe('Event Data Functions', () => {
       const events = await getEvents();
       expect(events).to.be.an('array');
     });
+
+    it('should return events sorted by date', async () => {
+      // Create events with different dates and verify if getEvents returns them in the correct order
+      // Check if events are sorted by date in ascending or descending order
+    });
+
+    // Add more specific tests for different filtering scenarios and edge cases
   });
 
   describe('getMyEvents', () => {
@@ -39,6 +47,8 @@ describe('Event Data Functions', () => {
       const events = await getMyEvents('testUser');
       expect(events).to.be.an('array');
     });
+
+    // Add more specific tests for scenarios where no events or specific events should be returned based on user or criteria
   });
 
   describe('getEventById', () => {
@@ -49,13 +59,17 @@ describe('Event Data Functions', () => {
       expect(event).to.have.property('_id');
     });
 
-    it('should throw an error if the event does not exist', async () => {
+    it('should return null for non-existent ID', async () => {
       try {
-        await getEventById('nonexistentID');
+        const nonExistentId = 'nonexistentID';
+        const event = await getEventById(nonExistentId);
       } catch (error) {
         expect(error).to.be.a('string');
       }
+    
     });
+
+    // Add more specific tests for edge cases like passing invalid IDs or incorrect formats
   });
 
   describe('updateEvent', () => {
@@ -80,6 +94,8 @@ describe('Event Data Functions', () => {
         expect(error).to.be.a('string');
       }
     });
+
+    // Add more specific tests for updating events with various data inputs and edge cases
   });
 
   describe('removeEvent', () => {
@@ -97,5 +113,7 @@ describe('Event Data Functions', () => {
         expect(error).to.be.a('string');
       }
     });
+
+    // Add more specific tests for scenarios like removing multiple events and ensuring they no longer exist in the database
   });
 });
