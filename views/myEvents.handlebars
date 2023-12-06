@@ -95,3 +95,20 @@
 
 
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const eventCards = document.querySelectorAll('.card');
+    eventCards.forEach(function (card) {
+      var eventId = card.dataset.eventId;
+      var interestCountElement = card.querySelector('.interest-count');
+      // Display initial interest count with correct singular or plural form
+      if (interestCountElement) {
+        var interestCount = interestCountElement.dataset.initialCount;
+        var interestText = interestCount === '1' ? 'user is' : 'users are';
+        interestCountElement.textContent = interestCount + ' ' + interestText + ' interested in this event!';
+      }
+    }); // Add a closing bracket for the forEach function
+  });
+</script>
+
