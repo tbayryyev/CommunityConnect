@@ -265,10 +265,9 @@ router.route('/postEvent')
       res.redirect('/login');
     }
   })
-  .post(upload.single('eventImage'), async (req, res) => {
+  .post( async (req, res) => {
     // Handle the form submission here (e.g., save event data to a database)
-    const eventData = req.body;
-    const eventImage = req.file; // Extract the uploaded image file
+    let eventData = req.body;
     let eventName = eventData.eventName;
     let description = eventData.description;
     let eventDate = eventData.eventDate;
@@ -277,24 +276,19 @@ router.route('/postEvent')
     let cost = Number(eventData.eventCost);
     let username = req.session.user.username;
     let eventLink = eventData.link;
-
     try {
-      // Validate input data
-      if (!eventName || !description || !eventDate || !eventTime || !eventLocation || !cost || !eventImage) {
-        throw new Error('All fields are required');
-      }
+     
 
       helpers.checkString(eventName);
       helpers.checkString(description);
       helpers.checkString(eventLocation);
 
       helpers.checkNum(cost);
-      // Process the uploaded image and get the file name
-      const imageFileName = eventImage.filename;
-
+    
+      
       // Add the event to a database
       try {
-        const newEvent = await dataEvent.createEvent(username, eventName, description, eventDate, eventTime, eventLocation, cost, eventLink, imageFileName);
+        const newEvent = await dataEvent.createEvent(username, eventName, description, eventDate, eventTime, eventLocation, cost, eventLink,"https://www.outdoyo.com/media/filer_public/fd/e2/fde2caf2-deb8-437b-9aea-2eaed1b726d8/hiking-trail.jpg");
       } 
       catch (e) {
         return res.status(400).render('postEvent', { title: "Post an Event", error: e });

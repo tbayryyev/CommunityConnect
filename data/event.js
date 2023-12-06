@@ -5,7 +5,7 @@ const helpers = require('../helpers');
 const profanityList = ['wtf', 'fck', 'smd']; // profanity words here
 
 const createEvent = async (
-    eventUsername,eventName, description, eventDate, eventTime, eventLocation, cost, link, eventImage, imageFileName
+    eventUsername,eventName, description, eventDate, eventTime, eventLocation, cost, link, eventImage
 ) => {
     //Validate input data
     helpers.checkString(eventName);
@@ -26,7 +26,6 @@ const createEvent = async (
       cost, 
       link,
       eventImage,      // Save the image data
-      imageFileName,   // Save the image file name
       interestCount: 0,
       interestedUsers: [], // Initialize the interestedUsers array
       comments: []
