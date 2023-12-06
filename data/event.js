@@ -57,14 +57,45 @@ const createEvent = async (
     }
     return events;
   }
-
-  const getEventById = async (eventId) => {
-    eventId = helpers.checkID(eventId.toString());
-    const eventCollection = await event();
-    const newEvent = await eventCollection.findOne({_id: ObjectId(eventId)});
-    if (!newEvent) throw "No event with that id";
-    return newEvent;
+  const filterComments = (comments, filterKeyword) => {
+    // If no filter is provided, return the original comments
+    if (!filterKeyword) return comments;
+  
+    // Filter comments that contain the keyword
+    return comments.filter(comment => 
+      comment.commentText.toLowerCase().includes(filterKeyword.toLowerCase()) &&
+      !profanityList.some(profaneWord => comment.commentText.toLowerCase().includes(profaneWord))
+    );
   };
+  
+  // Utility function to sort comments
+  const sortComments = (comments, sortOrder) => {
+    if (sortOrder === 'newest') {
+      return comments.sort((a, b) => b.comment_id.getTimestamp() - a.comment_id.getTimestamp());
+    } else if (sortOrder === 'oldest') {
+      return comments.sort((a, b) => a.comment_id.getTimestamp() - b.comment_id.getTimestamp());
+    }
+    return comments; // Default return without sorting
+  };
+
+
+
+  // Updated getEventById function with filtering and sorting
+const getEventById = async (eventId, filterKeyword = '', sortOrder = '') => {
+  eventId = helpers.checkID(eventId.toString());
+  const eventCollection = await event();
+  const foundEvent = await eventCollection.findOne({ _id: ObjectId(eventId) });
+  
+  if (!foundEvent) throw "No event with that id";
+  
+  // Apply comment filtering and sorting if parameters are provided
+  if (filterKeyword || sortOrder) {
+    foundEvent.comments = filterComments(foundEvent.comments, filterKeyword);
+    foundEvent.comments = sortComments(foundEvent.comments, sortOrder);
+  }
+  
+  return foundEvent;
+};
 
   const removeEvent = async (eventId) => {
     eventId = helpers.checkID(eventId.toString());
