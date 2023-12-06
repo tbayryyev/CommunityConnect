@@ -56,7 +56,7 @@ router
         // Retrieve events from the database
         const events = await dataEvent.getMyEvents(req.session.user.username);
 
-        formatEventDateTime(events);
+        //formatEventDateTime(events);
 
         return res.render('myEvents', { username: req.session.user.username, events });
   
