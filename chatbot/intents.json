@@ -31,12 +31,13 @@
     {
       "tag": "events",
       "patterns": [
-        "Which events are going on?",
-        "Which event is the cheapest?",
-        "What do you sell?"
+        "Which events are going on (list 5)?",
+        "Tell me 5 cool events going on",
+        "What do you sell?",
+        "Tell me 5 cool events going on"
       ],
       "responses": [
-        "Soccer Match at the Hoboken HS, Art Gallery at Stevens UCC, and Haunted House at Hoboken Haunted House"
+        "Soccer Match at the Hoboken HS, Art Gallery at Stevens UCC, Haunted House at Hoboken Haunted House, Hiking Adventure at Mountain Park, Music Concert at Concert Hall"
       ]
     },
     {
