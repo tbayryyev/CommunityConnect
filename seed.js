@@ -37,8 +37,8 @@ const main = async () =>
         "Networking Mixer": null,
         "Technology Conference": null,
         "Hiking Adventure": null,
-        "Music Concert": null,
-        "Charity Fundraiser": null
+        "Music Concert": "https://stevens.campuslabs.com/engage/event/9398049",
+        "Charity Fundraiser": "https://www.hobokenshelter.org/events"
         };
 
         let event1 = await event.createEvent("codyf02", "Soccer Match", "Come watch the local high school team play this weekend!", "2023-12-07", "19:00", "Hoboken High School", 5, eventLinks["Soccer Match"],"https://cloudfront-us-east-2.images.arcpublishing.com/reuters/7YKAJ3JWWJNL7PGRPZKY2TEU5Y.jpg");
@@ -52,7 +52,7 @@ const main = async () =>
         let event9 = await event.createEvent("emilyBrown456", "Technology Conference", "Delve into the future of technology with industry experts.", "2023-12-19", "09:30", "Conference Center", 40, eventLinks["Technology Conference"],"https://www.travelperk.com/wp-content/uploads/alex-kotliarskyi-ourQHRTE2IM-unsplash-1024x683.jpg");
         let event10 = await event.createEvent("emilyBrown456", "Hiking Adventure", "Embark on an exciting hiking trail!", "2023-12-21", "08:00", "Mountain Park", 10, eventLinks["Hiking Adventure"],"https://www.outdoyo.com/media/filer_public/fd/e2/fde2caf2-deb8-437b-9aea-2eaed1b726d8/hiking-trail.jpg");
         let event11 = await event.createEvent("jasonDoe789", "Music Concert", "Live music performance by renowned artists", "2023-12-26", "19:00", "Concert Hall", 30, eventLinks["Music Concert"],"https://d194ip2226q57d.cloudfront.net/images/House-Concert_CO-Katie-Jones.original.jpg");
-        let event12 = await event.createEvent("jasonDoe789", "Charity Fundraiser", "Support a cause and make a difference!", "2024-01-14", "16:30", "Community Center", 25, eventLinks["Charity Fundraiser"],"https://cdn.shopify.com/s/files/1/2572/3764/files/Outdoor_Charity_Fundraiser_Tips-min_1024x1024.jpg?v=1639405017");
+        let event12 = await event.createEvent("jasonDoe789", "Charity Fundraiser", "Support a cause and make a difference!", "2023-12-13", "16:30", "Community Center", 0, eventLinks["Charity Fundraiser"],"https://cdn.shopify.com/s/files/1/2572/3764/files/Outdoor_Charity_Fundraiser_Tips-min_1024x1024.jpg?v=1639405017");
       
     } 
     catch (e) 
